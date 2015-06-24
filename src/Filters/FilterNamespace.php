@@ -43,7 +43,7 @@
 
 namespace GanbaroDigital\Reflection\Filters;
 
-class NamespaceFilter
+class FilterNamespace
 {
     /**
      * strip the namespace (if there is one) from the front of a PHP
