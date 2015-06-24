@@ -1,0 +1,19 @@
+{
+    "name": "ganbarodigital/php-reflection",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "authors": [
+        { "name": "Stuart Herbert", "email": "stuart@stuartherbert.com" }
+    ],
+    "require": {
+        "php": ">= 5.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "GanbaroDigital\\Reflection\\": "src"
+        }
+    }
+}
