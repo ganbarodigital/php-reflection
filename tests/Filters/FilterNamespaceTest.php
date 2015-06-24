@@ -46,9 +46,9 @@ namespace GanbaroDigital\Reflection\Filters;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @coversDefaultClass GanbaroDigital\Reflection\Filters\NamespaceFilter
+ * @coversDefaultClass GanbaroDigital\Reflection\Filters\FilterNamespace
  */
-class NamespaceFilterTest extends PHPUnit_Framework_TestCase
+class FilterNamespaceTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers ::fromString
@@ -56,7 +56,7 @@ class NamespaceFilterTest extends PHPUnit_Framework_TestCase
      */
     public function testCanStripNamespaces($classname, $expectedResult)
     {
-        $actualResult = NamespaceFilter::fromString($classname);
+        $actualResult = FilterNamespace::fromString($classname);
         $this->assertEquals($expectedResult, $actualResult);
     }
 
