@@ -2,7 +2,9 @@
 
 ## develop branch
 
-Nothing yet.
+### New
+
+* ItemSimpleType value builder
 
 ## 2.0.0 - Wed Jun 24 2015
 
