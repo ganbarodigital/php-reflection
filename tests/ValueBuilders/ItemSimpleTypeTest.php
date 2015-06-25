@@ -104,4 +104,50 @@ class ItemSimpleTypeTest extends PHPUnit_Framework_TestCase
             [ '100', 'string' ],
         ];
     }
+
+    /**
+     * @covers ::__invoke
+     * @covers ::fromMixed
+     * @covers ::fromObject
+     * @dataProvider provideDataToTest
+     */
+    public function testCanStaticallyGetAnyType($data, $expectedType)
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualType = ItemSimpleType::fromMixed($data);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertEquals($expectedType, $actualType);
+    }
+
+    /**
+     * @covers ::fromObject
+     */
+    public function testCanStaticallyGetObjectType()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $data = new ItemSimpleType();
+        $expectedType = ItemSimpleType::class;
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualType = ItemSimpleType::fromObject($data);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertEquals($expectedType, $actualType);
+    }
+
 }
