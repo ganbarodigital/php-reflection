@@ -4,8 +4,9 @@
 
 ### New
 
-* ItemAllTypes value builder
-* ItemSimpleType value builder
+* AllMatchingTypesList value builder
+* CodeCaller value builer
+* SimpleType value builder
 
 ## 2.0.0 - Wed Jun 24 2015
 
