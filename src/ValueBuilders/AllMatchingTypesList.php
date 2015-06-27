@@ -205,12 +205,8 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
         // robustness!
         self::checkAcceptableObject($item);
 
-        // what kind of object are we looking at?
-        $className = get_class($item);
-
         // do we have this cached?
-        $cacheName = $className . '::object';
-        if ($retval = static::getFromCache($cacheName)) {
+        if ($retval = static::getObjectFromCache($item)) {
             return $retval;
         }
 
@@ -223,14 +219,14 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
         // 3. any magic methods that can be automatically taken advantage of
         // 4. the default fallback type
         $retval = array_merge(
-            self::fromClassName($className),
+            self::fromClassName(get_class($item)),
             ['Object'],
             self::getObjectConditionalTypes($item),
             [self::FALLBACK_TYPE]
         );
 
         // cache the results
-        static::setInCache($cacheName, $retval);
+        static::setObjectInCache($item, $retval);
 
         // all done
         return $retval;
@@ -272,6 +268,44 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
         }
 
         return $retval;
+    }
+
+    /**
+     * do we have the details of this object in the cache?
+     *
+     * @param  object $object
+     *         the object to check for
+     * @return array|null
+     */
+    private static function getObjectFromCache($object)
+    {
+        $cacheName = self::getObjectCacheName($object);
+        return self::getFromCache($cacheName);
+    }
+
+    /**
+     * write the details about this object into the cache
+     *
+     * @param object $object
+     *        the object to cache details about
+     * @param array $typeList
+     *        the details for $object
+     */
+    private static function setObjectInCache($object, array $typeList)
+    {
+        $cacheName = self::getObjectCacheName($object);
+        self::setInCache($cacheName, $typeList);
+    }
+
+    /**
+     * what is the cache key to use for this object?
+     *
+     * @param  object $object
+     * @return string
+     */
+    private static function getObjectCacheName($object)
+    {
+        return get_class($object) . '::object';
     }
 
     /**
