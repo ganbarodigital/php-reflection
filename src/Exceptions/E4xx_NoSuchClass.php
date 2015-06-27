@@ -45,9 +45,9 @@ namespace GanbaroDigital\Reflection\Exceptions;
 
 class E4xx_NoSuchClass extends E4xx_ReflectionException
 {
-	public function __construct($className)
-	{
-		$msg = "no such class '{$className}'";
-		parent::__construct(400, $msg);
-	}
+    public function __construct($className)
+    {
+        $msg = "no such class '{$className}'";
+        parent::__construct(400, $msg);
+    }
 }

@@ -186,7 +186,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
         // if we get here, then we have not seen this object before
         //
         // we can start by getting all the details about the class
-        $retval = static::fromClassName($className);
+        $retval = self::fromClassName($className);
 
         // before we see if we can pretend to be other types, let's tell
         // the world that we are, in fact, an object
