@@ -203,10 +203,9 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
     public static function fromObject($item)
     {
         // robustness!
-        if (!is_object($item)) {
-            throw new E4xx_UnsupportedType(gettype($item));
-        }
+        self::checkAcceptableObject($item);
 
+        // what kind of object are we looking at?
         $className = get_class($item);
 
         // do we have this cached?
@@ -235,6 +234,23 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
 
         // all done
         return $retval;
+    }
+
+    /**
+     * make sure that we have an object to inspect
+     *
+     * @param  mixed $item
+     *         the item to inspect
+     * @return void
+     *
+     * @throws E4xx_UnsupportedType
+     */
+    private static function checkAcceptableObject($item)
+    {
+        // robustness!
+        if (!is_object($item)) {
+            throw new E4xx_UnsupportedType(gettype($item), 2);
+        }
     }
 
     /**

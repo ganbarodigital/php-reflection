@@ -53,27 +53,73 @@ class E4xx_UnsupportedType extends E4xx_ReflectionException
         // the type of the item
         //
         // we do this conversion to avoid a fatal PHP error
+        $msgType = $this->ensureString($type);
+
+        // let's find out who is trying to throw this exception
+        $caller = $this->getCaller($level);
+
+        // what do we want to tell our error handler?
+        $msg = $this->buildErrorMessage($type, $caller);
+
+        // all done
+        parent::__construct(400, $msg);
+    }
+
+    /**
+     * make sure that we have a string for our message
+     *
+     * @param  mixed $type
+     *         the item to check
+     * @return string
+     *         the original string, or the type of $type
+     */
+    private function ensureString($type)
+    {
         if (!is_string($type)) {
             $type = gettype($type);
         }
 
+        return $type;
+    }
+
+    /**
+     * work out who is throwing the exception
+     *
+     * @param  int $level
+     *         how deep into the backtrace we need to go
+     * @return array
+     *         the calling class, and the calling method
+     */
+    private function getCaller($level)
+    {
         // let's find out who is trying to throw this exception
         $backtrace = debug_backtrace();
-        for (; $level > 1 && count($backtrace) > 1; $level--) {
+        for (; $level > 0 && count($backtrace) > 1; $level--) {
             array_shift($backtrace);
         }
-        list($rejectedBy, $funcOrMethod) = CodeCaller::fromBacktrace($backtrace);
 
-        // what do we want to tell our error handler?
+        return CodeCaller::fromBacktrace($backtrace);
+    }
+
+    /**
+     * create the error message to add to the exception
+     *
+     * @param  string $type
+     *         the data type that the thrower does not support
+     * @param  array $caller
+     *         details about who is throwing the exception
+     * @return string
+     */
+    private function buildErrorMessage($type, $caller)
+    {
         $msg = "type '{$type}' is not supported by ";
-        if ($rejectedBy) {
-            $msg .= $rejectedBy;
+        if ($caller[0]) {
+            $msg .= $caller[0];
         }
-        if ($funcOrMethod) {
-            $msg .= "::{$funcOrMethod}";
+        if ($caller[1]) {
+            $msg .= "::{$caller[1]}";
         }
 
-        // all done
-        parent::__construct(400, $msg);
+        return $msg;
     }
 }
