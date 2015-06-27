@@ -59,7 +59,7 @@ class E4xx_UnsupportedType extends E4xx_ReflectionException
         $caller = $this->getCaller($level);
 
         // what do we want to tell our error handler?
-        $msg = $this->buildErrorMessage($type, $caller);
+        $msg = $this->buildErrorMessage($msgType, $caller);
 
         // all done
         parent::__construct(400, $msg);
