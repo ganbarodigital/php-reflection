@@ -71,9 +71,12 @@ class ItemSimpleType
         if (is_object($item)) {
             return static::fromObject($item);
         }
-        else {
-            return gettype($item);
+
+        if (is_callable($item)) {
+            return 'callable';
         }
+
+        return gettype($item);
     }
 
     /**

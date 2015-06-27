@@ -101,6 +101,7 @@ class ItemSimpleTypeTest extends PHPUnit_Framework_TestCase
             [ 0, 'integer' ],
             [ 1, 'integer' ],
             [ new ItemSimpleType(), ItemSimpleType::class ],
+            [ [ ItemSimpleType::class, 'fromMixed' ], 'callable' ],
             [ '100', 'string' ],
         ];
     }
