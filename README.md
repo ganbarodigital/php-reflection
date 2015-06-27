@@ -19,7 +19,7 @@ Add this to your `composer.json` file:
 
 	{
 		"require": {
-			"ganbarodigital/php-reflection": "^1.0"
+			"ganbarodigital/php-reflection": "^2.1"
 		}
 	}
 

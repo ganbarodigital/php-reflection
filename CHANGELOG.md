@@ -4,6 +4,12 @@
 
 Nothing yet.
 
+## 2.1.1 - Sat Jun 27 2015
+
+### Fix
+
+* README: install v2, not v1!
+
 ## 2.1.0 - Sat Jun 27 2015
 
 ### New
