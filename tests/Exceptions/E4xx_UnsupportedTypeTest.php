@@ -138,8 +138,6 @@ class E4xx_UnsupportedTypeTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::ensureString
-     * @covers ::setArgs
-     * @covers ::getArgs
      * @dataProvider provideListOfPhpTypes
      */
     public function testAutomaticallyHandlesTypesPassedIn($item)
@@ -157,7 +155,7 @@ class E4xx_UnsupportedTypeTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // test the results
 
-        $actualArgs = $obj->getArgs();
+        $actualArgs = $obj->getMessageData();
         $this->assertEquals($expectedType, $actualArgs['type']);
     }
 
@@ -178,8 +176,6 @@ class E4xx_UnsupportedTypeTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::getCaller
-     * @covers ::setArgs
-     * @covers ::getArgs
      */
     public function testAutomaticallyWorksOutWhoIsThrowingTheException()
     {
@@ -199,15 +195,13 @@ class E4xx_UnsupportedTypeTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // test the results
 
-        $actualArgs = $obj->getArgs();
+        $actualArgs = $obj->getMessageData();
         $this->assertEquals($expectedCaller, $actualArgs['caller']);
     }
 
     /**
      * @covers ::__construct
      * @covers ::getCaller
-     * @covers ::setArgs
-     * @covers ::getArgs
      */
     public function testSupportsUnwindingTheCallStackFurther()
     {
@@ -231,7 +225,7 @@ class E4xx_UnsupportedTypeTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // test the results
 
-        $actualArgs = $obj->getArgs();
+        $actualArgs = $obj->getMessageData();
         $this->assertEquals($expectedCaller, $actualArgs['caller']);
     }
 

@@ -64,27 +64,22 @@ class E4xx_UnsupportedType extends E4xx_ReflectionException
     {
         // our list of args, in case someone wants to dig deeper into
         // what went wrong
-        $args = [];
+        $data = [];
 
         // special case - someone passed us the original item, rather than
         // the type of the item
         //
         // we do this conversion to avoid a fatal PHP error
-        $args['type'] = $this->ensureString($type);
+        $data['type'] = $this->ensureString($type);
 
         // let's find out who is trying to throw this exception
-        $args['caller'] = $this->getCaller($level);
+        $data['caller'] = $this->getCaller($level);
 
         // what do we want to tell our error handler?
-        $msg = $this->buildErrorMessage($args['type'], $args['caller']);
-
-        // remember the args in case someone else wants them
-        //
-        // we will move this out into a base class at some point
-        $this->setArgs($args);
+        $msg = $this->buildErrorMessage($data['type'], $data['caller']);
 
         // all done
-        parent::__construct(400, $msg);
+        parent::__construct(400, $msg, $data);
     }
 
     /**
@@ -143,26 +138,5 @@ class E4xx_UnsupportedType extends E4xx_ReflectionException
         }
 
         return $msg;
-    }
-
-    /**
-     * return a list of the data items used to build this exception
-     *
-     * @return array
-     */
-    public function getArgs()
-    {
-        return $this->args;
-    }
-
-    /**
-     * set the list of data items used to build this exception
-     *
-     * @param array $args
-     *        the list of data items
-     */
-    protected function setArgs(array $args)
-    {
-        $this->args = $args;
     }
 }

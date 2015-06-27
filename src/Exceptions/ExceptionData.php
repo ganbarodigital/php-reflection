@@ -43,15 +43,33 @@
 
 namespace GanbaroDigital\Reflection\Exceptions;
 
-use RuntimeException;
-
-class Exxx_ReflectionException extends RuntimeException
+trait ExceptionData
 {
-	use ExceptionData;
+    /**
+     * a list of the data used to build the message
+     *
+     * @var array
+     */
+    private $messageData = [];
 
-    public function __construct($code, $message, $data = array())
+    /**
+     * return a list of the data items used to build this exception
+     *
+     * @return array
+     */
+    public function getMessageData()
     {
-        parent::__construct($message, $code);
-        $this->setMessageData($data);
+        return $this->messageData;
+    }
+
+    /**
+     * set the list of data items used to build this exception
+     *
+     * @param array $data
+     *        the list of data items
+     */
+    protected function setMessageData(array $data)
+    {
+        $this->messageData = $data;
     }
 }
