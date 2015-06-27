@@ -69,9 +69,6 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
             throw new E4xx_UnsupportedType(gettype($item));
         }
 
-        // what are we looking at?
-        $simpleType = 'Array';
-
         // our return type
         $retval = [];
 
@@ -109,7 +106,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
 
         // do we have this cached?
         $cacheName = $className . '::class';
-        if ($retval = static::getFromCache($cacheName)) {
+        if ($retval = self::getFromCache($cacheName)) {
             return $retval;
         }
 
