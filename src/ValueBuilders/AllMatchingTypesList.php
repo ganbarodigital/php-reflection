@@ -55,6 +55,15 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
     const FALLBACK_TYPE = "Mixed";
 
     /**
+     * the extra items to append to a class
+     */
+    private static $classExtras = [
+        'Class',
+        'String',
+        self::FALLBACK_TYPE
+    ];
+
+    /**
      * get the list of possible types that could match an array
      *
      * @param  array $item
@@ -105,12 +114,9 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
 
         // if we get here, then we're looking at a type that we have not
         // seen before ...
-        $retval = self::fromClassName($className);
-
-        // add in our fallback type(s)
-        $retval[] = 'Class';
-        $retval[] = 'String';
-        $retval[] = static::FALLBACK_TYPE;
+        //
+        // combine details about the class name with our fallback types
+        $retval = array_merge(self::fromClassName($className), self::$classExtras);
 
         // cache the result
         static::setInCache($cacheName, $retval);
