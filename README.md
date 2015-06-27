@@ -5,6 +5,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/ganbarodigital/php-reflection.svg?style=flat)](https://packagist.org/packages/ganbarodigital/php-reflection)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ganbarodigital/php-reflection/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ganbarodigital/php-reflection/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/ganbarodigital/php-reflection/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ganbarodigital/php-reflection/build-status/master)
+[![Coverage Status](https://coveralls.io/repos/ganbarodigital/php-reflection/badge.svg)](https://coveralls.io/r/ganbarodigital/php-reflection)
 [![Dependency Status](https://www.versioneye.com/php/ganbarodigital:php-reflection/dev-master/badge.svg)](https://www.versioneye.com/php/ganbarodigital:php-reflection/dev-master)
 [![Reference Status](https://www.versioneye.com/php/ganbarodigital:php-reflection/reference_badge.svg?style=flat)](https://www.versioneye.com/php/ganbarodigital:php-reflection/references)
 
