@@ -224,9 +224,9 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
         // 4. the default fallback type
         $retval = array_merge(
             self::fromClassName($className),
-            [ 'Object'],
+            ['Object'],
             self::getObjectConditionalTypes($item),
-            [ self::FALLBACK_TYPE ]
+            [self::FALLBACK_TYPE]
         );
 
         // cache the results
