@@ -8,12 +8,10 @@ The PHP Reflection library provides a set of useful and robust reflection helper
 
 Add this to your `composer.json` file:
 
-{% highlight json %}
-{
-	"require": {
-		"ganbarodigital/php-reflection": "^1.0"
+	{
+		"require": {
+			"ganbarodigital/php-reflection": "^1.0"
+		}
 	}
-}
-{% endhighlight %}
 
 and then run `composer update`.
