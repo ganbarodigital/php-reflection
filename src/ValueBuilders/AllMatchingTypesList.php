@@ -95,14 +95,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
     public static function fromClass($className)
     {
         // robustness!
-        if (!is_string($className)) {
-            throw new E4xx_UnsupportedType(gettype($className));
-        }
-
-        // make sure we have a safe input
-        if (!class_exists($className)) {
-            throw new E4xx_NoSuchClass($className);
-        }
+        self::checkAcceptableClassName($className);
 
         // do we have this cached?
         $cacheName = $className . '::class';
@@ -124,6 +117,29 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
 
         // all done
         return $retval;
+    }
+
+    /**
+     * have we been given something that's really a classname?
+     *
+     * @param  string $className
+     *         the class name to check
+     * @return void
+     *
+     * @throws E4xx_UnsupportedType
+     * @throws E4xx_NoSuchClass
+     */
+    private static function checkAcceptableClassName($className)
+    {
+        // robustness!
+        if (!is_string($className)) {
+            throw new E4xx_UnsupportedType(gettype($className), 2);
+        }
+
+        // make sure we have a safe input
+        if (!class_exists($className)) {
+            throw new E4xx_NoSuchClass($className);
+        }
     }
 
     /**

@@ -47,7 +47,7 @@ use GanbaroDigital\Reflection\ValueBuilders\CodeCaller;
 
 class E4xx_UnsupportedType extends E4xx_ReflectionException
 {
-    public function __construct($type)
+    public function __construct($type, $level = 1)
     {
         // special case - someone passed us the original item, rather than
         // the type of the item
@@ -58,7 +58,11 @@ class E4xx_UnsupportedType extends E4xx_ReflectionException
         }
 
         // let's find out who is trying to throw this exception
-        list($rejectedBy, $funcOrMethod) = CodeCaller::fromBacktrace(debug_backtrace());
+        $backtrace = debug_backtrace();
+        for (; $level > 1 && count($backtrace) > 1; $level--) {
+            array_shift($backtrace);
+        }
+        list($rejectedBy, $funcOrMethod) = CodeCaller::fromBacktrace($backtrace);
 
         // what do we want to tell our error handler?
         $msg = "type '{$type}' is not supported by ";

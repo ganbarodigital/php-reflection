@@ -102,6 +102,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
      * @covers ::fromString
      * @covers ::fromClass
      * @covers ::fromClassName
+     * @covers ::checkAcceptableClassName
      * @dataProvider provideDataToTest
      */
     public function testCanUseAsObject($data, $expectedTypes)
@@ -142,6 +143,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
      * @covers ::fromObject
      * @covers ::fromClass
      * @covers ::fromClassName
+     * @covers ::checkAcceptableClassName
      * @dataProvider provideTestClasses
      */
     public function testCanGetInterfaceNames($data, $expectedTypes)
@@ -238,6 +240,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromObject
      * @covers ::fromClass
+     * @covers ::checkAcceptableClassName
      * @covers ::fromClassName
      */
     public function testDetectsInvokeableObjects()
@@ -268,6 +271,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromObject
      * @covers ::fromClass
+     * @covers ::checkAcceptableClassName
      */
     public function testDetectsStringyObjects()
     {
@@ -296,6 +300,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @covers ::fromClass
+     * @covers ::checkAcceptableClassName
      */
     public function testDetectsStringyClassnames()
     {
@@ -566,6 +571,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
+     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'NULL' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
      */
@@ -582,6 +588,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
+     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
      */
@@ -598,6 +605,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
+     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
      */
@@ -614,6 +622,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
+     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'object' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
      */
@@ -630,6 +639,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
+     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'integer' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
      */
@@ -646,6 +656,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
+     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'double' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
      */
@@ -662,6 +673,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
+     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'object' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
      */
@@ -678,6 +690,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
+     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'array' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
      */
@@ -694,6 +707,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
+     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_NoSuchClass
      * @expectedExceptionMessage no such class 'ThisIsANonsenseClass'
      */
