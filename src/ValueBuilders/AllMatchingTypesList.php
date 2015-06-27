@@ -55,6 +55,17 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
     const FALLBACK_TYPE = "Mixed";
 
     /**
+     * the extra items to append to any array's type list
+     *
+     * @var array
+     */
+    private static $arrayExtras = [
+        'Array',
+        'Traversable',
+        self::FALLBACK_TYPE
+    ];
+
+    /**
      * the extra items to append to a class
      * @var array
      */
@@ -78,7 +89,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
      *
      * @param  array $item
      *         the item to examine
-     * @return array
+     * @return string[]
      *         a list of matching types
      */
     public static function fromArray($item)
@@ -95,9 +106,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
         if (is_callable($item)) {
             $retval[] = "Callable";
         }
-        $retval[] = "Array";
-        $retval[] = "Traversable";
-        $retval[] = static::FALLBACK_TYPE;
+        $retval = array_merge($retval, self::$arrayExtras);
 
         // all done
         return $retval;
@@ -108,7 +117,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
      *
      * @param  string $className
      *         the item to examine
-     * @return array
+     * @return string[]
      *         a list of matching objects
      */
     public static function fromClass($className)
@@ -178,7 +187,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
         // 2. interfaces
         // 3. substituted as a string
         // 4. substituted as a callable
-        $retval = [ $className ];
+        $retval = [$className];
 
         foreach (class_parents($className) as $parentName) {
             $retval[] = $parentName;
@@ -197,7 +206,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
      *
      * @param  object $item
      *         the item to examine
-     * @return array
+     * @return string[]
      *         a list of matching objects
      */
     public static function fromObject($item)
@@ -206,7 +215,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
         self::checkAcceptableObject($item);
 
         // do we have this cached?
-        if ($retval = static::getObjectFromCache($item)) {
+        if ($retval = self::getObjectFromCache($item)) {
             return $retval;
         }
 
@@ -226,7 +235,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
         );
 
         // cache the results
-        static::setObjectInCache($item, $retval);
+        self::setObjectInCache($item, $retval);
 
         // all done
         return $retval;
@@ -254,7 +263,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
      *
      * @param  object $object
      *         the object to examine
-     * @return array
+     * @return string[]
      *         a (possibly empty) list of types for this object
      */
     private static function getObjectConditionalTypes($object)
@@ -313,7 +322,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
      *
      * @param  mixed $item
      *         the item to examine
-     * @return array
+     * @return string[]
      *         the basic type of the examined item
      */
     public static function fromMixed($item)
