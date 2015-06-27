@@ -49,7 +49,7 @@ use GanbaroDigital\DataContainers\Caches\StaticDataCache;
  * we need a common cache for the ValueBuilders
  *
  */
-class ClassTypesListCache
+class AllMatchingTypesListCache
 {
     use StaticDataCache;
 }

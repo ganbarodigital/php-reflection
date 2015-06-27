@@ -43,14 +43,10 @@
 
 namespace GanbaroDigital\Reflection\ValueBuilders;
 
-use GanbaroDigital\DataContainers\Caches\StaticDataCache;
+use GanbaroDigital\Reflection\Caches\AllMatchingTypesListCache;
 
-class ItemAllTypesList
+class AllMatchingTypesList extends AllMatchingTypesListCache
 {
-    // allows us to calculate once, and then re-use on subsequent
-    // repeated calls
-    use StaticDataCache;
-
     /**
      * what type is everything expected to match?
      */
@@ -85,6 +81,77 @@ class ItemAllTypesList
     }
 
     /**
+     * get the list of possible types that could match a class name
+     *
+     * @param  string $className
+     *         the item to examine
+     * @return array
+     *         a list of matching objects
+     */
+    public static function fromClass($className)
+    {
+        // make sure we have a safe input
+        if (!class_exists($className)) {
+            throw new E4xx_NoSuchClass($className);
+        }
+
+        // do we have this cached?
+        $cacheName = $className . '::class';
+        if ($retval = static::getFromCache($cacheName)) {
+            return $retval;
+        }
+
+        // if we get here, then we're looking at a type that we have not
+        // seen before ...
+        $retval = self::fromClassName($className);
+
+        // add in our fallback type(s)
+        $retval[] = 'Class';
+        $retval[] = 'String';
+        $retval[] = static::FALLBACK_TYPE;
+
+        // cache the result
+        static::setInCache($cacheName, $retval);
+
+        // all done
+        return $retval;
+    }
+
+    /**
+     * get the list of possible types that could match a class name
+     *
+     * caching the result is the responsibility of the caller
+     *
+     * @param  string $className
+     *         the item to examine
+     * @return array
+     *         a list of matching objects
+     */
+    private static function fromClassName($className)
+    {
+        // our return value
+        //
+        // we build this to go from the most specific to the least specific
+        //
+        // 1. parent classes
+        // 2. interfaces
+        // 3. substituted as a string
+        // 4. substituted as a callable
+        $retval = [ $className ];
+
+        foreach (class_parents($className) as $parentName) {
+            $retval[] = $parentName;
+        }
+
+        foreach (class_implements($className) as $interfaceName) {
+            $retval[] = $interfaceName;
+        }
+
+        // all done
+        return $retval;
+    }
+
+    /**
      * get the list of possible types that could match an object
      *
      * @param  object $item
@@ -94,52 +161,37 @@ class ItemAllTypesList
      */
     public static function fromObject($item)
     {
-        $simpleType = get_class($item);
+        $className = get_class($item);
 
         // do we have this cached?
-        if ($retval = static::getFromCache($simpleType)) {
+        $cacheName = $className . '::object';
+        if ($retval = static::getFromCache($cacheName)) {
             return $retval;
         }
 
-        // if we get here, then we're looking at a type that we have not
-        // seen before ...
-
-        // our return value
+        // if we get here, then we have not seen this object before
         //
-        // we build this to go from the most specific to the least specific
-        //
-        // 1. parent classes
-        // 2. interfaces
-        // 3. substituted as a string
-        // 4. substituted as a callable
-        $retval = [ $simpleType ];
-
-        foreach (class_parents($item) as $parentName) {
-            $retval[] = $parentName;
-        }
-
-        foreach (class_implements($item) as $interfaceName) {
-            $retval[] = $interfaceName;
-        }
+        // we can start by getting all the details about the class
+        $retval = static::fromClassName($className);
 
         // before we see if we can pretend to be other types, let's tell
         // the world that we are, in fact, an object
         $retval[] = "Object";
 
         // can this object be a string?
-        if (method_exists($item, '__toString')) {
+        if (method_exists($className, '__toString')) {
             $retval[] = "String";
         }
 
-        if (method_exists($item, '__invoke')) {
+        if (method_exists($className, '__invoke')) {
             $retval[] = "Callable";
         }
 
         // add in our fallback type
         $retval[] = static::FALLBACK_TYPE;
 
-        // cache the result
-        static::setInCache($simpleType, $retval);
+        // cache the results
+        static::setInCache($cacheName, $retval);
 
         // all done
         return $retval;
@@ -155,19 +207,38 @@ class ItemAllTypesList
      */
     public static function fromMixed($item)
     {
-        if (is_object($item)) {
-            return static::fromObject($item);
-        }
-
-        // this will pick up callable types too
-        if (is_array($item)) {
-            return static::fromArray($item);
+        $type = ucfirst(gettype($item));
+        $methodName = 'from' . ucfirst($type);
+        if (method_exists(static::class, $methodName)) {
+            return call_user_func_array([static::class, $methodName], [$item]);
         }
 
         // if we get here, then we just return the PHP scalar type
         return [
-            ucfirst(gettype($item)),
+            $type,
             static::FALLBACK_TYPE
+        ];
+    }
+
+    /**
+     * return any data type's type name
+     *
+     * @param  mixed $item
+     *         the item to examine
+     * @return array
+     *         the basic type of the examined item
+     */
+    public static function fromString($item)
+    {
+        // special case - is this a class name?
+        if (class_exists($item)) {
+            return self::fromClass($item);
+        }
+
+        // if we get here, then this is just a plain old regular string
+        return [
+            "String",
+            Static::FALLBACK_TYPE,
         ];
     }
 

@@ -43,7 +43,7 @@
 
 namespace GanbaroDigital\Reflection\ValueBuilders;
 
-class ItemSimpleType
+class SimpleType
 {
     /**
      * return the object's fully-qualified class name

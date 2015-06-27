@@ -46,9 +46,9 @@ namespace GanbaroDigital\Reflection\ValueBuilders;
 use PHPUnit_Framework_TestCase;
 
 /**
- * @coversDefaultClass GanbaroDigital\Reflection\ValueBuilders\ItemSimpleType
+ * @coversDefaultClass GanbaroDigital\Reflection\ValueBuilders\SimpleType
  */
-class ItemSimpleTypeTest extends PHPUnit_Framework_TestCase
+class SimpleTypeTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @coversNone
@@ -58,12 +58,12 @@ class ItemSimpleTypeTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new ItemSimpleType();
+        $obj = new SimpleType();
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertTrue($obj instanceof ItemSimpleType);
+        $this->assertTrue($obj instanceof SimpleType);
     }
 
     /**
@@ -77,7 +77,7 @@ class ItemSimpleTypeTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // setup your test
 
-        $obj = new ItemSimpleType();
+        $obj = new SimpleType();
 
         // ----------------------------------------------------------------
         // perform the change
@@ -100,8 +100,8 @@ class ItemSimpleTypeTest extends PHPUnit_Framework_TestCase
             [ 0.0, 'double' ],
             [ 0, 'integer' ],
             [ 1, 'integer' ],
-            [ new ItemSimpleType(), ItemSimpleType::class ],
-            [ [ ItemSimpleType::class, 'fromMixed' ], 'callable' ],
+            [ new SimpleType(), SimpleType::class ],
+            [ [ SimpleType::class, 'fromMixed' ], 'callable' ],
             [ '100', 'string' ],
         ];
     }
@@ -121,7 +121,7 @@ class ItemSimpleTypeTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $actualType = ItemSimpleType::fromMixed($data);
+        $actualType = SimpleType::fromMixed($data);
 
         // ----------------------------------------------------------------
         // test the results
@@ -137,13 +137,13 @@ class ItemSimpleTypeTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // setup your test
 
-        $data = new ItemSimpleType();
-        $expectedType = ItemSimpleType::class;
+        $data = new SimpleType();
+        $expectedType = SimpleType::class;
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $actualType = ItemSimpleType::fromObject($data);
+        $actualType = SimpleType::fromObject($data);
 
         // ----------------------------------------------------------------
         // test the results
