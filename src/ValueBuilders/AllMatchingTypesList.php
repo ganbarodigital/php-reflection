@@ -56,11 +56,21 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
 
     /**
      * the extra items to append to a class
+     * @var array
      */
     private static $classExtras = [
         'Class',
         'String',
         self::FALLBACK_TYPE
+    ];
+
+    /**
+     * the extra items that *might* be part of an object's type list
+     * @var array
+     */
+    private static $objectConditionalExtras = [
+        "__toString" => "String",
+        "__invoke"   => "Callable",
     ];
 
     /**
@@ -207,29 +217,44 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
 
         // if we get here, then we have not seen this object before
         //
-        // we can start by getting all the details about the class
-        $retval = self::fromClassName($className);
-
-        // before we see if we can pretend to be other types, let's tell
-        // the world that we are, in fact, an object
-        $retval[] = "Object";
-
-        // can this object be a string?
-        if (method_exists($className, '__toString')) {
-            $retval[] = "String";
-        }
-
-        if (method_exists($className, '__invoke')) {
-            $retval[] = "Callable";
-        }
-
-        // add in our fallback type
-        $retval[] = static::FALLBACK_TYPE;
+        // our details are made up of this order:
+        //
+        // 1. details about the class
+        // 2. that we are an object
+        // 3. any magic methods that can be automatically taken advantage of
+        // 4. the default fallback type
+        $retval = array_merge(
+            self::fromClassName($className),
+            [ 'Object'],
+            self::getObjectConditionalTypes($item),
+            [ self::FALLBACK_TYPE ]
+        );
 
         // cache the results
         static::setInCache($cacheName, $retval);
 
         // all done
+        return $retval;
+    }
+
+    /**
+     * get the list of extra types that are valid for this specific object
+     *
+     * @param  object $object
+     *         the object to examine
+     * @return array
+     *         a (possibly empty) list of types for this object
+     */
+    private static function getObjectConditionalTypes($object)
+    {
+        $retval = [];
+
+        foreach (self::$objectConditionalExtras as $methodName => $type) {
+            if (method_exists($object, $methodName)) {
+                $retval[] = $type;
+            }
+        }
+
         return $retval;
     }
 

@@ -99,6 +99,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
      * @covers ::fromArray
      * @covers ::fromMixed
      * @covers ::fromObject
+     * @covers ::getObjectConditionalTypes
      * @covers ::fromString
      * @covers ::fromClass
      * @covers ::fromClassName
@@ -141,6 +142,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__invoke
      * @covers ::fromObject
+     * @covers ::getObjectConditionalTypes
      * @covers ::fromClass
      * @covers ::fromClassName
      * @covers ::checkAcceptableClassName
@@ -239,6 +241,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
+     * @covers ::getObjectConditionalTypes
      * @covers ::fromClass
      * @covers ::checkAcceptableClassName
      * @covers ::fromClassName
