@@ -48,6 +48,13 @@ use GanbaroDigital\Reflection\ValueBuilders\CodeCaller;
 class E4xx_UnsupportedType extends E4xx_ReflectionException
 {
     /**
+     * a list of the args used to build the message
+     *
+     * @var array
+     */
+    protected $args = [];
+
+    /**
      * @param string $type
      *        result of calling gettype() on the unsupported item
      * @param integer $level
@@ -55,17 +62,26 @@ class E4xx_UnsupportedType extends E4xx_ReflectionException
      */
     public function __construct($type, $level = 1)
     {
+        // our list of args, in case someone wants to dig deeper into
+        // what went wrong
+        $args = [];
+
         // special case - someone passed us the original item, rather than
         // the type of the item
         //
         // we do this conversion to avoid a fatal PHP error
-        $msgType = $this->ensureString($type);
+        $args['type'] = $this->ensureString($type);
 
         // let's find out who is trying to throw this exception
-        $caller = $this->getCaller($level);
+        $args['caller'] = $this->getCaller($level);
 
         // what do we want to tell our error handler?
-        $msg = $this->buildErrorMessage($msgType, $caller);
+        $msg = $this->buildErrorMessage($args['type'], $args['caller']);
+
+        // remember the args in case someone else wants them
+        //
+        // we will move this out into a base class at some point
+        $this->setArgs($args);
 
         // all done
         parent::__construct(400, $msg);
@@ -127,5 +143,26 @@ class E4xx_UnsupportedType extends E4xx_ReflectionException
         }
 
         return $msg;
+    }
+
+    /**
+     * return a list of the data items used to build this exception
+     *
+     * @return array
+     */
+    public function getArgs()
+    {
+        return $this->args;
+    }
+
+    /**
+     * set the list of data items used to build this exception
+     *
+     * @param array $args
+     *        the list of data items
+     */
+    protected function setArgs(array $args)
+    {
+        $this->args = $args;
     }
 }
