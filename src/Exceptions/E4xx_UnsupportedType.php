@@ -47,6 +47,12 @@ use GanbaroDigital\Reflection\ValueBuilders\CodeCaller;
 
 class E4xx_UnsupportedType extends E4xx_ReflectionException
 {
+    /**
+     * @param string $type
+     *        result of calling gettype() on the unsupported item
+     * @param integer $level
+     *        how far up the call stack to go
+     */
     public function __construct($type, $level = 1)
     {
         // special case - someone passed us the original item, rather than
