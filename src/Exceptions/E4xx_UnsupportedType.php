@@ -43,11 +43,33 @@
 
 namespace GanbaroDigital\Reflection\Exceptions;
 
+use GanbaroDigital\Reflection\ValueBuilders\CodeCaller;
+
 class E4xx_UnsupportedType extends E4xx_ReflectionException
 {
-	public function __construct($type, $rejectedBy)
+	public function __construct($type)
 	{
-		$msg = "type '{$type}' is not supported by " . get_class($rejectedBy);
+		// special case - someone passed us the original item, rather than
+		// the type of the item
+		//
+		// we do this conversion to avoid a fatal PHP error
+		if (!is_string($type)) {
+			$type = gettype($type);
+		}
+
+		// let's find out who is trying to throw this exception
+		list($rejectedBy, $funcOrMethod) = CodeCaller::fromBacktrace(debug_backtrace());
+
+		// what do we want to tell our error handler?
+		$msg = "type '{$type}' is not supported by ";
+		if ($rejectedBy) {
+			$msg .= $rejectedBy;
+		}
+		if ($funcOrMethod) {
+			$msg .= "::{$funcOrMethod}";
+		}
+
+		// all done
 		parent::__construct(400, $msg);
 	}
 }

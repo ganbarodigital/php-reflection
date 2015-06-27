@@ -44,6 +44,8 @@
 namespace GanbaroDigital\Reflection\ValueBuilders;
 
 use GanbaroDigital\Reflection\Caches\AllMatchingTypesListCache;
+use GanbaroDigital\Reflection\Exceptions\E4xx_NoSuchClass;
+use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 
 class AllMatchingTypesList extends AllMatchingTypesListCache
 {
@@ -62,6 +64,11 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
      */
     public static function fromArray($item)
     {
+        // robustness!
+        if (!is_array($item)) {
+            throw new E4xx_UnsupportedType(gettype($item));
+        }
+
         // what are we looking at?
         $simpleType = 'Array';
 
@@ -90,6 +97,11 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
      */
     public static function fromClass($className)
     {
+        // robustness!
+        if (!is_string($className)) {
+            throw new E4xx_UnsupportedType(gettype($className));
+        }
+
         // make sure we have a safe input
         if (!class_exists($className)) {
             throw new E4xx_NoSuchClass($className);
@@ -161,6 +173,11 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
      */
     public static function fromObject($item)
     {
+        // robustness!
+        if (!is_object($item)) {
+            throw new E4xx_UnsupportedType(gettype($item));
+        }
+
         $className = get_class($item);
 
         // do we have this cached?
@@ -230,6 +247,11 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
      */
     public static function fromString($item)
     {
+        // robustness!
+        if (!is_string($item)) {
+            throw new E4xx_UnsupportedType(gettype($item));
+        }
+
         // special case - is this a class name?
         if (class_exists($item)) {
             return self::fromClass($item);
