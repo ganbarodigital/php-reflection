@@ -43,45 +43,62 @@
 
 namespace GanbaroDigital\Reflection\ValueBuilders;
 
+use GanbaroDigital\DataContainers\Caches\StaticDataCache;
+
 class ItemAllTypesList
 {
+    // allows us to calculate once, and then re-use on subsequent
+    // repeated calls
+    use StaticDataCache;
+
+    /**
+     * what type is everything expected to match?
+     */
     const FALLBACK_TYPE = "Mixed";
 
     /**
-     * our internal cache of answers, to speed up subsequent calls
+     * get the list of possible types that could match an array
      *
-     * @var array
+     * @param  array $item
+     *         the item to examine
+     * @return array
+     *         a list of matching types
      */
-    protected static $knownTypes = [];
-
     public static function fromArray($item)
     {
         // what are we looking at?
-        $simpleType = gettype($item);
+        $simpleType = 'Array';
 
-        // do we have this cached?
-        if ($retval = static::getFromCache($simpleType)) {
-            return $retval;
+        // our return type
+        $retval = [];
+
+        // we go from the most specific to the least specific
+        if (is_callable($item)) {
+            $retval[] = "Callable";
         }
-
-        // if we get here, we need to figure this out
-        $retval = [
-            "Traversable",
-            ucfirst(gettype($item)),
-            static::FALLBACK_TYPE,
-        ];
+        $retval[] = "Array";
+        $retval[] = "Traversable";
+        $retval[] = static::FALLBACK_TYPE;
 
         // all done
         return $retval;
     }
 
+    /**
+     * get the list of possible types that could match an object
+     *
+     * @param  object $item
+     *         the item to examine
+     * @return array
+     *         a list of matching objects
+     */
     public static function fromObject($item)
     {
         $simpleType = get_class($item);
 
-        // special case - have we seen this before?
-        if (isset(static::$knownTypes[$simpleType])) {
-            return static::$knownTypes[$simpleType];
+        // do we have this cached?
+        if ($retval = static::getFromCache($simpleType)) {
+            return $retval;
         }
 
         // if we get here, then we're looking at a type that we have not
@@ -90,23 +107,39 @@ class ItemAllTypesList
         // our return value
         //
         // we build this to go from the most specific to the least specific
+        //
+        // 1. parent classes
+        // 2. interfaces
+        // 3. substituted as a string
+        // 4. substituted as a callable
         $retval = [ $simpleType ];
+
+        foreach (class_parents($item) as $parentName) {
+            $retval[] = $parentName;
+        }
 
         foreach (class_implements($item) as $interfaceName) {
             $retval[] = $interfaceName;
         }
+
+        // before we see if we can pretend to be other types, let's tell
+        // the world that we are, in fact, an object
+        $retval[] = "Object";
 
         // can this object be a string?
         if (method_exists($item, '__toString')) {
             $retval[] = "String";
         }
 
-        // add in our fallback types
-        $retval[] = "Object";
+        if (method_exists($item, '__invoke')) {
+            $retval[] = "Callable";
+        }
+
+        // add in our fallback type
         $retval[] = static::FALLBACK_TYPE;
 
         // cache the result
-        static::$knownTypes[$simpleType] = $retval;
+        static::setInCache($simpleType, $retval);
 
         // all done
         return $retval;
@@ -126,6 +159,7 @@ class ItemAllTypesList
             return static::fromObject($item);
         }
 
+        // this will pick up callable types too
         if (is_array($item)) {
             return static::fromArray($item);
         }
@@ -148,21 +182,5 @@ class ItemAllTypesList
     public function __invoke($item)
     {
         return static::fromMixed($item);
-    }
-
-    /**
-     * do we have this result set in the cache?
-     *
-     * @param  string $type
-     *         the data type to search for
-     * @return array|null
-     */
-    protected static function getFromCache($type)
-    {
-        if (isset(static::$knownTypes[$type])) {
-            return static::$knownTypes[$type];
-        }
-
-        return null;
     }
 }
