@@ -241,10 +241,9 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
+     * @covers ::checkAcceptableObject
+     * @covers ::buildObjectTypeList
      * @covers ::getObjectConditionalTypes
-     * @covers ::fromClass
-     * @covers ::checkAcceptableClassName
-     * @covers ::fromClassName
      */
     public function testDetectsInvokeableObjects()
     {
@@ -273,8 +272,9 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
-     * @covers ::fromClass
-     * @covers ::checkAcceptableClassName
+     * @covers ::checkAcceptableObject
+     * @covers ::buildObjectTypeList
+     * @covers ::getObjectConditionalTypes
      */
     public function testDetectsStringyObjects()
     {
@@ -389,6 +389,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
+     * @covers ::getObjectFromCache
+     * @covers ::getObjectCacheName
      */
     public function testReadsFromInternalCacheForObjects()
     {
@@ -419,6 +421,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
+     * @covers ::setObjectInCache
+     * @covers ::getObjectCacheName
      */
     public function testWritesToInternalCacheForObjects()
     {
@@ -728,6 +732,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
+     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'NULL' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
      */
@@ -744,6 +749,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
+     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
      */
@@ -760,6 +766,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
+     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
      */
@@ -776,6 +783,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
+     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'integer' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
      */
@@ -792,6 +800,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
+     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'double' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
      */
@@ -808,6 +817,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
+     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'array' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
      */
@@ -824,6 +834,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
+     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      * @expectedExceptionMessage type 'string' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
      */
