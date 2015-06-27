@@ -220,7 +220,25 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
         }
 
         // if we get here, then we have not seen this object before
-        //
+        $retval = self::buildObjectTypeList($item);
+
+        // cache the results
+        self::setObjectInCache($item, $retval);
+
+        // all done
+        return $retval;
+    }
+
+    /**
+     * build up a list of supported types for an object
+     *
+     * @param  object $object
+     *         the object to examine
+     * @return string[]
+     *         the types available
+     */
+    private static function buildObjectTypeList($object)
+    {
         // our details are made up of this order:
         //
         // 1. details about the class
@@ -228,16 +246,12 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
         // 3. any magic methods that can be automatically taken advantage of
         // 4. the default fallback type
         $retval = array_merge(
-            self::fromClassName(get_class($item)),
+            self::fromClassName(get_class($object)),
             ['Object'],
-            self::getObjectConditionalTypes($item),
+            self::getObjectConditionalTypes($object),
             [self::FALLBACK_TYPE]
         );
 
-        // cache the results
-        self::setObjectInCache($item, $retval);
-
-        // all done
         return $retval;
     }
 
