@@ -43,7 +43,7 @@
 
 namespace GanbaroDigital\Reflection\ValueBuilders;
 
-class SimpleType
+final class SimpleType
 {
     /**
      * return the object's fully-qualified class name
@@ -69,7 +69,7 @@ class SimpleType
     public static function fromMixed($item)
     {
         if (is_object($item)) {
-            return static::fromObject($item);
+            return self::fromObject($item);
         }
 
         if (is_callable($item)) {
@@ -89,6 +89,6 @@ class SimpleType
      */
     public function __invoke($item)
     {
-        return static::fromMixed($item);
+        return self::fromMixed($item);
     }
 }

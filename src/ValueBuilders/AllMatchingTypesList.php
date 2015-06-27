@@ -47,7 +47,7 @@ use GanbaroDigital\Reflection\Caches\AllMatchingTypesListCache;
 use GanbaroDigital\Reflection\Exceptions\E4xx_NoSuchClass;
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 
-class AllMatchingTypesList extends AllMatchingTypesListCache
+final class AllMatchingTypesList extends AllMatchingTypesListCache
 {
     /**
      * what type is everything expected to match?
@@ -138,7 +138,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
         $retval = array_merge(self::fromClassName($className), self::$classExtras);
 
         // cache the result
-        static::setInCache($cacheName, $retval);
+        self::setInCache($cacheName, $retval);
 
         // all done
         return $retval;
@@ -329,14 +329,14 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
     {
         $type = ucfirst(gettype($item));
         $methodName = 'from' . ucfirst($type);
-        if (method_exists(static::class, $methodName)) {
-            return call_user_func_array([static::class, $methodName], [$item]);
+        if (method_exists(self::class, $methodName)) {
+            return call_user_func_array([self::class, $methodName], [$item]);
         }
 
         // if we get here, then we just return the PHP scalar type
         return [
             $type,
-            static::FALLBACK_TYPE
+            self::FALLBACK_TYPE
         ];
     }
 
@@ -363,7 +363,7 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
         // if we get here, then this is just a plain old regular string
         return [
             "String",
-            Static::FALLBACK_TYPE,
+            self::FALLBACK_TYPE,
         ];
     }
 
@@ -377,6 +377,6 @@ class AllMatchingTypesList extends AllMatchingTypesListCache
      */
     public function __invoke($item)
     {
-        return static::fromMixed($item);
+        return self::fromMixed($item);
     }
 }
