@@ -88,6 +88,8 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
      * @covers ::fromString
      * @covers ::fromClassName
      * @covers ::fromObject
+     * @covers ::getPublicMethodsFromClass
+     * @covers ::filterMethodsByStaticness
      * @dataProvider provideTargetsToFilter
      */
     public function testCanUseAsObject($target, $expectedMethods)
@@ -119,6 +121,8 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @covers ::fromClassName
+     * @covers ::getPublicMethodsFromClass
+     * @covers ::filterMethodsByStaticness
      */
     public function testCanGetMethodsFromClass()
     {
@@ -143,6 +147,8 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
+     * @covers ::getPublicMethodsFromClass
+     * @covers ::filterMethodsByStaticness
      */
     public function testCanGetMethodsFromObject()
     {
