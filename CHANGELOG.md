@@ -4,7 +4,7 @@
 
 ### New
 
-* Filters\FilterMethodNames
+* CallableMethodsList value builder
 
 ## 2.1.1 - Sat Jun 27 2015
 

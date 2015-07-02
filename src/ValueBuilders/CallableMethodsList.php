@@ -34,14 +34,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   Reflection/Filters
+ * @package   Reflection/ValueBuilders
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-file-system
  */
 
-namespace GanbaroDigital\Reflection\Filters;
+namespace GanbaroDigital\Reflection\ValueBuilders;
 
 use ReflectionClass;
 use ReflectionObject;
@@ -51,7 +51,7 @@ use GanbaroDigital\DataContainers\Caches\StaticDataCache;
 use GanbaroDigital\Reflection\Exceptions\E4xx_NoSuchClass;
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 
-class FilterMethodNames
+class CallableMethodsList
 {
     // we are going to cache the results for performance
     use StaticDataCache;

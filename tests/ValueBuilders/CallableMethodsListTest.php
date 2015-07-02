@@ -34,18 +34,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   Reflection/Filters
+ * @package   Reflection/ValueBuilders
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-file-system
  */
 
-namespace GanbaroDigital\Reflection\Filters;
+namespace GanbaroDigital\Reflection\ValueBuilders;
 
 use PHPUnit_Framework_TestCase;
 
-class FilterMethodNamesTest_Target1
+class CallableMethodsListTest_Target1
 {
     public function objectMethod1() { }
     protected function objectMethod2() { }
@@ -56,9 +56,9 @@ class FilterMethodNamesTest_Target1
 }
 
 /**
- * @coversDefaultClass GanbaroDigital\Reflection\Filters\FilterMethodNames
+ * @coversDefaultClass GanbaroDigital\Reflection\ValueBuilders\CallableMethodsList
  */
-class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
+class CallableMethodsListTest extends PHPUnit_Framework_TestCase
 {
 
     /**
@@ -74,12 +74,12 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new FilterMethodNames;
+        $obj = new CallableMethodsList;
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertTrue($obj instanceof FilterMethodNames);
+        $this->assertTrue($obj instanceof CallableMethodsList);
     }
 
     /**
@@ -99,7 +99,7 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // setup your test
 
-        $filter = new FilterMethodNames;
+        $filter = new CallableMethodsList;
 
         // ----------------------------------------------------------------
         // perform the change
@@ -117,12 +117,12 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
         // the duplication here is to prove that the underlying cache
         // doesn't affect the return values
         return [
-            [ FilterMethodNamesTest_Target1::class, [ 'staticMethod1' => 'staticMethod1' ] ],
-            [ FilterMethodNamesTest_Target1::class, [ 'staticMethod1' => 'staticMethod1' ] ],
+            [ CallableMethodsListTest_Target1::class, [ 'staticMethod1' => 'staticMethod1' ] ],
+            [ CallableMethodsListTest_Target1::class, [ 'staticMethod1' => 'staticMethod1' ] ],
             [ new \stdClass, [ ] ],
             [ new \stdClass, [ ] ],
-            [ new FilterMethodNamesTest_Target1, [ 'objectMethod1' => 'objectMethod1' ] ],
-            [ new FilterMethodNamesTest_Target1, [ 'objectMethod1' => 'objectMethod1' ] ],
+            [ new CallableMethodsListTest_Target1, [ 'objectMethod1' => 'objectMethod1' ] ],
+            [ new CallableMethodsListTest_Target1, [ 'objectMethod1' => 'objectMethod1' ] ],
         ];
     }
 
@@ -138,7 +138,7 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // setup your test
 
-        $target = new FilterMethodNamesTest_Target1;
+        $target = new CallableMethodsListTest_Target1;
         $expectedMethods = [
             'staticMethod1' => 'staticMethod1'
         ];
@@ -146,7 +146,7 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $actualMethods = FilterMethodNames::fromString(get_class($target));
+        $actualMethods = CallableMethodsList::fromString(get_class($target));
 
         // ----------------------------------------------------------------
         // test the results
@@ -165,7 +165,7 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // setup your test
 
-        $target = new FilterMethodNamesTest_Target1;
+        $target = new CallableMethodsListTest_Target1;
         $expectedMethods = [
             'objectMethod1' => 'objectMethod1'
         ];
@@ -173,7 +173,7 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $actualMethods = FilterMethodNames::fromObject($target);
+        $actualMethods = CallableMethodsList::fromObject($target);
 
         // ----------------------------------------------------------------
         // test the results
@@ -193,7 +193,7 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // setup your test
 
-        $filter = new FilterMethodNames;
+        $filter = new CallableMethodsList;
 
         // ----------------------------------------------------------------
         // perform the change
@@ -217,7 +217,7 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        FilterMethodNames::fromMixed($target);
+        CallableMethodsList::fromMixed($target);
     }
 
     /**
@@ -232,12 +232,12 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // setup your test
 
-        $filter = new FilterMethodNamesTest;
+        $filter = new CallableMethodsListTest;
 
         // ----------------------------------------------------------------
         // perform the change
 
-        FilterMethodNames::fromString($target);
+        CallableMethodsList::fromString($target);
     }
 
     /**
@@ -251,12 +251,12 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // setup your test
 
-        $filter = new FilterMethodNamesTest;
+        $filter = new CallableMethodsListTest;
 
         // ----------------------------------------------------------------
         // perform the change
 
-        FilterMethodNames::fromObject($target);
+        CallableMethodsList::fromObject($target);
     }
 
     public function provideBadDataToTest()
@@ -291,7 +291,7 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        FilterMethodNames::fromString('NoSuch\\Class\\Exists\\At\\All');
+        CallableMethodsList::fromString('NoSuch\\Class\\Exists\\At\\All');
     }
 
 }
