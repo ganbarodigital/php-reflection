@@ -68,9 +68,6 @@ class FilterMethodNames
             throw new E4xx_UnsupportedType(gettype($obj));
         }
 
-        // our return value
-        $retval = [];
-
         // get the methods
         $rawMethods = self::getPublicMethodsFromClass(get_class($obj));
 
