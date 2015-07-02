@@ -2,7 +2,9 @@
 
 ## develop branch
 
-Nothing yet.
+### New
+
+* Filters\FilterMethodNames
 
 ## 2.1.1 - Sat Jun 27 2015
 
