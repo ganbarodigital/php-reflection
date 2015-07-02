@@ -98,11 +98,6 @@ class CallableMethodsList
      */
     protected static function fromClassName($className)
     {
-        // robustness!
-        if (!is_string($className)) {
-            throw new E4xx_UnsupportedType(gettype($className));
-        }
-
         // make sure that we have an actual class
         if (!class_exists($className)) {
             throw new E4xx_NoSuchClass($className);
@@ -183,6 +178,11 @@ class CallableMethodsList
      */
     public static function fromString($className)
     {
+        // robustness!
+        if (!is_string($className)) {
+            throw new E4xx_UnsupportedType(gettype($className));
+        }
+
         return self::fromClassName($className);
     }
 
