@@ -77,13 +77,8 @@ class CallableMethodsList
             return $retval;
         }
 
-        // get the methods
-        $rawMethods = self::getPublicMethodsFromClass(get_class($obj));
-
-        // unfortunately, getMethods() returns an array indexed by number,
-        // and not an array indexed by method name, so we now need to
-        // transform the array
-        $retval = self::filterMethodsByStaticness($rawMethods, false);
+        // what can be called?
+        $retval = self::buildListOfObjectMethods($obj);
 
         // cache it for next time
         self::setObjectInCache($obj, $retval);
@@ -118,13 +113,8 @@ class CallableMethodsList
             return $retval;
         }
 
-        // get the methods
-        $rawMethods = self::getPublicMethodsFromClass($className);
-
-        // unfortunately, getMethods() returns an array indexed by number,
-        // and not an array indexed by method name, so we now need to
-        // transform the array
-        $retval = self::filterMethodsByStaticness($rawMethods, true);
+        // what can be called?
+        $retval = self::buildListOfClassMethods($className);
 
         // cache it
         self::setClassInCache($className, $retval);
@@ -286,5 +276,33 @@ class CallableMethodsList
     {
         $cacheKey = self::getObjectCacheName($obj);
         self::setInCache($cacheKey, $methodsList);
+    }
+
+    private static function buildListOfClassMethods($className)
+    {
+        // get the methods
+        $rawMethods = self::getPublicMethodsFromClass($className);
+
+        // unfortunately, getMethods() returns an array indexed by number,
+        // and not an array indexed by method name, so we now need to
+        // transform the array
+        $retval = self::filterMethodsByStaticness($rawMethods, true);
+
+        // all done
+        return $retval;
+    }
+
+    private static function buildListOfObjectMethods($obj)
+    {
+        // get the methods
+        $rawMethods = self::getPublicMethodsFromClass(get_class($obj));
+
+        // unfortunately, getMethods() returns an array indexed by number,
+        // and not an array indexed by method name, so we now need to
+        // transform the array
+        $retval = self::filterMethodsByStaticness($rawMethods, false);
+
+        // all done
+        return $retval;
     }
 }
