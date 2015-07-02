@@ -73,8 +73,7 @@ class CallableMethodsList
         }
 
         // do we already have the answer?
-        $cacheKey = self::getObjectCacheName($obj);
-        if (($retval = self::getFromCache($cacheKey)) !== null) {
+        if (($retval = self::getObjectFromCache($obj)) !== null) {
             return $retval;
         }
 
@@ -87,7 +86,7 @@ class CallableMethodsList
         $retval = self::filterMethodsByStaticness($rawMethods, false);
 
         // cache it for next time
-        self::setInCache($cacheKey, $retval);
+        self::setObjectInCache($obj, $retval);
 
         // all done
         return $retval;
@@ -115,8 +114,7 @@ class CallableMethodsList
         }
 
         // do we already have this?
-        $cacheKey = self::getClassCacheName($className);
-        if (($retval = self::getFromCache($cacheKey)) !== null) {
+        if (($retval = self::getClassFromCache($className)) !== null) {
             return $retval;
         }
 
@@ -129,7 +127,7 @@ class CallableMethodsList
         $retval = self::filterMethodsByStaticness($rawMethods, true);
 
         // cache it
-        self::setInCache($cacheKey, $retval);
+        self::setClassInCache($className, $retval);
 
         // all done
         return $retval;
@@ -264,5 +262,29 @@ class CallableMethodsList
     private static function getObjectCacheName($obj)
     {
         return get_class($obj) . '::object';
+    }
+
+    private static function getClassFromCache($className)
+    {
+        $cacheKey = self::getClassCacheName($className);
+        return self::getFromCache($cacheKey);
+    }
+
+    private static function setClassInCache($className, array $methodsList)
+    {
+        $cacheKey = self::getClassCacheName($className);
+        self::setInCache($cacheKey, $methodsList);
+    }
+
+    private static function getObjectFromCache($obj)
+    {
+        $cacheKey = self::getObjectCacheName($obj);
+        return self::getFromCache($cacheKey);
+    }
+
+    private static function setObjectInCache($obj, array $methodsList)
+    {
+        $cacheKey = self::getObjectCacheName($obj);
+        self::setInCache($cacheKey, $methodsList);
     }
 }
