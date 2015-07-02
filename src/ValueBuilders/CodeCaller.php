@@ -47,7 +47,7 @@ class CodeCaller
 {
     public static function fromBacktrace($backtrace)
     {
-        $retval = [ null, null ];
+        $retval = [null, null];
         if (isset($backtrace[1]['class'])) {
             $retval[0] = $backtrace[1]['class'];
         }
