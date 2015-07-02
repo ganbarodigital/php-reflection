@@ -90,6 +90,8 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
      * @covers ::fromObject
      * @covers ::getPublicMethodsFromClass
      * @covers ::filterMethodsByStaticness
+     * @covers ::getClassCacheName
+     * @covers ::getObjectCacheName
      * @dataProvider provideTargetsToFilter
      */
     public function testCanUseAsObject($target, $expectedMethods)
@@ -112,8 +114,14 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
 
     public function provideTargetsToFilter()
     {
+        // the duplication here is to prove that the underlying cache
+        // doesn't affect the return values
         return [
             [ FilterMethodNamesTest_Target1::class, [ 'staticMethod1' => 'staticMethod1' ] ],
+            [ FilterMethodNamesTest_Target1::class, [ 'staticMethod1' => 'staticMethod1' ] ],
+            [ new \stdClass, [ ] ],
+            [ new \stdClass, [ ] ],
+            [ new FilterMethodNamesTest_Target1, [ 'objectMethod1' => 'objectMethod1' ] ],
             [ new FilterMethodNamesTest_Target1, [ 'objectMethod1' => 'objectMethod1' ] ],
         ];
     }
@@ -121,6 +129,7 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @covers ::fromClassName
+     * @covers ::getClassCacheName
      * @covers ::getPublicMethodsFromClass
      * @covers ::filterMethodsByStaticness
      */
@@ -148,6 +157,7 @@ class FilterMethodNamesTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromObject
      * @covers ::getPublicMethodsFromClass
+     * @covers ::getObjectCacheName
      * @covers ::filterMethodsByStaticness
      */
     public function testCanGetMethodsFromObject()

@@ -47,11 +47,15 @@ use ReflectionClass;
 use ReflectionObject;
 use ReflectionMethod;
 
+use GanbaroDigital\DataContainers\Caches\StaticDataCache;
 use GanbaroDigital\Reflection\Exceptions\E4xx_NoSuchClass;
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 
 class FilterMethodNames
 {
+    // we are going to cache the results for performance
+    use StaticDataCache;
+
     /**
      * extract an indexed list of methods from an object
      *
@@ -68,6 +72,12 @@ class FilterMethodNames
             throw new E4xx_UnsupportedType(gettype($obj));
         }
 
+        // do we already have the answer?
+        $cacheKey = self::getObjectCacheName($obj);
+        if (($retval = self::getFromCache($cacheKey)) !== null) {
+            return $retval;
+        }
+
         // get the methods
         $rawMethods = self::getPublicMethodsFromClass(get_class($obj));
 
@@ -75,6 +85,9 @@ class FilterMethodNames
         // and not an array indexed by method name, so we now need to
         // transform the array
         $retval = self::filterMethodsByStaticness($rawMethods, false);
+
+        // cache it for next time
+        self::setInCache($cacheKey, $retval);
 
         // all done
         return $retval;
@@ -101,6 +114,12 @@ class FilterMethodNames
             throw new E4xx_NoSuchClass($className);
         }
 
+        // do we already have this?
+        $cacheKey = self::getClassCacheName($className);
+        if (($retval = self::getFromCache($cacheKey)) !== null) {
+            return $retval;
+        }
+
         // get the methods
         $rawMethods = self::getPublicMethodsFromClass($className);
 
@@ -108,6 +127,9 @@ class FilterMethodNames
         // and not an array indexed by method name, so we now need to
         // transform the array
         $retval = self::filterMethodsByStaticness($rawMethods, true);
+
+        // cache it
+        self::setInCache($cacheKey, $retval);
 
         // all done
         return $retval;
@@ -218,5 +240,29 @@ class FilterMethodNames
     public function __invoke($data)
     {
         return self::fromMixed($data);
+    }
+
+    /**
+     * get the cache key to use for a given classname
+     *
+     * @param  string $className
+     *         the class we want to cache data about
+     * @return string
+     */
+    private static function getClassCacheName($className)
+    {
+        return $className . '::class';
+    }
+
+    /**
+     * get the cache key to use for a given object
+     *
+     * @param  object $obj
+     *         the object we want to cache data about
+     * @return string
+     */
+    private static function getObjectCacheName($obj)
+    {
+        return get_class($obj) . '::object';
     }
 }
