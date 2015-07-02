@@ -48,7 +48,7 @@ use GanbaroDigital\Exceptions\ExceptionMessageData;
 
 class Exxx_ReflectionException extends RuntimeException
 {
-	use ExceptionMessageData;
+    use ExceptionMessageData;
 
     public function __construct($code, $message, $data = array())
     {
