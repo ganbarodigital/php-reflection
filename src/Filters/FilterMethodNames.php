@@ -71,26 +71,13 @@ class FilterMethodNames
         // our return value
         $retval = [];
 
-        // get the list of methods from reflection
-        $refClass = new ReflectionObject($obj);
-        $rawMethods = $refClass->getMethods(ReflectionMethod::IS_PUBLIC);
+        // get the methods
+        $rawMethods = self::getPublicMethodsFromClass(get_class($obj));
 
         // unfortunately, getMethods() returns an array indexed by number,
         // and not an array indexed by method name, so we now need to
         // transform the array
-        //
-        // eventually, we'll move this out into a separate class that can
-        // be combined as a data stream
-        foreach ($rawMethods as $rawMethod) {
-            // skip over static methods
-            if ($rawMethod->isStatic()) {
-                continue;
-            }
-
-            // we like this one :)
-            $methodName = $rawMethod->getName();
-            $retval[$methodName] = $methodName;
-        }
+        $retval = self::filterMethodsByStaticness($rawMethods, false);
 
         // all done
         return $retval;
@@ -112,31 +99,64 @@ class FilterMethodNames
             throw new E4xx_UnsupportedType(gettype($className));
         }
 
-        // our return value
-        $retval = [];
-
         // make sure that we have an actual class
         if (!class_exists($className)) {
             throw new E4xx_NoSuchClass($className);
         }
 
-        // get the list of methods from reflection
-        $refClass = new ReflectionClass($className);
-        $rawMethods = $refClass->getMethods(ReflectionMethod::IS_PUBLIC);
+        // get the methods
+        $rawMethods = self::getPublicMethodsFromClass($className);
 
         // unfortunately, getMethods() returns an array indexed by number,
         // and not an array indexed by method name, so we now need to
         // transform the array
-        //
+        $retval = self::filterMethodsByStaticness($rawMethods, true);
+
+        // all done
+        return $retval;
+    }
+
+    /**
+     * return a list of public methods on a class
+     *
+     * this will return both static and non-static methods
+     *
+     * @param  string $className
+     *         the class to check
+     * @return array
+     */
+    private static function getPublicMethodsFromClass($className)
+    {
+        // get the list of methods from reflection
+        $refClass = new ReflectionClass($className);
+        return $refClass->getMethods(ReflectionMethod::IS_PUBLIC);
+    }
+
+    /**
+     * build a list of methods, based on whether they are static or not
+     *
+     * @param  array $rawMethods
+     *         a list of ReflectionMethod objects to filter on
+     * @param  boolean $isStatic
+     *         TRUE if you want only static methods
+     *         FALSE if you want only non-static methods
+     * @return array
+     *         the method names that have passed the filter
+     */
+    private static function filterMethodsByStaticness($rawMethods, $isStatic)
+    {
+        // our return value
+        $retval = [];
+
         // eventually, we'll move this out into a separate class that can
         // be combined as a data stream
         foreach ($rawMethods as $rawMethod) {
-            // skip over non-static methods
-            if (!$rawMethod->isStatic()) {
+            // skip over static methods
+            if (!$rawMethod->isStatic() === $isStatic) {
                 continue;
             }
 
-            // we like this one!
+            // we like this one :)
             $methodName = $rawMethod->getName();
             $retval[$methodName] = $methodName;
         }
