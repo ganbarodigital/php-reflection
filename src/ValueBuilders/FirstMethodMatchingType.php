@@ -160,16 +160,9 @@ final class FirstMethodMatchingType
      */
     private static function findMethodToCall($data, $target, $methodPrefix)
     {
-        // no, so we need to build it
-        $possibleTypes   = AllMatchingTypesList::fromMixed($data);
-        $possibleMethods = CallableMethodsList::fromMixed($target);
-
-        foreach ($possibleTypes as $possibleType) {
-            $targetMethodName = $methodPrefix . $possibleType;
-            if (isset($possibleMethods[$targetMethodName])) {
-                // all done
-                return $targetMethodName;
-            }
+        // is there a method that matches the data type?
+        if (($retval = self::findFirstMatchingMethod($data, $target, $methodPrefix)) !== null) {
+            return $retval;
         }
 
         // before we give in ...
@@ -185,6 +178,36 @@ final class FirstMethodMatchingType
         //
         // treat as an error
         throw new E4xx_UnsupportedType(gettype($data));
+    }
+
+    /**
+     * find the first method on $target that matches $data's data type
+     *
+     * @param  mixed $data
+     *         the data we want to call $target with
+     * @param  string|object $target
+     *         the target that we want to call
+     * @param  string $methodPrefix
+     *         the prefix at the front of methods on $target
+     * @return string|null
+     *         the method that suits $data the best
+     */
+    private static function findFirstMatchingMethod($data, $target, $methodPrefix)
+    {
+        // no, so we need to build it
+        $possibleTypes   = AllMatchingTypesList::fromMixed($data);
+        $possibleMethods = CallableMethodsList::fromMixed($target);
+
+        foreach ($possibleTypes as $possibleType) {
+            $targetMethodName = $methodPrefix . $possibleType;
+            if (isset($possibleMethods[$targetMethodName])) {
+                // all done
+                return $targetMethodName;
+            }
+        }
+
+        // no match
+        return null;
     }
 
     /**

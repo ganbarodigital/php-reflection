@@ -252,6 +252,7 @@ class FirstMethodMatchingTypeTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::findMethodToCall
+     * @covers ::findFirstMatchingMethod
      * @dataProvider provideDataToTest
      */
     public function testMatchesFirstMethodForType($data, $target, $prefix, $expectedMethod)
@@ -274,6 +275,7 @@ class FirstMethodMatchingTypeTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::findMethodToCall
+     * @covers ::findFirstMatchingMethod
      */
     public function testFallsBackToInvokeWhenTargetIsAnObject()
     {
