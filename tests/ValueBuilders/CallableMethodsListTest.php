@@ -44,6 +44,7 @@
 namespace GanbaroDigital\Reflection\ValueBuilders;
 
 use PHPUnit_Framework_TestCase;
+use GanbaroDigital\UnitTestHelpers\ClassesAndObjects\InvokeMethod;
 
 class CallableMethodsListTest_Target1
 {
@@ -60,6 +61,11 @@ class CallableMethodsListTest_Target1
  */
 class CallableMethodsListTest extends PHPUnit_Framework_TestCase
 {
+    public function setup()
+    {
+        // we need to empty the internal cache before each unit test
+        InvokeMethod::onString(CallableMethodsList::class, 'resetCache');
+    }
 
     /**
      * @coversNone
@@ -90,8 +96,6 @@ class CallableMethodsListTest extends PHPUnit_Framework_TestCase
      * @covers ::fromObject
      * @covers ::getPublicMethodsFromClass
      * @covers ::filterMethodsByStaticness
-     * @covers ::getClassCacheName
-     * @covers ::getObjectCacheName
      * @dataProvider provideTargetsToFilter
      */
     public function testCanUseAsObject($target, $expectedMethods)
@@ -129,7 +133,6 @@ class CallableMethodsListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @covers ::fromClassName
-     * @covers ::getClassCacheName
      * @covers ::getPublicMethodsFromClass
      * @covers ::filterMethodsByStaticness
      */
@@ -157,7 +160,6 @@ class CallableMethodsListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromObject
      * @covers ::getPublicMethodsFromClass
-     * @covers ::getObjectCacheName
      * @covers ::filterMethodsByStaticness
      */
     public function testCanGetMethodsFromObject()
@@ -292,6 +294,190 @@ class CallableMethodsListTest extends PHPUnit_Framework_TestCase
         // perform the change
 
         CallableMethodsList::fromString('NoSuch\\Class\\Exists\\At\\All');
+    }
+
+    /**
+     * @covers ::getClassCacheName
+     * @covers ::getObjectCacheName
+     */
+    public function testUsesDifferentCacheKeyForClassesAndObjects()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $targetClass = CallableMethodsListTest_Target1::class;
+        $targetObj   = new CallableMethodsListTest_Target1;
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $classCacheKey  = InvokeMethod::onString(CallableMethodsList::class, 'getClassCacheName', [ $targetClass ]);
+        $objectCacheKey = InvokeMethod::onString(CallableMethodsList::class, 'getObjectCacheName', [ $targetObj ]);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertNotEquals($classCacheKey, $objectCacheKey);
+    }
+
+    /**
+     * @covers ::setClassInCache
+     * @covers ::fromClassName
+     */
+    public function testWritesClassResultsToAnInternalCache()
+    {
+        $target = CallableMethodsListTest_Target1::class;
+        $expectedMethods = [
+            'staticMethod1' => 'staticMethod1'
+        ];
+
+        // put the data into the cache
+        CallableMethodsList::fromString($target);
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualMethods = InvokeMethod::onString(CallableMethodsList::class, 'getClassFromCache', [$target]);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertEquals($expectedMethods, $actualMethods);
+    }
+
+    /**
+     * @covers ::getClassFromCache
+     * @covers ::setClassInCache
+     * @covers ::fromClassName
+     */
+    public function testReadsClassResultsFromAnInternalCache()
+    {
+        $target = CallableMethodsListTest_Target1::class;
+        $expectedMethods = [
+            'garbageMethod1' => 'staticMethod1'
+        ];
+
+        // put the data into the cache
+        InvokeMethod::onString(CallableMethodsList::class, 'setClassInCache', [$target, $expectedMethods]);
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualMethods2 = CallableMethodsList::fromString($target);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        // this proves that the data we expect is in the internal cache
+        $actualMethods1 = InvokeMethod::onString(CallableMethodsList::class, 'getClassFromCache', [$target]);
+        $this->assertEquals($expectedMethods, $actualMethods1);
+
+        // this proves that CallableMethodsList uses the internal cache
+        // when data is present
+        $this->assertEquals($expectedMethods, $actualMethods2);
+    }
+
+    /**
+     * @covers ::setObjectInCache
+     * @covers ::fromObject
+     */
+    public function testWritesObjectResultsToAnInternalCache()
+    {
+        $target = new CallableMethodsListTest_Target1;
+        $expectedMethods = [
+            'objectMethod1' => 'objectMethod1'
+        ];
+
+        // put the data into the cache
+        CallableMethodsList::fromObject($target);
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualMethods = InvokeMethod::onString(CallableMethodsList::class, 'getObjectFromCache', [$target]);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertEquals($expectedMethods, $actualMethods);
+    }
+
+    /**
+     * @covers ::getObjectFromCache
+     * @covers ::setObjectInCache
+     * @covers ::fromObject
+     */
+    public function testReadsObjectResultsFromAnInternalCache()
+    {
+        $target = new CallableMethodsListTest_Target1;
+        $expectedMethods = [
+            'garbageMethod1' => 'staticMethod1'
+        ];
+
+        // put the data into the cache
+        InvokeMethod::onString(CallableMethodsList::class, 'setObjectInCache', [$target, $expectedMethods]);
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualMethods2 = CallableMethodsList::fromObject($target);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        // this proves that the data we expect is in the internal cache
+        $actualMethods1 = InvokeMethod::onString(CallableMethodsList::class, 'getObjectFromCache', [$target]);
+        $this->assertEquals($expectedMethods, $actualMethods1);
+
+        // this proves that CallableMethodsList uses the internal cache
+        // when data is present
+        $this->assertEquals($expectedMethods, $actualMethods2);
+    }
+
+    /**
+     * @covers ::buildListOfClassMethods
+     */
+    public function testBuildsAListOfStaticMethodsWhenExaminingAClass()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $expectedMethods = [
+            'staticMethod1' => 'staticMethod1'
+        ];
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualMethods = InvokeMethod::onString(CallableMethodsList::class, 'buildListOfClassMethods', [ CallableMethodsListTest_Target1::class]);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertEquals($expectedMethods, $actualMethods);
+    }
+
+    /**
+     * @covers ::buildListOfObjectMethods
+     */
+    public function testBuildsAListOfNonStaticMethodsWhenExaminingAnObject()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $expectedMethods = [
+            'objectMethod1' => 'objectMethod1'
+        ];
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualMethods = InvokeMethod::onString(CallableMethodsList::class, 'buildListOfObjectMethods', [ new CallableMethodsListTest_Target1 ]);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertEquals($expectedMethods, $actualMethods);
     }
 
 }

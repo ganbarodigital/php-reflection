@@ -254,30 +254,71 @@ class CallableMethodsList
         return get_class($obj) . '::object';
     }
 
+    /**
+     * get cached data about a class
+     *
+     * @param  string $className
+     *         the class we want cached data for
+     * @return array|null
+     */
     private static function getClassFromCache($className)
     {
         $cacheKey = self::getClassCacheName($className);
         return self::getFromCache($cacheKey);
     }
 
+    /**
+     * write data about a class into our cache
+     *
+     * @param  string $className
+     *         the class we want to cache data for
+     * @param  array $methodsList
+     *         the data we want to cache
+     * @return void
+     */
     private static function setClassInCache($className, array $methodsList)
     {
         $cacheKey = self::getClassCacheName($className);
         self::setInCache($cacheKey, $methodsList);
     }
 
+    /**
+     * get cached data about an object
+     *
+     * @param  object $obj
+     *         the object we want cached data for
+     * @return array|null
+     */
     private static function getObjectFromCache($obj)
     {
         $cacheKey = self::getObjectCacheName($obj);
         return self::getFromCache($cacheKey);
     }
 
+    /**
+     * write data about an object into our cache
+     *
+     * @param  object $obj
+     *         the obj we want to cache data for
+     * @param  array $methodsList
+     *         the data we want to cache
+     * @return void
+     */
     private static function setObjectInCache($obj, array $methodsList)
     {
         $cacheKey = self::getObjectCacheName($obj);
         self::setInCache($cacheKey, $methodsList);
     }
 
+    /**
+     * return a list of methods that can be called on a class
+     *
+     * @param  string $className
+     *         the class to examine
+     * @return array
+     *         a list of methods that can be called without having to
+     *         instantiate an object
+     */
     private static function buildListOfClassMethods($className)
     {
         // get the methods
@@ -292,6 +333,14 @@ class CallableMethodsList
         return $retval;
     }
 
+    /**
+     * return a list of methods that can be called on an object
+     *
+     * @param  object $obj
+     *         the object to examine
+     * @return array
+     *         a list of methods that can be called on the object
+     */
     private static function buildListOfObjectMethods($obj)
     {
         // get the methods
