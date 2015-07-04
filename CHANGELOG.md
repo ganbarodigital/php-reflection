@@ -4,6 +4,13 @@
 
 Nothing yet.
 
+## 2.2.0 - Sat Jul 4 2015
+
+### New
+
+* CallableMethodsList value builder
+* FirstMethodMatchingType value builder
+
 ## 2.1.1 - Sat Jun 27 2015
 
 ### Fix

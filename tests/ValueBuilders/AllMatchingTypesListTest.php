@@ -283,11 +283,17 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
         $data = new AllMatchingTypesListTest_StringTarget;
         $expectedResult = [
-            AllMatchingTypesListTest_StringTarget::class,
+            AllMatchingTypesListTest_StringTarget::class
+        ];
+        // HHVM currently adds this class to the class hierarchy
+        if (defined('HHVM_VERSION')) {
+            $expectedResult[] = 'Stringish';
+        }
+        $expectedResult = array_merge($expectedResult, [
             'Object',
             'String',
             'Mixed'
-        ];
+        ]);
 
         // ----------------------------------------------------------------
         // perform the change
