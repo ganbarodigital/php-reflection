@@ -2,7 +2,10 @@
 
 ## develop branch
 
-Nothing yet.
+### Fixes
+
+* CodeCaller value builder is now implemented in `ganbarodigital/php-exceptions`
+* E4xx_UnsupportedType uses the new UnsupportedType trait from `ganbarodigital/php-exceptions`
 
 ## 2.2.0 - Sat Jul 4 2015
 
