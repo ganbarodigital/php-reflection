@@ -2,7 +2,20 @@
 
 ## develop branch
 
-Nothing yet.
+Nothing yet
+
+## 2.3.0 - Fri Jul 10 2015
+
+### New
+
+* Checks\IsAssignable - does a variable support object-notation assignment (e.g. $a->$b)?
+* Checks\IsIndexable - does a variable support array-notation assignment (e.g. $a[$b])?
+* Checks\IsTraversable - can a variable be used in a foreach() loop?
+
+### Fixes
+
+* CodeCaller value builder is now implemented in `ganbarodigital/php-exceptions`
+* E4xx_UnsupportedType uses the new UnsupportedType trait from `ganbarodigital/php-exceptions`
 
 ## 2.2.0 - Sat Jul 4 2015
 

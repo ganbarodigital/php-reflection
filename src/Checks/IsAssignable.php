@@ -34,31 +34,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   Reflection/Exceptions
+ * @package   Reflection/Checks
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-data-containers
+ * @link      http://code.ganbarodigital.com/php-reflection
  */
 
-namespace GanbaroDigital\Reflection\Exceptions;
+namespace GanbaroDigital\Reflection\Checks;
 
-use GanbaroDigital\Exceptions\Traits\UnsupportedType;
+use stdClass;
 
-class E4xx_UnsupportedType extends E4xx_ReflectionException
+class IsAssignable
 {
-    use UnsupportedType;
-
-    public function __construct($type, $level = 1)
+    /**
+     * is $item something that can be used by PHP code that uses object
+     * property notation?
+     *
+     * @param  mixed $item
+     *         the item to examine
+     * @return boolean
+     *         true if the item is compatible
+     *         false otherwise
+     */
+    public static function checkMixed($item)
     {
-        // our list of args, in case someone wants to dig deeper into
-        // what went wrong
-        $data = $this->buildErrorData($type, $level);
+        if ($item instanceof stdClass) {
+            return true;
+        }
 
-        // what do we want to tell our error handler?
-        $msg = $this->buildErrorMessage($data['type'], $data['caller']);
+        return false;
+    }
 
-        // all done
-        parent::__construct(400, $msg, $data);
+    /**
+     * is $item something that can be used by PHP code that uses object
+     * property notation?
+     *
+     * @param  mixed $item
+     *         the item to examine
+     * @return boolean
+     *         true if the item is compatible
+     *         false otherwise
+     */
+    public function __invoke($item)
+    {
+        return self::checkMixed($item);
     }
 }

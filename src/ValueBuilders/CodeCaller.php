@@ -43,18 +43,8 @@
 
 namespace GanbaroDigital\Reflection\ValueBuilders;
 
-class CodeCaller
-{
-    public static function fromBacktrace($backtrace)
-    {
-        $retval = [null, null];
-        if (isset($backtrace[1]['class'])) {
-            $retval[0] = $backtrace[1]['class'];
-        }
-        if (isset($backtrace[1]['function'])) {
-            $retval[1] = $backtrace[1]['function'];
-        }
+use GanbaroDigital\Exceptions\ValueBuilders\CodeCaller as BaseBuilder;
 
-        return $retval;
-    }
+class CodeCaller extends BaseBuilder
+{
 }
