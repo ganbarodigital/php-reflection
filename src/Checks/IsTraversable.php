@@ -46,10 +46,14 @@ namespace GanbaroDigital\Reflection\Checks;
 use stdClass;
 use IteratorAggregate;
 use Traversable;
+use GanbaroDigital\DataContainers\Caches\StaticDataCache;
 use GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList;
 
 class IsTraversable
 {
+    // speed repeated things up
+    use StaticDataCache;
+
     /**
      * list of types that we consider to be traversable
      *
@@ -73,6 +77,27 @@ class IsTraversable
      */
     public static function checkMixed($item)
     {
+        if (($retval = self::getCachedResult($item)) !== null) {
+            return $retval;
+        }
+
+        $retval = self::calculateResult($item);
+
+        self::setCachedResult($item, $retval);
+        return $retval;
+    }
+
+    /**
+     * is $item something that can be used in a foreach() loop?
+     *
+     * @param  mixed $item
+     *         the item to examine
+     * @return boolean
+     *         true if the item can be used in a foreach() loop
+     *         false otherwise
+     */
+    private static function calculateResult($item)
+    {
         $itemTypes = AllMatchingTypesList::fromMixed($item);
         foreach ($itemTypes as $itemType) {
             if (isset(self::$acceptableTypes[$itemType])) {
@@ -95,5 +120,45 @@ class IsTraversable
     public function __invoke($item)
     {
         return self::checkMixed($item);
+    }
+
+    /**
+     * have we seen this kind of item before?
+     *
+     * @param  mixed $item
+     * @return boolean|null
+     */
+    private static function getCachedResult($item)
+    {
+        $cacheKey = self::getCacheKey($item);
+        return self::getFromCache($cacheKey);
+    }
+
+    /**
+     * remember the result in case there is a next time
+     *
+     * @param mixed $item
+     * @param boolean $result
+     * @return void
+     */
+    private static function setCachedResult($item, $result)
+    {
+        $cacheKey = self::getCacheKey($item);
+        self::setInCache($cacheKey, $result);
+    }
+
+    /**
+     * work out what lookup key to use for this item
+     *
+     * @param  mixed $item
+     * @return string
+     */
+    private static function getCacheKey($item)
+    {
+        if (is_object($item)) {
+            return get_class($item);
+        }
+
+        return gettype($item);
     }
 }

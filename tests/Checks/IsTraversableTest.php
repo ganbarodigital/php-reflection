@@ -45,6 +45,8 @@ namespace GanbaroDigital\Reflection\Checks;
 
 use ArrayIterator;
 use ArrayObject;
+use GanbaroDigital\UnitTestHelpers\ClassesAndObjects\InvokeMethod;
+
 use IteratorAggregate;
 use PHPUnit_Framework_TestCase;
 use stdClass;
@@ -63,6 +65,12 @@ class IsTraversableTest_Target1 implements IteratorAggregate
  */
 class IsTraversableTest extends PHPUnit_Framework_TestCase
 {
+    public function setup()
+    {
+        // make sure the cache is always empty before a test runs
+        InvokeMethod::onClass(IsTraversable::class, 'resetCache');
+    }
+
     /**
      * @coversNothing
      */
@@ -84,6 +92,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::checkMixed
+     * @covers ::calculateResult
      * @covers ::__invoke
      */
     public function testCanCheckForArray()
@@ -108,6 +117,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::checkMixed
+     * @covers ::calculateResult
      * @covers ::__invoke
      */
     public function testCanCheckForIteratorAggregate()
@@ -132,6 +142,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::checkMixed
+     * @covers ::calculateResult
      * @covers ::__invoke
      */
     public function testCanCheckForArrayIterator()
@@ -156,6 +167,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::checkMixed
+     * @covers ::calculateResult
      * @covers ::__invoke
      */
     public function testCanCheckForArrayObject()
@@ -180,6 +192,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::checkMixed
+     * @covers ::calculateResult
      * @covers ::__invoke
      */
     public function testCanCheckForStdclass()
@@ -205,6 +218,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__invoke
      * @covers ::checkMixed
+     * @covers ::calculateResult
      * @dataProvider provideNonTraversables
      */
     public function testRejectsEverythingElse($item)
@@ -236,5 +250,78 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
             [ "hello world"],
             [ new IsTraversable ],
         ];
+    }
+
+    /**
+     * @covers ::setCachedResult
+     * @covers ::getCacheKey
+     */
+    public function testWritesToStaticCache()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        // prove that this result is not in the cache
+        $expectedResult = false;
+        $data = 3.1415927;
+        $this->assertEquals(null, InvokeMethod::onClass(IsTraversable::class, 'getCachedResult', [ $data ]));
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        IsTraversable::checkMixed($data);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $actualResult = InvokeMethod::onClass(IsTraversable::class, 'getCachedResult', [ $data ]);
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @covers ::getCachedResult
+     * @covers ::getCacheKey
+     * @covers ::checkMixed
+     */
+    public function testReadsFromStaticCache()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        // force a nonsense result into the cache
+        $expectedResult = 100;
+        $data = 3.1415927;
+        InvokeMethod::onClass(IsTraversable::class, 'setCachedResult', [ $data, $expectedResult ]);
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualResult = IsTraversable::checkMixed($data);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @covers ::getCacheKey
+     */
+    public function testUsesClassNameForObjectKeyIntoStaticCache()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $data = new stdClass;
+        $expectedResult = get_class($data);
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $actualResult = InvokeMethod::onClass(IsTraversable::class, 'getCacheKey', [$data]);
+        $this->assertEquals($expectedResult, $actualResult);
     }
 }
