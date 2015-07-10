@@ -46,9 +46,22 @@ namespace GanbaroDigital\Reflection\Checks;
 use stdClass;
 use IteratorAggregate;
 use Traversable;
+use GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList;
 
 class IsTraversable
 {
+    /**
+     * list of types that we consider to be traversable
+     *
+     * @var array
+     */
+    private static $acceptableTypes = [
+        'Array'                  => true,
+        stdClass::class          => true,
+        Traversable::class       => true,
+        IteratorAggregate::class => true,
+    ];
+
     /**
      * is $item something that can be used in a foreach() loop?
      *
@@ -60,8 +73,11 @@ class IsTraversable
      */
     public static function checkMixed($item)
     {
-        if (is_array($item) || $item instanceof stdClass || $item instanceof Traversable || $item instanceof IteratorAggregate) {
-            return true;
+        $itemTypes = AllMatchingTypesList::fromMixed($item);
+        foreach ($itemTypes as $itemType) {
+            if (isset(self::$acceptableTypes[$itemType])) {
+                return true;
+            }
         }
 
         return false;
