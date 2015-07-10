@@ -2,6 +2,10 @@
 
 ## develop branch
 
+Nothing yet
+
+## 2.3.0 - Fri Jul 10 2015
+
 ### New
 
 * Checks\IsAssignable - does a variable support object-notation assignment (e.g. $a->$b)?
