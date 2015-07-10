@@ -6,6 +6,7 @@
 
 * Checks\IsAssignable - does a variable support object-notation assignment (e.g. $a->$b)?
 * Checks\IsIndexable - does a variable support array-notation assignment (e.g. $a[$b])?
+* Checks\IsTraversable - can a variable be used in a foreach() loop?
 
 ### Fixes
 
