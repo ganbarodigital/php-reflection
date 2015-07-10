@@ -5,6 +5,7 @@
 ### New
 
 * Checks\IsAssignable - does a variable support object-notation assignment (e.g. $a->$b)?
+* Checks\IsIndexable - does a variable support array-notation assignment (e.g. $a[$b])?
 
 ### Fixes
 
