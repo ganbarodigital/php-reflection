@@ -7,7 +7,7 @@
     ],
     "require": {
         "php": ">= 5.5",
-        "ganbarodigital/php-data-containers": "^2.0 || dev-develop",
+        "ganbarodigital/php-static-data-cache": "^1.0",
         "ganbarodigital/php-exceptions": "^1.1"
     },
     "require-dev": {
