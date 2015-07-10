@@ -2,6 +2,10 @@
 
 ## develop branch
 
+### New
+
+* Checks\IsAssignable - does a variable support object-notation assignment (e.g. $a->$b)?
+
 ### Fixes
 
 * CodeCaller value builder is now implemented in `ganbarodigital/php-exceptions`
