@@ -4,6 +4,8 @@
 
 Nothing yet.
 
+## 2.6.2 - Sat Jul 18 2015
+
 ### Fixes
 
 * ValueBuilders\FirstMethodMatchingType - no longer falls back to __invoke() on objects
