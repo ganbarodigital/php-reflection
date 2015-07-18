@@ -2,13 +2,15 @@
 
 ## develop branch
 
-Nothing yet.
+### Fixes
+
+* ValueBuilders\FirstMethodMatchingType now takes a $eUnsupportedType parameter. This makes it possible for other libraries to get this value builder to throw their own E4xx_UnsupportedType exception (making it easier for callers to catch), instead of throwing exceptions defined inside php-reflection.
 
 ## 2.5.1 - Sat Jul 18 2015 
 
 ### Fixes
 
-* All requirements now take a $exception parameter. This makes it possible for other libraries to use these requirements to throw their own exceptions, instead of throwing excexceptions from inside php-reflection.
+* All requirements now take a $exception parameter. This makes it possible for other libraries to use these requirements to throw their own exceptions, instead of throwing exceptions from inside php-reflection.
 
 ## 2.5.0 - Sat Jul 18 2015
 
