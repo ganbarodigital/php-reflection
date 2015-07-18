@@ -51,7 +51,6 @@ use GanbaroDigital\UnitTestHelpers\ClassesAndObjects\InvokeMethod;
 // a match is found
 class FirstMethodMatchingTypeTest_Target1
 {
-    public function __invoke() { }
     public static function fromMixed() { }
     public static function fromObject() { }
     public static function fromString() { }
@@ -203,14 +202,14 @@ class FirstMethodMatchingTypeTest extends PHPUnit_Framework_TestCase
 
         $obj = new FirstMethodMatchingType;
         $data = new \stdClass;
-        $targetObj = new FirstMethodMatchingTypeTest_Target1;
+        $targetClass = FirstMethodMatchingTypeTest_Target1::class;
 
-        $expectedResult = $obj($data, $targetObj, 'from');
+        $expectedResult = $obj($data, $targetClass, 'from');
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $actualResult = InvokeMethod::onObject($obj, 'getMethodFromCache', [$data, $targetObj]);
+        $actualResult = InvokeMethod::onObject($obj, 'getMethodFromCache', [$data, $targetClass]);
 
         // ----------------------------------------------------------------
         // test the results
@@ -278,33 +277,6 @@ class FirstMethodMatchingTypeTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::findMethodToCall
      * @covers ::findFirstMatchingMethod
-     */
-    public function testFallsBackToInvokeWhenTargetIsAnObject()
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $target = new FirstMethodMatchingTypeTest_Target1;
-
-        // there is no method on the target object that will match an
-        // integer
-        $data = 100;
-
-        $expectedMethod = '__invoke';
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $actualMethod = InvokeMethod::onString(FirstMethodMatchingType::class, 'findMethodToCall', [ $data, $target, 'from' ]);
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $this->assertEquals($expectedMethod, $actualMethod);
-    }
-
-    /**
-     * @covers ::findMethodToCall
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      */
     public function testThrowsAnExceptionWhenNoMatchFound()
