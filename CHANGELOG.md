@@ -2,6 +2,10 @@
 
 ## develop branch
 
+Nothing yet.
+
+## 2.5.0 - Sat Jul 18 2015
+
 ### New
 
 * Requirements\RequireAssignable - throw exception if an item isn't an assignable type
