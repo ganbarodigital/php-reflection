@@ -2,7 +2,9 @@
 
 ## develop branch
 
-Nothing yet.
+### New
+
+* Checks\IsLogical - check for boolean data types
 
 ## 2.5.2 - Sat Jul 18 2015
 
