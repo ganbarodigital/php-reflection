@@ -4,6 +4,13 @@
 
 Nothing yet.
 
+## 2.6.0 - Sat Jul 18 2015
+
+### New
+
+* Checks\IsLogical - check for boolean data types
+* Requirements\RequireLogical - throw exception if data is not Logical
+
 ## 2.5.2 - Sat Jul 18 2015
 
 ### Fixes
