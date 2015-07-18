@@ -2,6 +2,10 @@
 
 ## develop branch
 
+Nothing yet.
+
+## 2.5.2 - Sat Jul 18 2015
+
 ### Fixes
 
 * ValueBuilders\FirstMethodMatchingType now takes a $eUnsupportedType parameter. This makes it possible for other libraries to get this value builder to throw their own E4xx_UnsupportedType exception (making it easier for callers to catch), instead of throwing exceptions defined inside php-reflection.
