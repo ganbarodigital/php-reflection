@@ -2,7 +2,9 @@
 
 ## develop branch
 
-Nothing yet.
+### Fixes
+
+* All requirements now take a $exception parameter. This makes it possible for other libraries to use these requirements to throw their own exceptions, instead of throwing excexceptions from inside php-reflection.
 
 ## 2.5.0 - Sat Jul 18 2015
 
