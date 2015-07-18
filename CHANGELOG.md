@@ -5,6 +5,7 @@
 ### New
 
 * Checks\IsLogical - check for boolean data types
+* Requirements\RequireLogical - throw exception if data is not Logical
 
 ## 2.5.2 - Sat Jul 18 2015
 
