@@ -60,10 +60,12 @@ final class FirstMethodMatchingType
      *         the class or object that we want to call with $data
      * @param  string $methodPrefix
      *         the prefix to put on the front of the method name
+     * @param  string $eUnsupportedType
+     *         the exception to throw if no matching method found
      * @return string
      *         the first method on $target that will accept $data
      */
-    public static function fromMixed($data, $target, $methodPrefix)
+    public static function fromMixed($data, $target, $methodPrefix, $eUnsupportedType = E4xx_UnsupportedType::class)
     {
         // do we have this in the cache?
         if (($retval = self::getMethodFromCache($data, $target)) !== null) {
@@ -71,7 +73,7 @@ final class FirstMethodMatchingType
         }
 
         // what method do we want to call?
-        $retval = self::findMethodToCall($data, $target, $methodPrefix);
+        $retval = self::findMethodToCall($data, $target, $methodPrefix, $eUnsupportedType);
 
         // cache it for next time
         self::setMethodInCache($data, $target, $retval);
@@ -153,12 +155,14 @@ final class FirstMethodMatchingType
      *         the target that we want to call
      * @param  string $methodPrefix
      *         the prefix at the front of methods on $target
+     * @param  string $eUnsupportedType
+     *         the exception to throw if no matching method found
      * @return string
      *         the method that suits $data the best
      *
      * @throws E4xx_UnsupportedType
      */
-    private static function findMethodToCall($data, $target, $methodPrefix)
+    private static function findMethodToCall($data, $target, $methodPrefix, $eUnsupportedType = E4xx_UnsupportedType::class)
     {
         // is there a method that matches the data type?
         if (($retval = self::findFirstMatchingMethod($data, $target, $methodPrefix)) !== null) {
@@ -177,7 +181,7 @@ final class FirstMethodMatchingType
         // no match
         //
         // treat as an error
-        throw new E4xx_UnsupportedType(gettype($data));
+        throw new $eUnsupportedType(gettype($data));
     }
 
     /**
@@ -219,11 +223,13 @@ final class FirstMethodMatchingType
      *         the class or object that we want to call with $data
      * @param  string $methodPrefix
      *         the prefix to put on the front of the method name
+     * @param  string $eUnsupportedType
+     *         the exception to throw if no matching method found
      * @return string
      *         the first method on $target that will accept $data
      */
-    public function __invoke($data, $target, $methodPrefix)
+    public function __invoke($data, $target, $methodPrefix, $eUnsupportedType = E4xx_UnsupportedType::class)
     {
-        return self::fromMixed($data, $target, $methodPrefix);
+        return self::fromMixed($data, $target, $methodPrefix, $eUnsupportedType);
     }
 }
