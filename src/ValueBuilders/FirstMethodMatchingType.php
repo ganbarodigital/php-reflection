@@ -45,7 +45,7 @@ namespace GanbaroDigital\Reflection\ValueBuilders;
 
 use GanbaroDigital\DataContainers\Caches\StaticDataCache;
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
-use GanbaroDigital\Reflection\Filters\FilterMethodNames;
+use GanbaroDigital\Reflection\Filters\FilterNamespace;
 
 final class FirstMethodMatchingType
 {
@@ -203,7 +203,7 @@ final class FirstMethodMatchingType
         $possibleMethods = CallableMethodsList::fromMixed($target);
 
         foreach ($possibleTypes as $possibleType) {
-            $targetMethodName = $methodPrefix . $possibleType;
+            $targetMethodName = $methodPrefix . FilterNamespace::fromString($possibleType);
             if (isset($possibleMethods[$targetMethodName])) {
                 // all done
                 return $targetMethodName;

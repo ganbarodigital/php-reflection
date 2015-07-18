@@ -55,6 +55,7 @@ class FirstMethodMatchingTypeTest_Target1
     public static function fromMixed() { }
     public static function fromObject() { }
     public static function fromString() { }
+    public static function fromFirstMethodMatchingTypeTest_Target2() { }
 }
 
 // this is the $target to use when we want to test what happens when no
@@ -120,6 +121,7 @@ class FirstMethodMatchingTypeTest extends PHPUnit_Framework_TestCase
     {
         return [
             [ new \stdClass, FirstMethodMatchingTypeTest_Target1::class, 'from', 'fromObject' ],
+            [ new FirstMethodMatchingTypeTest_Target2, FirstMethodMatchingTypeTest_Target1::class, 'from', 'fromFirstMethodMatchingTypeTest_Target2' ]
         ];
     }
 
