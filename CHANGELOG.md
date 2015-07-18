@@ -2,6 +2,10 @@
 
 ## develop branch
 
+Nothing yet.
+
+## 2.4.0 - Sat Jul 18 2015
+
 ### New
 
 * Checks\IsStringy - is a variable a real string, or an object that can be used as a string?
