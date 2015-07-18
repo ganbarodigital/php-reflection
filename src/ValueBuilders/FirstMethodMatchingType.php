@@ -169,19 +169,10 @@ final class FirstMethodMatchingType
             return $retval;
         }
 
-        // before we give in ...
-        //
-        // PHP does not allow static and non-static methods with the same
-        // name, so it might be that the only available method on an
-        // object is the __invoke magic method
-        if (is_object($target) && method_exists($target, '__invoke')) {
-            return '__invoke';
-        }
-
         // no match
         //
         // treat as an error
-        throw new $eUnsupportedType(gettype($data));
+        throw new $eUnsupportedType(SimpleType::fromMixed($data));
     }
 
     /**
