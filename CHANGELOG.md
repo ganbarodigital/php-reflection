@@ -5,6 +5,7 @@
 ### New
 
 * Requirements\RequireAssignable - throw exception if an item isn't an assignable type
+* Requirements\RequireIndexable - throw exception if an item isn't an indexable type
 
 ## 2.4.0 - Sat Jul 18 2015
 
