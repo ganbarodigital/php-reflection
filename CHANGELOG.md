@@ -6,6 +6,7 @@
 
 * Requirements\RequireAssignable - throw exception if an item isn't an assignable type
 * Requirements\RequireIndexable - throw exception if an item isn't an indexable type
+* Requirements\RequireStringy - throw exception if an item isn't a stringy type
 * Requirements\RequireTraversable - throw exception if an item isn't a traversable type
 
 ## 2.4.0 - Sat Jul 18 2015
