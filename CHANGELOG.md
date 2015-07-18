@@ -4,6 +4,8 @@
 
 Nothing yet.
 
+## 2.6.1 - Sat Jul 18 2015
+
 ### Fixes
 
 * ValueBuilders\FirstMethodMatchingType - did not strip the namespace from objects :(
