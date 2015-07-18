@@ -53,13 +53,15 @@ class RequireTraversable
      *
      * @param  mixed $item
      *         the container to check
+     * @param  string $exception
+     *         the class to use when throwing an exception
      * @return void
      */
-    public static function checkMixed($item)
+    public static function checkMixed($item, $exception = E4xx_UnsupportedType::class)
     {
         // make sure we have a traversable type
         if (!IsTraversable::checkMixed($item)) {
-            throw new E4xx_UnsupportedType($item);
+            throw new $exception($item);
         }
     }
 
@@ -68,10 +70,12 @@ class RequireTraversable
      *
      * @param  mixed $item
      *         the container to check
+     * @param  string $exception
+     *         the class to use when throwing an exception
      * @return void
      */
-    public function __invoke($item)
+    public function __invoke($item, $exception = E4xx_UnsupportedType::class)
     {
-        return self::checkMixed($item);
+        return self::checkMixed($item, $exception);
     }
 }
