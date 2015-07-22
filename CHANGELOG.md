@@ -2,7 +2,9 @@
 
 ## develop branch
 
-Nothing yet.
+### New
+
+* Checks\IsNull - check for NULLs
 
 ## 2.70 - Wed Jul 22 2015
 
