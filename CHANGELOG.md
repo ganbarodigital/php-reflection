@@ -2,7 +2,10 @@
 
 ## develop branch
 
-Nothing yet.
+### New
+
+* Checks\IsNumeric - check for numeric data
+* Requirements\RequireNumeric - throw exception if data is not numeric
 
 ## 2.6.2 - Sat Jul 18 2015
 
@@ -29,7 +32,7 @@ Nothing yet.
 
 * ValueBuilders\FirstMethodMatchingType now takes a $eUnsupportedType parameter. This makes it possible for other libraries to get this value builder to throw their own E4xx_UnsupportedType exception (making it easier for callers to catch), instead of throwing exceptions defined inside php-reflection.
 
-## 2.5.1 - Sat Jul 18 2015 
+## 2.5.1 - Sat Jul 18 2015
 
 ### Fixes
 
