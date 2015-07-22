@@ -2,6 +2,10 @@
 
 ## develop branch
 
+Nothing yet.
+
+## 2.70 - Wed Jul 22 2015
+
 ### New
 
 * Checks\IsNumeric - check for numeric data
