@@ -196,7 +196,8 @@ class E4xx_UnsupportedTypeTest extends PHPUnit_Framework_TestCase
         // test the results
 
         $actualArgs = $obj->getMessageData();
-        $this->assertEquals($expectedCaller, $actualArgs['caller']);
+        $this->assertEquals($expectedCaller[0], $actualArgs['caller'][0]);
+        $this->assertEquals($expectedCaller[1], $actualArgs['caller'][1]);
     }
 
     /**
@@ -226,7 +227,8 @@ class E4xx_UnsupportedTypeTest extends PHPUnit_Framework_TestCase
         // test the results
 
         $actualArgs = $obj->getMessageData();
-        $this->assertEquals($expectedCaller, $actualArgs['caller']);
+        $this->assertEquals($expectedCaller[0], $actualArgs['caller'][0]);
+        $this->assertEquals($expectedCaller[1], $actualArgs['caller'][1]);
     }
 
     /**
