@@ -5,6 +5,7 @@
 ### New
 
 * Checks\IsNull - check for NULLs
+* Requirements\RequireNull - throws exception if data is not null
 
 ## 2.70 - Wed Jul 22 2015
 
