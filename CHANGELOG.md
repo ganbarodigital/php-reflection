@@ -4,6 +4,13 @@
 
 Nothing yet.
 
+## 2.8.0 - Thu Jul 23 2015
+
+### New
+
+* Checks\IsNull - check for NULLs
+* Requirements\RequireNull - throws exception if data is not null
+
 ## 2.70 - Wed Jul 22 2015
 
 ### New
