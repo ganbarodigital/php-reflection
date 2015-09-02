@@ -43,8 +43,10 @@
 
 namespace GanbaroDigital\Reflection\Requirements;
 
-use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Checks\IsPcreRegex;
+use GanbaroDigital\Reflection\Exceptions\E4xx_InvalidPcreRegex;
+use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
+use GanbaroDigital\Reflection\ValueBuilders\FirstMethodMatchingType;
 
 class RequirePcreRegex
 {
@@ -57,10 +59,10 @@ class RequirePcreRegex
      *         the class to use when throwing an exception
      * @return void
      */
-    public static function checkString($item, $exception = E4xx_UnsupportedType::class)
+    public static function checkString($item, $exception = E4xx_InvalidPcreRegex::class)
     {
         // make sure we have a stringy type
-        if (!IsPcreRegex::check($item)) {
+        if (!IsPcreRegex::checkString($item)) {
             throw new $exception($item);
         }
     }
@@ -74,9 +76,10 @@ class RequirePcreRegex
      *         the class to use when throwing an exception
      * @return void
      */
-    public static function check($item, $exception = E4xx_UnsupportedType::class)
+    public static function check($item, $exception = E4xx_InvalidPcreRegex::class)
     {
-        self::checkString($item, $exception);
+        $method = FirstMethodMatchingType::fromMixed($item, self::class, 'check', E4xx_UnsupportedType::class);
+        return self::$method($item, $exception);
     }
 
     /**
@@ -88,7 +91,7 @@ class RequirePcreRegex
      *         the class to use when throwing an exception
      * @return void
      */
-    public function __invoke($item, $exception = E4xx_UnsupportedType::class)
+    public function __invoke($item, $exception = E4xx_InvalidPcreRegex::class)
     {
         self::check($item, $exception);
     }

@@ -115,7 +115,7 @@ class RequirePcreRegexTest extends PHPUnit_Framework_TestCase
      * @covers ::__invoke
      * @covers ::checkString
      * @dataProvider provideInvalidRegexesToCheck
-     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_InvalidPcreRegex
      */
     public function testRejectsInvalidRegexesWhenUsedAsObject($item)
     {
@@ -134,7 +134,7 @@ class RequirePcreRegexTest extends PHPUnit_Framework_TestCase
      * @covers ::check
      * @covers ::checkString
      * @dataProvider provideInvalidRegexesToCheck
-     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_InvalidPcreRegex
      */
     public function testRejectsInvalidRegexesWhenCalledStatically($item)
     {
