@@ -2,6 +2,10 @@
 
 ## develop branch
 
+Nothing yet.
+
+## 2.9.0 - Wed Sep 2 2015
+
 ### New
 
 * Checks\IsPcreRegex - check if a string is a valid PCRE regex
