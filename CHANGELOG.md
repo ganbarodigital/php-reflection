@@ -5,6 +5,7 @@
 ### New
 
 * Checks\IsPcreRegex - check if a string is a valid PCRE regex
+* Exceptions\E4xx_InvalidPcreRegex - exception for when we have an invalid PCRE regex
 * Requirements\RequirePcreRegex - throws exception if data is not a valid PCRE regex
 
 ## 2.8.0 - Thu Jul 23 2015
