@@ -4,6 +4,13 @@
 
 Nothing yet.
 
+## 2.10.0 - Fri Sep 4 2015
+
+### New
+
+* static::xxxMixed() is now __deprecated__
+* use the static:xxx() (e.g. static::check() and static::from()) instead
+
 ## 2.9.0 - Wed Sep 2 2015
 
 ### New
