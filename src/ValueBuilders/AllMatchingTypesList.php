@@ -52,7 +52,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
     /**
      * what type is everything expected to match?
      */
-    const FALLBACK_TYPE = "Mixed";
+    const FALLBACK_TYPE = "EverythingElse";
 
     /**
      * the extra items to append to any array's type list
