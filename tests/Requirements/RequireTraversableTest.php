@@ -89,6 +89,7 @@ class RequireTraversableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @dataProvider provideTraversables
      */
@@ -100,7 +101,7 @@ class RequireTraversableTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        RequireTraversable::checkMixed($item);
+        RequireTraversable::check($item);
     }
 
     /**
@@ -122,6 +123,7 @@ class RequireTraversableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @dataProvider provideNonTraversables
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
@@ -134,7 +136,7 @@ class RequireTraversableTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        RequireTraversable::checkMixed($item);
+        RequireTraversable::check($item);
     }
 
     public function provideTraversables()

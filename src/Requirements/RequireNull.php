@@ -59,10 +59,10 @@ class RequireNull
      *         the class to use when throwing an exception
      * @return void
      */
-    public static function checkMixed($item, $exception = E4xx_UnsupportedType::class)
+    public static function check($item, $exception = E4xx_UnsupportedType::class)
     {
         // make sure we have a stringy type
-        if (!IsNull::checkMixed($item)) {
+        if (!IsNull::check($item)) {
             throw new $exception($item);
         }
     }
@@ -72,15 +72,17 @@ class RequireNull
      *
      * this is a wrapper around our IsNull check
      *
+     * @deprecated since 2.10.0
+     * @codeCoverageIgnore
      * @param  mixed $item
      *         the container to check
      * @param  string $exception
      *         the class to use when throwing an exception
      * @return void
      */
-    public static function check($item, $exception = E4xx_UnsupportedType::class)
+    public static function checkMixed($item, $exception = E4xx_UnsupportedType::class)
     {
-        return self::checkMixed($item, $exception);
+        return self::check($item, $exception);
     }
 
     /**
@@ -96,6 +98,6 @@ class RequireNull
      */
     public function __invoke($item, $exception = E4xx_UnsupportedType::class)
     {
-        self::checkMixed($item, $exception);
+        self::check($item, $exception);
     }
 }

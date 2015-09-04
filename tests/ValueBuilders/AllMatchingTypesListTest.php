@@ -43,6 +43,7 @@
 
 namespace GanbaroDigital\Reflection\ValueBuilders;
 
+use ArrayObject;
 use PHPUnit_Framework_TestCase;
 use GanbaroDigital\Reflection\Caches\AllMatchingTypesListCache;
 use GanbaroDigital\UnitTestHelpers\ClassesAndObjects\InvokeMethod;
@@ -96,8 +97,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__invoke
+     * @covers ::from
      * @covers ::fromArray
-     * @covers ::fromMixed
      * @covers ::fromObject
      * @covers ::getObjectConditionalTypes
      * @covers ::fromString
@@ -127,15 +128,16 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     public function provideDataToTest()
     {
         return [
-            [ null,  [ 'NULL' , 'Mixed' ] ],
-            [ [ 1,2,3 ], [ 'Array', 'Traversable', 'Mixed' ] ],
-            [ true, [ 'Boolean', 'Mixed' ] ],
-            [ false, [ 'Boolean', 'Mixed' ] ],
-            [ 0.0, [ 'Double', 'Mixed' ] ],
-            [ 0, [ 'Integer', 'Mixed' ] ],
-            [ 1, [ 'Integer', 'Mixed' ] ],
-            [ new SimpleType(), [ SimpleType::class, 'Object', 'Callable', 'Mixed' ] ],
-            [ '100', [ 'String', 'Mixed' ] ],
+            [ null,  [ 'NULL' , 'EverythingElse' ] ],
+            [ [ 1,2,3 ], [ 'Array', 'Traversable', 'EverythingElse' ] ],
+            [ true, [ 'Boolean', 'EverythingElse' ] ],
+            [ false, [ 'Boolean', 'EverythingElse' ] ],
+            [ 0.0, [ 'Double', 'EverythingElse' ] ],
+            [ 0, [ 'Integer', 'EverythingElse' ] ],
+            [ 1, [ 'Integer', 'EverythingElse' ] ],
+            [ new ArrayObject(), [ ArrayObject::class, 'IteratorAggregate', 'Traversable', 'ArrayAccess', 'Serializable', 'Countable', 'Object', 'EverythingElse' ] ],
+            [ new SimpleType(), [ SimpleType::class, 'Object', 'Callable', 'EverythingElse' ] ],
+            [ '100', [ 'String', 'EverythingElse' ] ],
         ];
     }
 
@@ -175,7 +177,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
                     AllMatchingTypesListTest_Target1::class,
                     AllMatchingTypesListTest_Interface1::class,
                     'Object',
-                    'Mixed'
+                    'EverythingElse'
                 ]
             ],
             [
@@ -184,7 +186,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
                     AllMatchingTypesListTest_Target2::class,
                     AllMatchingTypesListTest_Interface2::class,
                     'Object',
-                    'Mixed'
+                    'EverythingElse'
                 ]
             ],
             [
@@ -195,7 +197,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
                     AllMatchingTypesListTest_Interface1::class,
                     AllMatchingTypesListTest_Interface3::class,
                     'Object',
-                    'Mixed'
+                    'EverythingElse'
                 ]
             ],
             [
@@ -206,7 +208,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
                     AllMatchingTypesListTest_Interface2::class,
                     AllMatchingTypesListTest_Interface3::class,
                     'Object',
-                    'Mixed'
+                    'EverythingElse'
                 ]
             ],
         ];
@@ -225,7 +227,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
             'Callable',
             'Array',
             'Traversable',
-            'Mixed'
+            'EverythingElse'
         ];
 
         // ----------------------------------------------------------------
@@ -256,7 +258,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
             AllMatchingTypesListCache::class,
             'Object',
             'Callable',
-            'Mixed'
+            'EverythingElse'
         ];
 
         // ----------------------------------------------------------------
@@ -292,7 +294,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
         $expectedResult = array_merge($expectedResult, [
             'Object',
             'String',
-            'Mixed'
+            'EverythingElse'
         ]);
 
         // ----------------------------------------------------------------
@@ -321,7 +323,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
             AllMatchingTypesListTest_StringTarget::class,
             'Class',
             'String',
-            'Mixed'
+            'EverythingElse'
         ];
 
         // ----------------------------------------------------------------

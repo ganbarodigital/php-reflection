@@ -75,7 +75,7 @@ class IsTraversable
      *         true if the item can be used in a foreach() loop
      *         false otherwise
      */
-    public static function checkMixed($item)
+    public static function check($item)
     {
         if (($retval = self::getCachedResult($item)) !== null) {
             return $retval;
@@ -98,7 +98,7 @@ class IsTraversable
      */
     private static function calculateResult($item)
     {
-        $itemTypes = AllMatchingTypesList::fromMixed($item);
+        $itemTypes = AllMatchingTypesList::from($item);
         foreach ($itemTypes as $itemType) {
             if (isset(self::$acceptableTypes[$itemType])) {
                 return true;
@@ -106,6 +106,22 @@ class IsTraversable
         }
 
         return false;
+    }
+
+    /**
+     * is $item something that can be used in a foreach() loop?
+     *
+     * @deprecated since 2.10.0
+     * @codeCoverageIgnore
+     * @param  mixed $item
+     *         the item to examine
+     * @return boolean
+     *         true if the item can be used in a foreach() loop
+     *         false otherwise
+     */
+    public static function checkMixed($item)
+    {
+        return self::check($item);
     }
 
     /**
@@ -119,7 +135,7 @@ class IsTraversable
      */
     public function __invoke($item)
     {
-        return self::checkMixed($item);
+        return self::check($item);
     }
 
     /**

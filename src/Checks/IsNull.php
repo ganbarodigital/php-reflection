@@ -54,7 +54,7 @@ class IsNull
      *         TRUE if the item is null
      *         FALSE otherwise
      */
-    public static function checkMixed($item)
+    public static function check($item)
     {
         // general cases
         if ($item === NULL) {
@@ -68,15 +68,17 @@ class IsNull
     /**
      * do we have something that is null?
      *
+     * @deprecated since 2.10.0
+     * @codeCoverageIgnore
      * @param  mixed $item
      *         the item to be checked
      * @return boolean
      *         TRUE if the item is null
      *         FALSE otherwise
      */
-    public static function check($item)
+    public static function checkMixed($item)
     {
-        return self::checkMixed($item);
+        return self::check($item);
     }
 
     /**
@@ -90,6 +92,6 @@ class IsNull
      */
     public function __invoke($item)
     {
-        return self::checkMixed($item);
+        return self::check($item);
     }
 }

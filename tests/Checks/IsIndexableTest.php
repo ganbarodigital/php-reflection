@@ -107,6 +107,7 @@ class IsIndexableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @covers ::__invoke
      */
@@ -131,6 +132,7 @@ class IsIndexableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @covers ::__invoke
      */
@@ -155,6 +157,7 @@ class IsIndexableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @covers ::__invoke
      */
@@ -180,6 +183,7 @@ class IsIndexableTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__invoke
+     * @covers ::check
      * @covers ::checkMixed
      * @dataProvider provideNonIndexables
      */

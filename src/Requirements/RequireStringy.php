@@ -57,12 +57,28 @@ class RequireStringy
      *         the class to use when throwing an exception
      * @return void
      */
-    public static function checkMixed($item, $exception = E4xx_UnsupportedType::class)
+    public static function check($item, $exception = E4xx_UnsupportedType::class)
     {
         // make sure we have a stringy type
-        if (!IsStringy::checkMixed($item)) {
+        if (!IsStringy::check($item)) {
             throw new $exception($item);
         }
+    }
+
+    /**
+     * throws exceptions if $item is not a stringy data type
+     *
+     * @deprecated since 2.10.0
+     * @codeCoverageIgnore
+     * @param  mixed $item
+     *         the container to check
+     * @param  string $exception
+     *         the class to use when throwing an exception
+     * @return void
+     */
+    public static function checkMixed($item, $exception = E4xx_UnsupportedType::class)
+    {
+        self::check($item, $exception);
     }
 
     /**
@@ -76,6 +92,6 @@ class RequireStringy
      */
     public function __invoke($item, $exception = E4xx_UnsupportedType::class)
     {
-        self::checkMixed($item, $exception);
+        self::check($item, $exception);
     }
 }

@@ -95,7 +95,7 @@ class FirstMethodMatchingTypeTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__invoke
-     * @covers ::fromMixed
+     * @covers ::from
      * @dataProvider provideDataToTest
      */
     public function testCanUseAsObject($data, $target, $prefix, $expectedMethod)
@@ -218,7 +218,7 @@ class FirstMethodMatchingTypeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::fromMixed
+     * @covers ::from
      * @covers ::getMethodFromCache
      * @covers ::setMethodInCache
      */

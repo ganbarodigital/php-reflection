@@ -89,6 +89,7 @@ class RequireIndexableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @dataProvider provideIndexables
      */
@@ -100,7 +101,7 @@ class RequireIndexableTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        RequireIndexable::checkMixed($item);
+        RequireIndexable::check($item);
     }
 
     /**
@@ -122,6 +123,7 @@ class RequireIndexableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @dataProvider provideNonIndexables
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
@@ -134,7 +136,7 @@ class RequireIndexableTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        RequireIndexable::checkMixed($item);
+        RequireIndexable::check($item);
     }
 
     public function provideIndexables()

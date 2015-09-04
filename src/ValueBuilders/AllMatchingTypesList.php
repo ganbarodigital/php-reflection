@@ -52,7 +52,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
     /**
      * what type is everything expected to match?
      */
-    const FALLBACK_TYPE = "Mixed";
+    const FALLBACK_TYPE = "EverythingElse";
 
     /**
      * the extra items to append to any array's type list
@@ -339,7 +339,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
      * @return string[]
      *         the basic type of the examined item
      */
-    public static function fromMixed($item)
+    public static function from($item)
     {
         $type = ucfirst(gettype($item));
         $methodName = 'from' . ucfirst($type);
@@ -352,6 +352,21 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
             $type,
             self::FALLBACK_TYPE
         ];
+    }
+
+    /**
+     * return any data type's type name
+     *
+     * @deprecated since 2.10.0
+     * @codeCoverageIgnore
+     * @param  mixed $item
+     *         the item to examine
+     * @return string[]
+     *         the basic type of the examined item
+     */
+    public static function fromMixed($item)
+    {
+        return self::from($item);
     }
 
     /**
@@ -391,6 +406,6 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
      */
     public function __invoke($item)
     {
-        return self::fromMixed($item);
+        return self::from($item);
     }
 }

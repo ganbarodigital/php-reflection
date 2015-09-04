@@ -58,7 +58,7 @@ class IsNumeric
      *         TRUE if the item can be used as a number
      *         FALSE otherwise
      */
-    public static function checkMixed($item)
+    public static function check($item)
     {
         // general cases
         if (is_numeric($item)) {
@@ -76,15 +76,17 @@ class IsNumeric
      * number in this check, even though that might be what you're hoping
      * for
      *
+     * @deprecated since 2.10.0
+     * @codeCoverageIgnore
      * @param  mixed $item
      *         the item to be checked
      * @return boolean
      *         TRUE if the item can be used as a number
      *         FALSE otherwise
      */
-    public static function check($item)
+    public static function checkMixed($item)
     {
-        return self::checkMixed($item);
+        return self::check($item);
     }
 
     /**
@@ -102,6 +104,6 @@ class IsNumeric
      */
     public function __invoke($item)
     {
-        return self::checkMixed($item);
+        return self::check($item);
     }
 }
