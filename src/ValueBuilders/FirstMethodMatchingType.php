@@ -172,7 +172,7 @@ final class FirstMethodMatchingType
         // no match
         //
         // treat as an error
-        throw new $eUnsupportedType(SimpleType::fromMixed($data));
+        throw new $eUnsupportedType(SimpleType::from($data));
     }
 
     /**
