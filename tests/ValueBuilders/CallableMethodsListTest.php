@@ -90,7 +90,7 @@ class CallableMethodsListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__invoke
-     * @covers ::fromMixed
+     * @covers ::from
      * @covers ::fromString
      * @covers ::fromClassName
      * @covers ::fromObject
@@ -185,7 +185,7 @@ class CallableMethodsListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__invoke
-     * @covers ::fromMixed
+     * @covers ::from
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      *
      * @dataProvider provideBadDataToTest
@@ -204,7 +204,7 @@ class CallableMethodsListTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::fromMixed
+     * @covers ::from
      * @covers ::fromObject
      * @covers ::fromClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
