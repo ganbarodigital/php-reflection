@@ -73,7 +73,6 @@ class IsNullTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__invoke
      * @covers ::check
-     * @covers ::checkMixed
      */
     public function testCanDetectNulls()
     {
@@ -96,7 +95,7 @@ class IsNullTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::checkMixed
+     * @covers ::check
      * @covers ::__invoke
      * @dataProvider provideNonNull
      */

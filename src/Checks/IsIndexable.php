@@ -57,7 +57,7 @@ class IsIndexable
      *         true if the item is compatible
      *         false otherwise
      */
-    public static function checkMixed($item)
+    public static function check($item)
     {
         if (is_array($item) || $item instanceof ArrayAccess) {
             return true;
@@ -70,15 +70,17 @@ class IsIndexable
      * is $item something that can be used by PHP code that uses array
      * index notation?
      *
+     * @deprecated since 2.10.0
+     * @codeCoverageIgnore
      * @param  mixed $item
      *         the item to examine
      * @return boolean
      *         true if the item is compatible
      *         false otherwise
      */
-    public static function check($item)
+    public static function checkMixed($item)
     {
-        return self::checkMixed($item);
+        return self::check($item);
     }
 
     /**

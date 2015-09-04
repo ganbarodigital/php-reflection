@@ -58,10 +58,10 @@ class RequireLogical
      *         the class to use when throwing an exception
      * @return void
      */
-    public static function checkMixed($item, $exception = E4xx_UnsupportedType::class)
+    public static function check($item, $exception = E4xx_UnsupportedType::class)
     {
         // make sure we have a stringy type
-        if (!IsLogical::checkMixed($item)) {
+        if (!IsLogical::check($item)) {
             throw new $exception($item);
         }
     }
@@ -70,15 +70,17 @@ class RequireLogical
      * throws exceptions if $item is not a data type that we can use as
      * a boolean
      *
+     * @deprecated since 2.10.0
+     * @codeCoverageIgnore
      * @param  mixed $item
      *         the container to check
      * @param  string $exception
      *         the class to use when throwing an exception
      * @return void
      */
-    public static function check($item, $exception = E4xx_UnsupportedType::class)
+    public static function checkMixed($item, $exception = E4xx_UnsupportedType::class)
     {
-        self::checkMixed($item, $exception);
+        self::check($item, $exception);
     }
 
     /**

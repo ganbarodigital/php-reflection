@@ -197,7 +197,7 @@ class CallableMethodsList
      *
      * @throws E4xx_UnsupportedType
      */
-    public static function fromMixed($data)
+    public static function from($data)
     {
         // we do this old-skool style because CallableMethodsList (the way
         // we tell everyone to do this kind of matching) actually depends
@@ -217,6 +217,24 @@ class CallableMethodsList
     /**
      * extract an indexed list of methods from a class or object
      *
+     * @deprecated since 2.10.0
+     * @codeCoverageIgnore
+     * @param  mixed $data
+     *         the class or object to obtain method names from
+     * @return array
+     *         a list of the matching method names, indexed by method name
+     *         for quick look up
+     *
+     * @throws E4xx_UnsupportedType
+     */
+    public static function fromMixed($data)
+    {
+        return self::from($data);
+    }
+
+    /**
+     * extract an indexed list of methods from a class or object
+     *
      * @param  mixed $data
      *         the class or object to obtain method names from
      * @return array
@@ -227,7 +245,7 @@ class CallableMethodsList
      */
     public function __invoke($data)
     {
-        return self::fromMixed($data);
+        return self::from($data);
     }
 
     /**

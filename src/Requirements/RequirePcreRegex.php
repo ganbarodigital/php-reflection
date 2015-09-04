@@ -78,7 +78,7 @@ class RequirePcreRegex
      */
     public static function check($item, $exception = E4xx_InvalidPcreRegex::class)
     {
-        $method = FirstMethodMatchingType::fromMixed($item, self::class, 'check', E4xx_UnsupportedType::class);
+        $method = FirstMethodMatchingType::from($item, self::class, 'check', E4xx_UnsupportedType::class);
         return self::$method($item, $exception);
     }
 

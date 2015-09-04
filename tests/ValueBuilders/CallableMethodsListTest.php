@@ -219,7 +219,7 @@ class CallableMethodsListTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        CallableMethodsList::fromMixed($target);
+        CallableMethodsList::from($target);
     }
 
     /**

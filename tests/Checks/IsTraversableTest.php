@@ -275,7 +275,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        IsTraversable::checkMixed($data);
+        IsTraversable::check($data);
 
         // ----------------------------------------------------------------
         // test the results

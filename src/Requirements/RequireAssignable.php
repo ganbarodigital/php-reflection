@@ -57,10 +57,10 @@ class RequireAssignable
      *         the class to use when throwing an exception
      * @return void
      */
-    public static function checkMixed($item, $exception = E4xx_UnsupportedType::class)
+    public static function check($item, $exception = E4xx_UnsupportedType::class)
     {
         // make sure we have a string
-        if (!IsAssignable::checkMixed($item)) {
+        if (!IsAssignable::check($item)) {
             throw new $exception($item);
         }
     }
@@ -68,15 +68,17 @@ class RequireAssignable
     /**
      * throws exceptions if $item is not an assignable data type
      *
+     * @deprecated since 2.10.0
+     * @codeCoverageIgnore
      * @param  mixed $item
      *         the container to check
      * @param  string $exception
      *         the class to use when throwing an exception
      * @return void
      */
-    public static function check($item, $exception = E4xx_UnsupportedType::class)
+    public static function checkMixed($item, $exception = E4xx_UnsupportedType::class)
     {
-        return self::checkMixed($item, $exception);
+        return self::check($item, $exception);
     }
 
     /**

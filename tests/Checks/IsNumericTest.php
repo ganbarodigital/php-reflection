@@ -73,7 +73,6 @@ class IsNumericTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__invoke
      * @covers ::check
-     * @covers ::checkMixed
      */
     public function testCanDetectRealIntegers()
     {
@@ -99,7 +98,6 @@ class IsNumericTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__invoke
      * @covers ::check
-     * @covers ::checkMixed
      */
     public function testCanDetectRealFloats()
     {
@@ -125,7 +123,6 @@ class IsNumericTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::__invoke
      * @covers ::check
-     * @covers ::checkMixed
      * @dataProvider provideNumericData
      */
     public function testCanDetectNonBase10($data)
@@ -149,8 +146,8 @@ class IsNumericTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::checkMixed
      * @covers ::__invoke
+     * @covers ::check
      * @dataProvider provideNonNumeric
      */
     public function testRejectsEverythingElse($data)

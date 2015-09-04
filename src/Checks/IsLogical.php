@@ -54,7 +54,7 @@ class IsLogical
      *         TRUE if the item can be used as a boolean
      *         FALSE otherwise
      */
-    public static function checkMixed($item)
+    public static function check($item)
     {
         // general case
         if (is_bool($item)) {
@@ -73,15 +73,17 @@ class IsLogical
     /**
      * do we have something that can be used as a boolean value?
      *
+     * @deprecated since 2.10.0
+     * @codeCoverageIgnore
      * @param  mixed $item
      *         the item to be checked
      * @return boolean
      *         TRUE if the item can be used as a boolean
      *         FALSE otherwise
      */
-    public static function check($item)
+    public static function checkMixed($item)
     {
-        return self::checkMixed($item);
+        return self::check($item);
     }
 
     /**

@@ -57,7 +57,7 @@ class IsAssignable
      *         true if the item is compatible
      *         false otherwise
      */
-    public static function checkMixed($item)
+    public static function check($item)
     {
         if ($item instanceof stdClass) {
             return true;
@@ -70,15 +70,17 @@ class IsAssignable
      * is $item something that can be used by PHP code that uses object
      * property notation?
      *
+     * @deprecated since 2.10.0
      * @param  mixed $item
      *         the item to examine
      * @return boolean
      *         true if the item is compatible
      *         false otherwise
+     * @codeCoverageIgnore
      */
-    public static function check($item)
+    public static function checkMixed($item)
     {
-        return self::checkMixed($item);
+        return self::check($item);
     }
 
     /**

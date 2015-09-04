@@ -65,7 +65,7 @@ final class FirstMethodMatchingType
      * @return string
      *         the first method on $target that will accept $data
      */
-    public static function fromMixed($data, $target, $methodPrefix, $eUnsupportedType = E4xx_UnsupportedType::class)
+    public static function from($data, $target, $methodPrefix, $eUnsupportedType = E4xx_UnsupportedType::class)
     {
         // do we have this in the cache?
         if (($retval = self::getMethodFromCache($data, $target)) !== null) {
@@ -190,8 +190,8 @@ final class FirstMethodMatchingType
     private static function findFirstMatchingMethod($data, $target, $methodPrefix)
     {
         // no, so we need to build it
-        $possibleTypes   = AllMatchingTypesList::fromMixed($data);
-        $possibleMethods = CallableMethodsList::fromMixed($target);
+        $possibleTypes   = AllMatchingTypesList::from($data);
+        $possibleMethods = CallableMethodsList::from($target);
 
         foreach ($possibleTypes as $possibleType) {
             $targetMethodName = $methodPrefix . FilterNamespace::fromString($possibleType);
@@ -203,6 +203,27 @@ final class FirstMethodMatchingType
 
         // no match
         return null;
+    }
+
+    /**
+     * find a method on a class / object that can accept a given piece of data
+     *
+     * @deprecated since 2.10.0
+     * @codeCoverageIgnore
+     * @param  mixed $data
+     *         the data we are looking for
+     * @param  string|object $target
+     *         the class or object that we want to call with $data
+     * @param  string $methodPrefix
+     *         the prefix to put on the front of the method name
+     * @param  string $eUnsupportedType
+     *         the exception to throw if no matching method found
+     * @return string
+     *         the first method on $target that will accept $data
+     */
+    public static function fromMixed($data, $target, $methodPrefix, $eUnsupportedType = E4xx_UnsupportedType::class)
+    {
+        return self::from($data, $target, $methodPrefix, $eUnsupportedType);
     }
 
     /**
@@ -221,6 +242,6 @@ final class FirstMethodMatchingType
      */
     public function __invoke($data, $target, $methodPrefix, $eUnsupportedType = E4xx_UnsupportedType::class)
     {
-        return self::fromMixed($data, $target, $methodPrefix, $eUnsupportedType);
+        return self::from($data, $target, $methodPrefix, $eUnsupportedType);
     }
 }

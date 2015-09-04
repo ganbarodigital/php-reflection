@@ -66,7 +66,7 @@ final class SimpleType
      * @return string
      *         the basic type of the examined item
      */
-    public static function fromMixed($item)
+    public static function from($item)
     {
         if (is_object($item)) {
             return self::fromObject($item);
@@ -82,6 +82,21 @@ final class SimpleType
     /**
      * support for using this value builder as an object
      *
+     * @deprecated since 2.10.0
+     * @codeCoverageIgnore
+     * @param  mixed $item
+     *         the item to examine
+     * @return string
+     *         the basic type of the examined item
+     */
+    public static function fromMixed($item)
+    {
+        return self::from($item);
+    }
+
+    /**
+     * support for using this value builder as an object
+     *
      * @param  mixed $item
      *         the item to examine
      * @return string
@@ -89,6 +104,6 @@ final class SimpleType
      */
     public function __invoke($item)
     {
-        return self::fromMixed($item);
+        return self::from($item);
     }
 }

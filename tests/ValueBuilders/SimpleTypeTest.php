@@ -68,7 +68,7 @@ class SimpleTypeTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__invoke
-     * @covers ::fromMixed
+     * @covers ::from
      * @covers ::fromObject
      * @dataProvider provideDataToTest
      */
@@ -101,14 +101,14 @@ class SimpleTypeTest extends PHPUnit_Framework_TestCase
             [ 0, 'integer' ],
             [ 1, 'integer' ],
             [ new SimpleType(), SimpleType::class ],
-            [ [ SimpleType::class, 'fromMixed' ], 'callable' ],
+            [ [ SimpleType::class, 'from' ], 'callable' ],
             [ '100', 'string' ],
         ];
     }
 
     /**
      * @covers ::__invoke
-     * @covers ::fromMixed
+     * @covers ::from
      * @covers ::fromObject
      * @dataProvider provideDataToTest
      */
@@ -121,7 +121,7 @@ class SimpleTypeTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $actualType = SimpleType::fromMixed($data);
+        $actualType = SimpleType::from($data);
 
         // ----------------------------------------------------------------
         // test the results
