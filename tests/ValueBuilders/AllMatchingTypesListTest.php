@@ -43,6 +43,7 @@
 
 namespace GanbaroDigital\Reflection\ValueBuilders;
 
+use ArrayObject;
 use PHPUnit_Framework_TestCase;
 use GanbaroDigital\Reflection\Caches\AllMatchingTypesListCache;
 use GanbaroDigital\UnitTestHelpers\ClassesAndObjects\InvokeMethod;
@@ -134,6 +135,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
             [ 0.0, [ 'Double', 'EverythingElse' ] ],
             [ 0, [ 'Integer', 'EverythingElse' ] ],
             [ 1, [ 'Integer', 'EverythingElse' ] ],
+            [ new ArrayObject(), [ ArrayObject::class, 'IteratorAggregate', 'Traversable', 'ArrayAccess', 'Serializable', 'Countable', 'Object', 'EverythingElse' ] ],
             [ new SimpleType(), [ SimpleType::class, 'Object', 'Callable', 'EverythingElse' ] ],
             [ '100', [ 'String', 'EverythingElse' ] ],
         ];
