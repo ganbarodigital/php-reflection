@@ -74,8 +74,22 @@ class RequireTraversable
      *         the class to use when throwing an exception
      * @return void
      */
-    public function __invoke($item, $exception = E4xx_UnsupportedType::class)
+    public static function check($item, $exception = E4xx_UnsupportedType::class)
     {
         return self::checkMixed($item, $exception);
+    }
+
+    /**
+     * throws exceptions if $item is not a traversable data type
+     *
+     * @param  mixed $item
+     *         the container to check
+     * @param  string $exception
+     *         the class to use when throwing an exception
+     * @return void
+     */
+    public function __invoke($item, $exception = E4xx_UnsupportedType::class)
+    {
+        return self::check($item, $exception);
     }
 }

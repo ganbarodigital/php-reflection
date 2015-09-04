@@ -88,6 +88,7 @@ class RequireAssignableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @dataProvider provideAssignables
      */
@@ -99,7 +100,7 @@ class RequireAssignableTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        RequireAssignable::checkMixed($item);
+        RequireAssignable::check($item);
     }
 
     /**
@@ -121,6 +122,7 @@ class RequireAssignableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @dataProvider provideNonAssignables
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType

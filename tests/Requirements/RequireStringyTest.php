@@ -96,6 +96,7 @@ class RequireStringyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @dataProvider provideStringys
      */
@@ -107,7 +108,7 @@ class RequireStringyTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        RequireStringy::checkMixed($item);
+        RequireStringy::check($item);
     }
 
     /**
@@ -129,6 +130,7 @@ class RequireStringyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @dataProvider provideNonStringys
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
@@ -141,7 +143,7 @@ class RequireStringyTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        RequireStringy::checkMixed($item);
+        RequireStringy::check($item);
     }
 
     public function provideStringys()

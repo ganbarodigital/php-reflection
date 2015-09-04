@@ -88,6 +88,7 @@ class RequireLogicalTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @dataProvider provideBooleans
      */
@@ -99,7 +100,7 @@ class RequireLogicalTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        RequireLogical::checkMixed($item);
+        RequireLogical::check($item);
     }
 
     /**
@@ -121,6 +122,7 @@ class RequireLogicalTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @dataProvider provideNonLogical
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
@@ -133,7 +135,7 @@ class RequireLogicalTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        RequireLogical::checkMixed($item);
+        RequireLogical::check($item);
     }
 
     public function provideBooleans()
