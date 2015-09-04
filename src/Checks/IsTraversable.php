@@ -117,9 +117,23 @@ class IsTraversable
      *         true if the item can be used in a foreach() loop
      *         false otherwise
      */
-    public function __invoke($item)
+    public static function check($item)
     {
         return self::checkMixed($item);
+    }
+
+    /**
+     * is $item something that can be used in a foreach() loop?
+     *
+     * @param  mixed $item
+     *         the item to examine
+     * @return boolean
+     *         true if the item can be used in a foreach() loop
+     *         false otherwise
+     */
+    public function __invoke($item)
+    {
+        return self::check($item);
     }
 
     /**

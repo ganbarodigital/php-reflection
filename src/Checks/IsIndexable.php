@@ -76,8 +76,23 @@ class IsIndexable
      *         true if the item is compatible
      *         false otherwise
      */
-    public function __invoke($item)
+    public static function check($item)
     {
         return self::checkMixed($item);
+    }
+
+    /**
+     * is $item something that can be used by PHP code that uses array
+     * index notation?
+     *
+     * @param  mixed $item
+     *         the item to examine
+     * @return boolean
+     *         true if the item is compatible
+     *         false otherwise
+     */
+    public function __invoke($item)
+    {
+        return self::check($item);
     }
 }

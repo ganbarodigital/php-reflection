@@ -91,6 +91,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @covers ::calculateResult
      * @covers ::__invoke
@@ -116,6 +117,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @covers ::calculateResult
      * @covers ::__invoke
@@ -141,6 +143,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @covers ::calculateResult
      * @covers ::__invoke
@@ -166,6 +169,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @covers ::calculateResult
      * @covers ::__invoke
@@ -191,6 +195,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @covers ::calculateResult
      * @covers ::__invoke
@@ -216,6 +221,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::__invoke
      * @covers ::checkMixed
      * @covers ::calculateResult
@@ -281,6 +287,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::getCachedResult
      * @covers ::getCacheKey
+     * @covers ::check
      * @covers ::checkMixed
      */
     public function testReadsFromStaticCache()
@@ -296,7 +303,7 @@ class IsTraversableTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $actualResult = IsTraversable::checkMixed($data);
+        $actualResult = IsTraversable::check($data);
 
         // ----------------------------------------------------------------
         // test the results

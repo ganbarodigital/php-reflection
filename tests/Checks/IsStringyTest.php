@@ -80,6 +80,7 @@ class IsStringyTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__invoke
+     * @covers ::check
      * @covers ::checkMixed
      */
     public function testCanDetectRealStrings()
@@ -94,7 +95,7 @@ class IsStringyTest extends PHPUnit_Framework_TestCase
         // perform the change
 
         $actualResult1 = $obj($data);
-        $actualResult2 = IsStringy::checkMixed($data);
+        $actualResult2 = IsStringy::check($data);
 
         // ----------------------------------------------------------------
         // test the results
@@ -105,6 +106,7 @@ class IsStringyTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__invoke
+     * @covers ::check
      * @covers ::checkMixed
      */
     public function testCanDetectObjectsThatCanBecomeStrings()
@@ -119,7 +121,7 @@ class IsStringyTest extends PHPUnit_Framework_TestCase
         // perform the change
 
         $actualResult1 = $obj($data);
-        $actualResult2 = IsStringy::checkMixed($data);
+        $actualResult2 = IsStringy::check($data);
 
         // ----------------------------------------------------------------
         // test the results
@@ -129,6 +131,7 @@ class IsStringyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @covers ::__invoke
      * @dataProvider provideNonStringys

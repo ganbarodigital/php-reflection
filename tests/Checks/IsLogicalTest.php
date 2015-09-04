@@ -72,6 +72,7 @@ class IsLogicalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__invoke
+     * @covers ::check
      * @covers ::checkMixed
      * @dataProvider provideBooleans
      */
@@ -86,7 +87,7 @@ class IsLogicalTest extends PHPUnit_Framework_TestCase
         // perform the change
 
         $actualResult1 = $obj($data);
-        $actualResult2 = IsLogical::checkMixed($data);
+        $actualResult2 = IsLogical::check($data);
 
         // ----------------------------------------------------------------
         // test the results
@@ -97,6 +98,7 @@ class IsLogicalTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__invoke
+     * @covers ::check
      * @covers ::checkMixed
      */
     public function testCanDetectNulls()
@@ -111,7 +113,7 @@ class IsLogicalTest extends PHPUnit_Framework_TestCase
         // perform the change
 
         $actualResult1 = $obj($data);
-        $actualResult2 = IsLogical::checkMixed($data);
+        $actualResult2 = IsLogical::check($data);
 
         // ----------------------------------------------------------------
         // test the results
@@ -121,6 +123,7 @@ class IsLogicalTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @covers ::__invoke
      * @dataProvider provideNonLogical

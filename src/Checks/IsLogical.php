@@ -79,8 +79,22 @@ class IsLogical
      *         TRUE if the item can be used as a boolean
      *         FALSE otherwise
      */
-    public function __invoke($item)
+    public static function check($item)
     {
         return self::checkMixed($item);
+    }
+
+    /**
+     * do we have something that can be used as a boolean value?
+     *
+     * @param  mixed $item
+     *         the item to be checked
+     * @return boolean
+     *         TRUE if the item can be used as a boolean
+     *         FALSE otherwise
+     */
+    public function __invoke($item)
+    {
+        return self::check($item);
     }
 }

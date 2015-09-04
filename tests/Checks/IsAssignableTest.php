@@ -71,6 +71,7 @@ class IsAssignableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @covers ::__invoke
      */
@@ -95,6 +96,7 @@ class IsAssignableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::check
      * @covers ::checkMixed
      * @covers ::__invoke
      * @dataProvider provideNonAssignables

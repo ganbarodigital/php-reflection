@@ -86,8 +86,22 @@ class IsStringy
      *         TRUE if the item can be used as a read-only string
      *         FALSE otherwise
      */
-    public function __invoke($item)
+    public static function check($item)
     {
         return self::checkMixed($item);
+    }
+
+    /**
+     * do we have something that can be used as a read-only string?
+     *
+     * @param  mixed $item
+     *         the item to be checked
+     * @return boolean
+     *         TRUE if the item can be used as a read-only string
+     *         FALSE otherwise
+     */
+    public function __invoke($item)
+    {
+        return self::check($item);
     }
 }
