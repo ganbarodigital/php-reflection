@@ -6,6 +6,7 @@
 
 * Added Checks\IsCallable
 * Added Checks\IsDefinedClass
+* Added Checks\IsDefinedInterface
 
 ## 2.10.0 - Fri Sep 4 2015
 
