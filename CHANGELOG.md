@@ -2,7 +2,9 @@
 
 ## develop branch
 
-Nothing yet.
+### New
+
+* Added Checks\IsCallable
 
 ## 2.10.0 - Fri Sep 4 2015
 
