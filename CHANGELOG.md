@@ -8,6 +8,7 @@
 * Added Checks\IsDefinedClass
 * Added Checks\IsDefinedInterface
 * Added Checks\IsDefinedTrait
+* Added Checks\IsDefinedObjectType
 
 ## 2.10.0 - Fri Sep 4 2015
 
