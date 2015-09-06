@@ -45,6 +45,15 @@ namespace GanbaroDigital\Reflection\Checks;
 
 class IsDefinedObjectType
 {
+    /**
+     * is $name a valid type for an object?
+     *
+     * @param mixed $name
+     *        the name to check
+     * @return boolean
+     *         TRUE if $name is a class or interface name
+     *         FALSE otherwise
+     */
     public static function check($name)
     {
         // this prevents PHP runtime errors
@@ -61,6 +70,15 @@ class IsDefinedObjectType
         return false;
     }
 
+    /**
+     * is $name a valid type for an object?
+     *
+     * @param mixed $name
+     *        the name to check
+     * @return boolean
+     *         TRUE if $name is a class or interface name
+     *         FALSE otherwise
+     */
     public function __invoke($name)
     {
         return self::check($name);

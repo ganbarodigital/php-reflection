@@ -45,6 +45,15 @@ namespace GanbaroDigital\Reflection\Checks;
 
 class IsDefinedInterface
 {
+    /**
+     * do we have the name of an interface that has been defined?
+     *
+     * @param mixed $name
+     *        the name to check
+     * @return boolean
+     *         TRUE if $name is an interface that has been defined
+     *         FALSE otherwise
+     */
     public static function check($name)
     {
         // this prevents PHP runtime errors
@@ -61,6 +70,15 @@ class IsDefinedInterface
         return false;
     }
 
+    /**
+     * do we have the name of an interface that has been defined?
+     *
+     * @param mixed $name
+     *        the name to check
+     * @return boolean
+     *         TRUE if $name is an interface that has been defined
+     *         FALSE otherwise
+     */
     public function __invoke($name)
     {
         return self::check($name);
