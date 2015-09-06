@@ -5,6 +5,7 @@
 ### New
 
 * Added Checks\IsCallable
+* Added Checks\IsDefinedClass
 
 ## 2.10.0 - Fri Sep 4 2015
 
