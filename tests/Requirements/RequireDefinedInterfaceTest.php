@@ -164,7 +164,7 @@ class RequireDefinedInterfaceTest extends PHPUnit_Framework_TestCase
      * @dataProvider provideTraits
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      */
-    public function testTraitsInterfacesWhenCalledStatically($item)
+    public function testRejectsTraitsWhenCalledStatically($item)
     {
         // ----------------------------------------------------------------
         // setup your test
