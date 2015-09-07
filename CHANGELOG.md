@@ -10,6 +10,7 @@
 * Added Checks\IsDefinedTrait
 * Added Checks\IsDefinedObjectType
 * Added Requirements\RequireCallable
+* Added Requirements\RequireDefinedClass
 
 ## 2.10.0 - Fri Sep 4 2015
 
