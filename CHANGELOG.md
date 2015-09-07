@@ -12,6 +12,7 @@
 * Added Requirements\RequireCallable
 * Added Requirements\RequireDefinedClass
 * Added Requirements\RequireDefinedInterface
+* Added Requirements\RequireDefinedTrait
 
 ## 2.10.0 - Fri Sep 4 2015
 
