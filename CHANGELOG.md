@@ -11,6 +11,7 @@
 * Added Checks\IsDefinedObjectType
 * Added Requirements\RequireCallable
 * Added Requirements\RequireDefinedClass
+* Added Requirements\RequireDefinedInterface
 
 ## 2.10.0 - Fri Sep 4 2015
 
