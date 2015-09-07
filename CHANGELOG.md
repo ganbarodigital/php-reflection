@@ -9,6 +9,7 @@
 * Added Checks\IsDefinedInterface
 * Added Checks\IsDefinedTrait
 * Added Checks\IsDefinedObjectType
+* Added Requirements\RequireCallable
 
 ## 2.10.0 - Fri Sep 4 2015
 
