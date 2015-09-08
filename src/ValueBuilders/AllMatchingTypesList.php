@@ -76,6 +76,16 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
     ];
 
     /**
+     * the extra items to append to an interface
+     * @var array
+     */
+    private static $interfaceExtras = [
+        'Interface',
+        'String',
+        self::FALLBACK_TYPE
+    ];
+
+    /**
      * the extra items that *might* be part of an object's type list
      * @var array
      */
@@ -135,7 +145,12 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
         // seen before ...
         //
         // combine details about the class name with our fallback types
-        $retval = array_merge(self::fromClassName($className), self::$classExtras);
+        if (class_exists($className)) {
+            $retval = array_merge(self::fromClassName($className), self::$classExtras);
+        }
+        else  {
+            $retval = array_merge(self::fromClassName($className), self::$interfaceExtras);
+        }
 
         // cache the result
         self::setInCache($cacheName, $retval);
@@ -162,7 +177,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
         }
 
         // make sure we have a safe input
-        if (!class_exists($className)) {
+        if (!class_exists($className) && !interface_exists($className)) {
             throw new E4xx_NoSuchClass($className);
         }
     }

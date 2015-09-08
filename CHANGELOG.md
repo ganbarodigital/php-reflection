@@ -16,6 +16,10 @@
 * Added Requirements\RequireDefinedObjectType
 * Added Requirements\RequireDefinedTrait
 
+### Fixes
+
+* ValueBuilders\AllMatchingTypesList::fromClass() - now accepts interfaces
+
 ## 2.10.0 - Fri Sep 4 2015
 
 ### New

@@ -51,6 +51,7 @@ use GanbaroDigital\UnitTestHelpers\ClassesAndObjects\InvokeMethod;
 interface AllMatchingTypesListTest_Interface1 { }
 interface AllMatchingTypesListTest_Interface2 { }
 interface AllMatchingTypesListTest_Interface3 { }
+interface AllMatchingTypesListTest_Interface4 extends AllMatchingTypesListTest_Interface1 { }
 
 class AllMatchingTypesListTest_Target1 implements AllMatchingTypesListTest_Interface1 { }
 class AllMatchingTypesListTest_Target2 implements AllMatchingTypesListTest_Interface2 { }
@@ -667,6 +668,33 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
         // perform the change
 
         AllMatchingTypesList::fromClass(100);
+    }
+
+    /**
+     * @covers ::fromClass
+     * @covers ::checkAcceptableClassName
+     */
+    public function testCanPassInterfaceIntoStaticClassMethod()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $expectedResult = [
+            AllMatchingTypesListTest_Interface1::class,
+            'Interface',
+            'String',
+            'EverythingElse'
+        ];
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualResult = AllMatchingTypesList::fromClass(AllMatchingTypesListTest_Interface1::class);
+
+        // ----------------------------------------------------------------
+        // check the results
+
+        $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
