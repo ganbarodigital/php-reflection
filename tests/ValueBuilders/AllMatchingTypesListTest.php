@@ -680,6 +680,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
         // setup your test
 
         $expectedResult = [
+            AllMatchingTypesListTest_Interface4::class,
             AllMatchingTypesListTest_Interface1::class,
             'Interface',
             'String',
@@ -689,7 +690,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
         // ----------------------------------------------------------------
         // perform the change
 
-        $actualResult = AllMatchingTypesList::fromClass(AllMatchingTypesListTest_Interface1::class);
+        $actualResult = AllMatchingTypesList::fromClass(AllMatchingTypesListTest_Interface4::class);
 
         // ----------------------------------------------------------------
         // check the results
