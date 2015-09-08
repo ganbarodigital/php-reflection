@@ -9,6 +9,7 @@
 * Added Checks\IsDefinedInterface
 * Added Checks\IsDefinedTrait
 * Added Checks\IsDefinedObjectType
+* Added Checks\IsObject
 * Added Requirements\RequireCallable
 * Added Requirements\RequireDefinedClass
 * Added Requirements\RequireDefinedInterface
