@@ -46,6 +46,10 @@ namespace GanbaroDigital\Reflection\ValueBuilders;
 use GanbaroDigital\Reflection\Caches\AllMatchingTypesListCache;
 use GanbaroDigital\Reflection\Exceptions\E4xx_NoSuchClass;
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
+use GanbaroDigital\Reflection\Requirements\RequireArray;
+use GanbaroDigital\Reflection\Requirements\RequireDefinedObjectType;
+use GanbaroDigital\Reflection\Requirements\RequireObject;
+use GanbaroDigital\Reflection\Requirements\RequireStringy;
 
 final class AllMatchingTypesList extends AllMatchingTypesListCache
 {
@@ -105,9 +109,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
     public static function fromArray($item)
     {
         // robustness!
-        if (!is_array($item)) {
-            throw new E4xx_UnsupportedType(gettype($item));
-        }
+        RequireArray::check($item, E4xx_UnsupportedType::class);
 
         // our return type
         $retval = [];
@@ -133,7 +135,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
     public static function fromClass($className)
     {
         // robustness!
-        self::checkAcceptableClassName($className);
+        RequireDefinedObjectType::check($className);
 
         // do we have this cached?
         $cacheName = $className . '::class';
@@ -145,12 +147,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
         // seen before ...
         //
         // combine details about the class name with our fallback types
-        if (class_exists($className)) {
-            $retval = array_merge(self::fromClassName($className), self::$classExtras);
-        }
-        else  {
-            $retval = array_merge(self::fromClassName($className), self::$interfaceExtras);
-        }
+        $retval = self::buildCombinedClassNameDetails($className);
 
         // cache the result
         self::setInCache($cacheName, $retval);
@@ -159,27 +156,16 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
         return $retval;
     }
 
-    /**
-     * have we been given something that's really a classname?
-     *
-     * @param  string $className
-     *         the class name to check
-     * @return void
-     *
-     * @throws E4xx_UnsupportedType
-     * @throws E4xx_NoSuchClass
-     */
-    private static function checkAcceptableClassName($className)
+    private static function buildCombinedClassNameDetails($className)
     {
-        // robustness!
-        if (!is_string($className)) {
-            throw new E4xx_UnsupportedType(gettype($className), 2);
+        if (class_exists($className)) {
+            $retval = array_merge(self::fromClassName($className), self::$classExtras);
+        }
+        else {
+            $retval = array_merge(self::fromClassName($className), self::$interfaceExtras);
         }
 
-        // make sure we have a safe input
-        if (!class_exists($className) && !interface_exists($className)) {
-            throw new E4xx_NoSuchClass($className);
-        }
+        return $retval;
     }
 
     /**
@@ -227,7 +213,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
     public static function fromObject($item)
     {
         // robustness!
-        self::checkAcceptableObject($item);
+        RequireObject::check($item, E4xx_UnsupportedType::class);
 
         // do we have this cached?
         if ($retval = self::getObjectFromCache($item)) {
@@ -268,23 +254,6 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
         );
 
         return $retval;
-    }
-
-    /**
-     * make sure that we have an object to inspect
-     *
-     * @param  mixed $item
-     *         the item to inspect
-     * @return void
-     *
-     * @throws E4xx_UnsupportedType
-     */
-    private static function checkAcceptableObject($item)
-    {
-        // robustness!
-        if (!is_object($item)) {
-            throw new E4xx_UnsupportedType(gettype($item), 2);
-        }
     }
 
     /**
@@ -395,9 +364,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
     public static function fromString($item)
     {
         // robustness!
-        if (!is_string($item)) {
-            throw new E4xx_UnsupportedType(gettype($item));
-        }
+        RequireStringy::check($item);
 
         // special case - is this a class name?
         if (class_exists($item)) {

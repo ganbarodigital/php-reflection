@@ -202,37 +202,6 @@ class E4xx_UnsupportedTypeTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__construct
-     * @covers ::getCaller
-     */
-    public function testSupportsUnwindingTheCallStackFurther()
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedCaller = [
-            get_class($this),
-            'testSupportsUnwindingTheCallStackFurther',
-        ];
-
-        $func = function() {
-            return new E4xx_UnsupportedType("NULL", 2);
-        };
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $obj = $func();
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualArgs = $obj->getMessageData();
-        $this->assertEquals($expectedCaller[0], $actualArgs['caller'][0]);
-        $this->assertEquals($expectedCaller[1], $actualArgs['caller'][1]);
-    }
-
-    /**
-     * @covers ::__construct
      * @covers ::buildErrorMessage
      */
     public function testAutomaticallyAddsThrowerDetailsIntoExceptionMessage()
