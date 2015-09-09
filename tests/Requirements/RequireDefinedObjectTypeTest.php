@@ -143,6 +143,40 @@ class RequireDefinedObjectTypeTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::__invoke
+     * @dataProvider provideInvalidClassNames
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_NoSuchClass
+     */
+    public function testRejectsInvalidClassNamesWhenUsedAsObject($item)
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $obj = new RequireDefinedObjectType;
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $obj($item);
+    }
+
+    /**
+     * @covers ::check
+     * @dataProvider provideInvalidClassNames
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_NoSuchClass
+     */
+    public function testRejectsInvalidClassNamesWhenCalledStatically($item)
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        RequireDefinedObjectType::check($item);
+    }
+
+    /**
+     * @covers ::__invoke
      * @dataProvider provideScalars
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      */
@@ -190,6 +224,13 @@ class RequireDefinedObjectTypeTest extends PHPUnit_Framework_TestCase
         ];
     }
 
+    public function provideInvalidClassNames()
+    {
+        return [
+            [ "hello, world", false ],
+        ];
+    }
+
     public function provideScalars()
     {
         return [
@@ -201,7 +242,6 @@ class RequireDefinedObjectTypeTest extends PHPUnit_Framework_TestCase
             [ 0, false ],
             [ 100, false ],
             [ new IsDefinedClass, false ],
-            [ "hello, world", false ],
         ];
     }
 

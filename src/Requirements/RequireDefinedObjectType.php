@@ -57,15 +57,23 @@ class RequireDefinedObjectType
      *
      * @param  mixed $item
      *         the container to check
-     * @param  string $exception
-     *         the class to use when throwing an exception
+     * @param  string $eNoSuchClass
+     *         the exception to throw if $item isn't a valid PHP class
+     * @param  string $eUnsupportedType
+     *         the exception to throw if $item isn't something that we can check
      * @return void
      */
-    public static function check($item, $exception = E4xx_UnsupportedType::class)
+    public static function check($item, $eNoSuchClass = E4xx_NoSuchClass::class, $eUnsupportedType = E4xx_UnsupportedType::class)
     {
+        RequireStringy::check($item, $eUnsupportedType);
+
+        if (trait_exists($item)) {
+            throw new $eUnsupportedType(SimpleType::from($item));
+        }
+
         // make sure we have a PHP class that exists
         if (!IsDefinedObjectType::check($item)) {
-            throw new $exception($item);
+            throw new $eNoSuchClass($item);
         }
     }
 
@@ -76,12 +84,14 @@ class RequireDefinedObjectType
      *
      * @param  mixed $item
      *         the container to check
-     * @param  string $exception
-     *         the class to use when throwing an exception
+     * @param  string $eNoSuchClass
+     *         the exception to throw if $item isn't a valid PHP class
+     * @param  string $eUnsupportedType
+     *         the exception to throw if $item isn't something that we can check
      * @return void
      */
-    public function __invoke($item, $exception = E4xx_UnsupportedType::class)
+    public function __invoke($item, $eNoSuchClass = E4xx_NoSuchClass::class, $eUnsupportedType = E4xx_UnsupportedType::class)
     {
-        self::check($item, $exception);
+        self::check($item, $eNoSuchClass, $eUnsupportedType);
     }
 }
