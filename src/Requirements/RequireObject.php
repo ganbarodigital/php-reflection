@@ -45,6 +45,7 @@ namespace GanbaroDigital\Reflection\Requirements;
 
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Checks\IsObject;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class RequireObject
 {
@@ -63,7 +64,7 @@ class RequireObject
     {
         // make sure we have a PHP class that exists
         if (!IsObject::check($item)) {
-            throw new $exception($item);
+            throw new $exception(SimpleType::from($item));
         }
     }
 

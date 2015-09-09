@@ -45,6 +45,7 @@ namespace GanbaroDigital\Reflection\Requirements;
 
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Checks\IsLogical;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class RequireLogical
 {
@@ -62,7 +63,7 @@ class RequireLogical
     {
         // make sure we have a stringy type
         if (!IsLogical::check($item)) {
-            throw new $exception($item);
+            throw new $exception(SimpleType::from($item));
         }
     }
 

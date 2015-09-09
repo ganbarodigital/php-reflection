@@ -22,6 +22,7 @@
 
 ### Fixes
 
+* Requirements\Require* - now reports the correct type when throwing E4xx_UnsupportedType
 * ValueBuilders\AllMatchingTypesList::fromClass() - now accepts interfaces
 
 ## 2.10.0 - Fri Sep 4 2015

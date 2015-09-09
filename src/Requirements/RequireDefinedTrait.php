@@ -45,6 +45,7 @@ namespace GanbaroDigital\Reflection\Requirements;
 
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Checks\IsDefinedTrait;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class RequireDefinedTrait
 {
@@ -63,7 +64,7 @@ class RequireDefinedTrait
     {
         // make sure we have a PHP class that exists
         if (!IsDefinedTrait::check($item)) {
-            throw new $exception($item);
+            throw new $exception(SimpleType::from($item));
         }
     }
 

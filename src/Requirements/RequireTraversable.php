@@ -45,6 +45,7 @@ namespace GanbaroDigital\Reflection\Requirements;
 
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Checks\IsTraversable;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class RequireTraversable
 {
@@ -61,7 +62,7 @@ class RequireTraversable
     {
         // make sure we have a traversable type
         if (!IsTraversable::check($item)) {
-            throw new $exception($item);
+            throw new $exception(SimpleType::from($item));
         }
     }
 

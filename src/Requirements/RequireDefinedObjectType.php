@@ -43,8 +43,10 @@
 
 namespace GanbaroDigital\Reflection\Requirements;
 
+use GanbaroDigital\Reflection\Exceptions\E4xx_NoSuchClass;
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Checks\IsDefinedObjectType;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class RequireDefinedObjectType
 {

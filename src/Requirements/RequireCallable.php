@@ -45,6 +45,7 @@ namespace GanbaroDigital\Reflection\Requirements;
 
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Checks\IsCallable;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class RequireCallable
 {
@@ -63,7 +64,7 @@ class RequireCallable
     {
         // make sure we have a stringy type
         if (!IsCallable::check($item)) {
-            throw new $exception($item);
+            throw new $exception(SimpleType::from($item));
         }
     }
 

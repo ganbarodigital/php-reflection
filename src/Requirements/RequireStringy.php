@@ -45,6 +45,7 @@ namespace GanbaroDigital\Reflection\Requirements;
 
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Checks\IsStringy;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class RequireStringy
 {
@@ -61,7 +62,7 @@ class RequireStringy
     {
         // make sure we have a stringy type
         if (!IsStringy::check($item)) {
-            throw new $exception($item);
+            throw new $exception(SimpleType::from($item));
         }
     }
 

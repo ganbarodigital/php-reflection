@@ -45,6 +45,7 @@ namespace GanbaroDigital\Reflection\Requirements;
 
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Checks\IsDefinedInterface;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class RequireDefinedInterface
 {
@@ -63,7 +64,7 @@ class RequireDefinedInterface
     {
         // make sure we have a PHP class that exists
         if (!IsDefinedInterface::check($item)) {
-            throw new $exception($item);
+            throw new $exception(SimpleType::from($item));
         }
     }
 

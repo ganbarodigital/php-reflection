@@ -45,6 +45,7 @@ namespace GanbaroDigital\Reflection\Requirements;
 
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Checks\IsDefinedClass;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class RequireDefinedClass
 {
@@ -63,7 +64,7 @@ class RequireDefinedClass
     {
         // make sure we have a PHP class that exists
         if (!IsDefinedClass::check($item)) {
-            throw new $exception($item);
+            throw new $exception(SimpleType::from($item));
         }
     }
 

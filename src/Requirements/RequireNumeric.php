@@ -45,6 +45,7 @@ namespace GanbaroDigital\Reflection\Requirements;
 
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Checks\IsNumeric;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class RequireNumeric
 {
@@ -63,7 +64,7 @@ class RequireNumeric
     {
         // make sure we have a stringy type
         if (!IsNumeric::check($item)) {
-            throw new $exception($item);
+            throw new $exception(SimpleType::from($item));
         }
     }
 
