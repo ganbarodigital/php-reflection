@@ -71,6 +71,7 @@ class RequireStringy
      *
      * @deprecated since 2.10.0
      * @codeCoverageIgnore
+     *
      * @param  mixed $item
      *         the container to check
      * @param  string $exception
