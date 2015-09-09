@@ -34,193 +34,184 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   Reflection/Exceptions
+ * @package   Reflection/Checks
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-file-system
+ * @link      http://code.ganbarodigital.com/php-reflection
  */
 
-namespace GanbaroDigital\Reflection\Exceptions;
+namespace GanbaroDigital\Reflection\Requirements;
 
+use ArrayIterator;
+use ArrayObject;
+use GanbaroDigital\UnitTestHelpers\ClassesAndObjects\InvokeMethod;
+
+use IteratorAggregate;
 use PHPUnit_Framework_TestCase;
-use RuntimeException;
+use stdClass;
+
+// cribbed directly from the PHP manual
+class RequireArrayTest_Target1 implements IteratorAggregate
+{
+    public function getIterator()
+    {
+        return new ArrayIterator([]);
+    }
+}
 
 /**
- * @coversDefaultClass GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
+ * @coversDefaultClass GanbaroDigital\Reflection\Requirements\RequireArray
  */
-class E4xx_UnsupportedTypeTest extends PHPUnit_Framework_TestCase
+class RequireArrayTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::__construct
+     * @coversNothing
      */
     public function testCanInstantiate()
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
-
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
+        $obj = new RequireArray();
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertTrue($obj instanceof E4xx_UnsupportedType);
+        $this->assertTrue($obj instanceof RequireArray);
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__invoke
+     * @covers ::check
      */
-    public function testIsE4xx_ReflectionException()
+    public function testAcceptsAnArray()
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
+        $obj = new RequireArray();
+        $data = [];
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
+        $obj($data);
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertTrue($obj instanceof E4xx_ReflectionException);
+        // if we get here, then the test has passed
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__invoke
+     * @covers ::check
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      */
-    public function testIsExxx_ReflectionException()
+    public function testRejectsAnIteratorAggregate()
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
+        $obj = new RequireArray();
+        $data = new RequireArrayTest_Target1;
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $this->assertTrue($obj instanceof Exxx_ReflectionException);
+        $obj($data);
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__invoke
+     * @covers ::check
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      */
-    public function testIsRuntimeException()
+    public function testRejectsAnArrayIterator()
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
+        $obj = new RequireArray();
+        $data = new ArrayIterator([]);
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $this->assertTrue($obj instanceof RuntimeException);
+        $obj($data);
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::ensureString
-     * @dataProvider provideListOfPhpTypes
+     * @covers ::__invoke
+     * @covers ::check
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      */
-    public function testAutomaticallyHandlesTypesPassedIn($item)
+    public function testRejectsAnArrayObject()
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $expectedType = is_string($item)? $item : gettype($item);
+        $obj = new RequireArray();
+        $data = new ArrayObject;
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($item);
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualArgs = $obj->getMessageData();
-        $this->assertEquals($expectedType, $actualArgs['type']);
+        $obj($data);
     }
 
-    public function provideListOfPhpTypes()
+    /**
+     * @covers ::__invoke
+     * @covers ::check
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
+     */
+    public function testRejectsStdclass()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $obj = new RequireArray();
+        $data = new stdClass;
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $obj($data);
+    }
+
+    /**
+     * @covers ::__invoke
+     * @covers ::check
+     * @dataProvider provideEverythingElse
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
+     */
+    public function testRejectsEverythingElse($item)
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $obj = new RequireArray();
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $obj($item);
+    }
+
+    public function provideEverythingElse()
     {
         return [
             [ null ],
             [ true ],
             [ false ],
-            [ [ 'alfred' ] ],
             [ 3.1415927 ],
             [ 100 ],
-            [ new \stdClass ],
-            [ "hello, world!" ]
+            [ "hello world"],
+            [ new RequireArray ],
         ];
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::getCaller
-     */
-    public function testAutomaticallyWorksOutWhoIsThrowingTheException()
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedCaller = [
-            get_class($this),
-            'testAutomaticallyWorksOutWhoIsThrowingTheException',
-        ];
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $obj = new E4xx_UnsupportedType("NULL");
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualArgs = $obj->getMessageData();
-        $this->assertEquals($expectedCaller[0], $actualArgs['caller'][0]);
-        $this->assertEquals($expectedCaller[1], $actualArgs['caller'][1]);
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::buildErrorMessage
-     */
-    public function testAutomaticallyAddsThrowerDetailsIntoExceptionMessage()
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedMessage = "type 'NULL' is not supported by "
-            .get_class($this)
-            .'::testAutomaticallyAddsThrowerDetailsIntoExceptionMessage';
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $obj = new E4xx_UnsupportedType("NULL");
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $this->assertEquals($expectedMessage, $obj->getMessage());
     }
 }

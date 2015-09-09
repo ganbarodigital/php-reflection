@@ -45,6 +45,7 @@ namespace GanbaroDigital\Reflection\Requirements;
 
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Checks\IsIndexable;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class RequireIndexable
 {
@@ -61,7 +62,7 @@ class RequireIndexable
     {
         // make sure we have a string
         if (!IsIndexable::check($item)) {
-            throw new $exception($item);
+            throw new $exception(SimpleType::from($item));
         }
     }
 

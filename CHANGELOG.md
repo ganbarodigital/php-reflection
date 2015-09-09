@@ -4,6 +4,31 @@
 
 Nothing yet.
 
+## 2.11.0 - Wed Sep 9 2015
+
+### New
+
+* Added Checks\IsArray
+* Added Checks\IsCallable
+* Added Checks\IsCompatibleWith
+* Added Checks\IsDefinedClass
+* Added Checks\IsDefinedInterface
+* Added Checks\IsDefinedTrait
+* Added Checks\IsDefinedObjectType
+* Added Checks\IsObject
+* Added Requirements\RequireArray
+* Added Requirements\RequireCallable
+* Added Requirements\RequireDefinedClass
+* Added Requirements\RequireDefinedInterface
+* Added Requirements\RequireDefinedObjectType
+* Added Requirements\RequireDefinedTrait
+* Added Requirements\RequireObject
+
+### Fixes
+
+* Requirements\Require* - now reports the correct type when throwing E4xx_UnsupportedType
+* ValueBuilders\AllMatchingTypesList::fromClass() - now accepts interfaces
+
 ## 2.10.0 - Fri Sep 4 2015
 
 ### New

@@ -34,193 +34,215 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   Reflection/Exceptions
+ * @package   Reflection/Requirements
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-file-system
+ * @link      http://code.ganbarodigital.com/php-reflection
  */
 
-namespace GanbaroDigital\Reflection\Exceptions;
+namespace GanbaroDigital\Reflection\Requirements;
 
+use GanbaroDigital\Reflection\Checks\IsDefinedClass;
 use PHPUnit_Framework_TestCase;
-use RuntimeException;
+use stdClass;
+
+class RequireDefinedTraitTest_Class1 { }
+interface RequireDefinedTrait_Interface1 { }
+trait RequireDefinedTrait_Trait1 { }
 
 /**
- * @coversDefaultClass GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
+ * @coversDefaultClass GanbaroDigital\Reflection\Requirements\RequireDefinedTrait
  */
-class E4xx_UnsupportedTypeTest extends PHPUnit_Framework_TestCase
+class RequireDefinedTraitTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::__construct
+     * @coversNothing
      */
     public function testCanInstantiate()
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
-
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
+        $obj = new RequireDefinedTrait;
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertTrue($obj instanceof E4xx_UnsupportedType);
+        $this->assertTrue($obj instanceof RequireDefinedTrait);
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__invoke
+     * @dataProvider provideTraits
      */
-    public function testIsE4xx_ReflectionException()
+    public function testCanUseAsObject($item)
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
+        $obj = new RequireDefinedTrait;
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $this->assertTrue($obj instanceof E4xx_ReflectionException);
+        $obj($item);
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::check
+     * @dataProvider provideTraits
      */
-    public function testIsExxx_ReflectionException()
+    public function testCanCallStatically($item)
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
-
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $this->assertTrue($obj instanceof Exxx_ReflectionException);
+        RequireDefinedTrait::check($item);
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__invoke
+     * @dataProvider provideClasses
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      */
-    public function testIsRuntimeException()
+    public function testRejectsClassesWhenUsedAsObject($item)
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
+        $obj = new RequireDefinedTrait;
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $this->assertTrue($obj instanceof RuntimeException);
+        $obj($item);
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::ensureString
-     * @dataProvider provideListOfPhpTypes
+     * @covers ::check
+     * @dataProvider provideClasses
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
      */
-    public function testAutomaticallyHandlesTypesPassedIn($item)
+    public function testRejectsClassesWhenCalledStatically($item)
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $expectedType = is_string($item)? $item : gettype($item);
+        // ----------------------------------------------------------------
+        // perform the change
+
+        RequireDefinedTrait::check($item);
+    }
+
+    /**
+     * @covers ::__invoke
+     * @dataProvider provideInterfaces
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
+     */
+    public function testRejectsInterfacesWhenUsedAsObject($item)
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $obj = new RequireDefinedTrait;
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($item);
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualArgs = $obj->getMessageData();
-        $this->assertEquals($expectedType, $actualArgs['type']);
+        $obj($item);
     }
 
-    public function provideListOfPhpTypes()
+    /**
+     * @covers ::check
+     * @dataProvider provideInterfaces
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
+     */
+    public function testRejectsInterfacesWhenCalledStatically($item)
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        RequireDefinedTrait::check($item);
+    }
+
+    /**
+     * @covers ::__invoke
+     * @dataProvider provideScalars
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
+     */
+    public function testRejectsEverythingElseWhenUsedAsObject($item)
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $obj = new RequireDefinedTrait;
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $obj($item);
+    }
+
+    /**
+     * @covers ::check
+     * @dataProvider provideScalars
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
+     */
+    public function testRejectsEverythingElseWhenCalledStatically($item)
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        RequireDefinedTrait::check($item);
+    }
+
+    public function provideClasses()
     {
         return [
-            [ null ],
-            [ true ],
-            [ false ],
-            [ [ 'alfred' ] ],
-            [ 3.1415927 ],
-            [ 100 ],
-            [ new \stdClass ],
-            [ "hello, world!" ]
+            [ RequireDefinedTraitTest_Class1::class, true ]
         ];
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getCaller
-     */
-    public function testAutomaticallyWorksOutWhoIsThrowingTheException()
+    public function provideInterfaces()
     {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedCaller = [
-            get_class($this),
-            'testAutomaticallyWorksOutWhoIsThrowingTheException',
+        return [
+            [ RequireDefinedTrait_Interface1::class, false ],
         ];
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $obj = new E4xx_UnsupportedType("NULL");
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualArgs = $obj->getMessageData();
-        $this->assertEquals($expectedCaller[0], $actualArgs['caller'][0]);
-        $this->assertEquals($expectedCaller[1], $actualArgs['caller'][1]);
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::buildErrorMessage
-     */
-    public function testAutomaticallyAddsThrowerDetailsIntoExceptionMessage()
+    public function provideTraits()
     {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedMessage = "type 'NULL' is not supported by "
-            .get_class($this)
-            .'::testAutomaticallyAddsThrowerDetailsIntoExceptionMessage';
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $obj = new E4xx_UnsupportedType("NULL");
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $this->assertEquals($expectedMessage, $obj->getMessage());
+        return [
+            [ RequireDefinedTrait_Trait1::class, false ],
+        ];
     }
+
+    public function provideScalars()
+    {
+        return [
+            [ null, false ],
+            [ [ IsDefinedClass::class ], false ],
+            [ true, false ],
+            [ false, false ],
+            [ 3.1415927, false ],
+            [ 0, false ],
+            [ 100, false ],
+            [ new IsDefinedClass, false ],
+            [ "hello, world", false ],
+        ];
+    }
+
 }

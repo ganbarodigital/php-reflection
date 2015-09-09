@@ -34,71 +34,53 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   Reflection/Requirements
+ * @package   Reflection/Checks
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-reflection
  */
 
-namespace GanbaroDigital\Reflection\Requirements;
+namespace GanbaroDigital\Reflection\Checks;
 
-use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
-use GanbaroDigital\Reflection\Checks\IsNumeric;
-use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
-
-class RequireNumeric
+class IsDefinedTrait
 {
     /**
-     * throws exceptions if $item is not numeric data
+     * do we have the name of a trait that has been defined?
      *
-     * this is a wrapper around our IsNumeric check
-     *
-     * @param  mixed $item
-     *         the container to check
-     * @param  string $exception
-     *         the class to use when throwing an exception
-     * @return void
+     * @param mixed $name
+     *        the name to check
+     * @return boolean
+     *         TRUE if $name is a trait that has been defined
+     *         FALSE otherwise
      */
-    public static function check($item, $exception = E4xx_UnsupportedType::class)
+    public static function check($name)
     {
-        // make sure we have a stringy type
-        if (!IsNumeric::check($item)) {
-            throw new $exception(SimpleType::from($item));
+        // this prevents PHP runtime errors
+        if (!IsStringy::check($name)) {
+            return false;
         }
+
+        // general cases
+        if (trait_exists($name)) {
+            return true;
+        }
+
+        // if we get here, we have run out of ideas
+        return false;
     }
 
     /**
-     * throws exceptions if $item is not numeric data
+     * do we have the name of a trait that has been defined?
      *
-     * this is a wrapper around our IsNumeric check
-     *
-     * @deprecated since 2.10.0
-     * @codeCoverageIgnore
-     * @param  mixed $item
-     *         the container to check
-     * @param  string $exception
-     *         the class to use when throwing an exception
-     * @return void
+     * @param mixed $name
+     *        the name to check
+     * @return boolean
+     *         TRUE if $name is a trait that has been defined
+     *         FALSE otherwise
      */
-    public static function checkMixed($item, $exception = E4xx_UnsupportedType::class)
+    public function __invoke($name)
     {
-        return self::check($item, $exception);
-    }
-
-    /**
-     * throws exceptions if $item is not numeric data
-     *
-     * this is a wrapper around our IsNumeric check
-     *
-     * @param  mixed $item
-     *         the container to check
-     * @param  string $exception
-     *         the class to use when throwing an exception
-     * @return void
-     */
-    public function __invoke($item, $exception = E4xx_UnsupportedType::class)
-    {
-        self::check($item, $exception);
+        return self::check($name);
     }
 }

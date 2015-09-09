@@ -45,6 +45,7 @@ namespace GanbaroDigital\Reflection\Requirements;
 
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Checks\IsNull;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class RequireNull
 {
@@ -63,7 +64,7 @@ class RequireNull
     {
         // make sure we have a stringy type
         if (!IsNull::check($item)) {
-            throw new $exception($item);
+            throw new $exception(SimpleType::from($item));
         }
     }
 

@@ -51,6 +51,7 @@ use GanbaroDigital\UnitTestHelpers\ClassesAndObjects\InvokeMethod;
 interface AllMatchingTypesListTest_Interface1 { }
 interface AllMatchingTypesListTest_Interface2 { }
 interface AllMatchingTypesListTest_Interface3 { }
+interface AllMatchingTypesListTest_Interface4 extends AllMatchingTypesListTest_Interface1 { }
 
 class AllMatchingTypesListTest_Target1 implements AllMatchingTypesListTest_Interface1 { }
 class AllMatchingTypesListTest_Target2 implements AllMatchingTypesListTest_Interface2 { }
@@ -104,7 +105,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
      * @covers ::fromString
      * @covers ::fromClass
      * @covers ::fromClassName
-     * @covers ::checkAcceptableClassName
+     * @covers ::buildCombinedClassNameDetails
      * @dataProvider provideDataToTest
      */
     public function testCanUseAsObject($data, $expectedTypes)
@@ -147,7 +148,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
      * @covers ::getObjectConditionalTypes
      * @covers ::fromClass
      * @covers ::fromClassName
-     * @covers ::checkAcceptableClassName
+     * @covers ::buildCombinedClassNameDetails
      * @dataProvider provideTestClasses
      */
     public function testCanGetInterfaceNames($data, $expectedTypes)
@@ -243,7 +244,6 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
-     * @covers ::checkAcceptableObject
      * @covers ::buildObjectTypeList
      * @covers ::getObjectConditionalTypes
      */
@@ -274,7 +274,6 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
-     * @covers ::checkAcceptableObject
      * @covers ::buildObjectTypeList
      * @covers ::getObjectConditionalTypes
      */
@@ -311,7 +310,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @covers ::fromClass
-     * @covers ::checkAcceptableClassName
+     * @covers ::buildCombinedClassNameDetails
      */
     public function testDetectsStringyClassnames()
     {
@@ -458,7 +457,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromArray
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'NULL' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromArray
+     * @expectedExceptionMessage type 'NULL' is not supported by GanbaroDigital\Reflection\Requirements\RequireArray::check
      */
     public function testCannotPassNullsIntoStaticArrayMethod()
     {
@@ -474,7 +473,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromArray
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromArray
+     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\Requirements\RequireArray::check
      */
     public function testCannotPassFalseIntoStaticArrayMethod()
     {
@@ -490,7 +489,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromArray
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromArray
+     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\Requirements\RequireArray::check
      */
     public function testCannotPassTrueIntoStaticArrayMethod()
     {
@@ -506,7 +505,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromArray
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'object' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromArray
+     * @expectedExceptionMessage type 'Closure' is not supported by GanbaroDigital\Reflection\Requirements\RequireArray::check
      */
     public function testCannotPassCallableIntoStaticArrayMethod()
     {
@@ -522,7 +521,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromArray
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'integer' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromArray
+     * @expectedExceptionMessage type 'integer' is not supported by GanbaroDigital\Reflection\Requirements\RequireArray::check
      */
     public function testCannotPassIntsIntoStaticArrayMethod()
     {
@@ -538,7 +537,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromArray
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'double' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromArray
+     * @expectedExceptionMessage type 'double' is not supported by GanbaroDigital\Reflection\Requirements\RequireArray::check
      */
     public function testCannotPassDoubleIntoStaticArrayMethod()
     {
@@ -554,7 +553,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromArray
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'object' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromArray
+     * @expectedExceptionMessage type 'stdClass' is not supported by GanbaroDigital\Reflection\Requirements\RequireArray::check
      */
     public function testCannotPassObjectIntoStaticArrayMethod()
     {
@@ -570,7 +569,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromArray
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'string' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromArray
+     * @expectedExceptionMessage type 'string' is not supported by GanbaroDigital\Reflection\Requirements\RequireArray::check
      */
     public function testCannotPassStringIntoStaticArrayMethod()
     {
@@ -586,9 +585,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
-     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'NULL' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
+     * @expectedExceptionMessage type 'NULL' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassNullsIntoStaticClassMethod()
     {
@@ -603,9 +601,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
-     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
+     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassFalseIntoStaticClassMethod()
     {
@@ -620,9 +617,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
-     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
+     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassTrueIntoStaticClassMethod()
     {
@@ -637,9 +633,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
-     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'object' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
+     * @expectedExceptionMessage type 'Closure' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassCallableIntoStaticClassMethod()
     {
@@ -654,9 +649,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
-     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'integer' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
+     * @expectedExceptionMessage type 'integer' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassIntsIntoStaticClassMethod()
     {
@@ -671,9 +665,36 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
-     * @covers ::checkAcceptableClassName
+     * @covers ::buildCombinedClassNameDetails
+     */
+    public function testCanPassInterfaceIntoStaticClassMethod()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $expectedResult = [
+            AllMatchingTypesListTest_Interface4::class,
+            AllMatchingTypesListTest_Interface1::class,
+            'Interface',
+            'String',
+            'EverythingElse'
+        ];
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualResult = AllMatchingTypesList::fromClass(AllMatchingTypesListTest_Interface4::class);
+
+        // ----------------------------------------------------------------
+        // check the results
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @covers ::fromClass
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'double' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
+     * @expectedExceptionMessage type 'double' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassDoubleIntoStaticClassMethod()
     {
@@ -688,9 +709,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
-     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'object' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
+     * @expectedExceptionMessage type 'stdClass' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassObjectIntoStaticClassMethod()
     {
@@ -705,9 +725,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
-     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'array' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromClass
+     * @expectedExceptionMessage type 'array' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassArrayIntoStaticClassMethod()
     {
@@ -722,7 +741,6 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromClass
-     * @covers ::checkAcceptableClassName
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_NoSuchClass
      * @expectedExceptionMessage no such class 'ThisIsANonsenseClass'
      */
@@ -740,9 +758,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
-     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'NULL' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
+     * @expectedExceptionMessage type 'NULL' is not supported by GanbaroDigital\Reflection\Requirements\RequireObject::check
      */
     public function testCannotPassNullsIntoStaticObjectMethod()
     {
@@ -757,9 +774,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
-     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
+     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\Requirements\RequireObject::check
      */
     public function testCannotPassFalseIntoStaticObjectMethod()
     {
@@ -774,9 +790,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
-     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
+     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\Requirements\RequireObject::check
      */
     public function testCannotPassTrueIntoStaticObjectMethod()
     {
@@ -791,9 +806,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
-     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'integer' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
+     * @expectedExceptionMessage type 'integer' is not supported by GanbaroDigital\Reflection\Requirements\RequireObject::check
      */
     public function testCannotPassIntsIntoStaticObjectMethod()
     {
@@ -808,9 +822,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
-     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'double' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
+     * @expectedExceptionMessage type 'double' is not supported by GanbaroDigital\Reflection\Requirements\RequireObject::check
      */
     public function testCannotPassDoubleIntoStaticObjectMethod()
     {
@@ -825,9 +838,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
-     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'array' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
+     * @expectedExceptionMessage type 'array' is not supported by GanbaroDigital\Reflection\Requirements\RequireObject::check
      */
     public function testCannotPassArrayIntoStaticObjectMethod()
     {
@@ -842,9 +854,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
-     * @covers ::checkAcceptableObject
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'string' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromObject
+     * @expectedExceptionMessage type 'string' is not supported by GanbaroDigital\Reflection\Requirements\RequireObject::check
      */
     public function testCannotPassStringIntoStaticObjectMethod()
     {
@@ -860,7 +871,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'NULL' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromString
+     * @expectedExceptionMessage type 'NULL' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassNullsIntoStaticStringMethod()
     {
@@ -876,7 +887,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromString
+     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassFalseIntoStaticStringMethod()
     {
@@ -892,7 +903,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromString
+     * @expectedExceptionMessage type 'boolean' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassTrueIntoStaticStringMethod()
     {
@@ -908,7 +919,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'object' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromString
+     * @expectedExceptionMessage type 'Closure' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassCallableIntoStaticStringMethod()
     {
@@ -924,7 +935,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'integer' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromString
+     * @expectedExceptionMessage type 'integer' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassIntsIntoStaticStringMethod()
     {
@@ -940,7 +951,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'double' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromString
+     * @expectedExceptionMessage type 'double' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassDoubleIntoStaticStringMethod()
     {
@@ -956,7 +967,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'object' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromString
+     * @expectedExceptionMessage type 'stdClass' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassObjectIntoStaticStringMethod()
     {
@@ -972,7 +983,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
-     * @expectedExceptionMessage type 'array' is not supported by GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList::fromString
+     * @expectedExceptionMessage type 'array' is not supported by GanbaroDigital\Reflection\Requirements\RequireStringy::check
      */
     public function testCannotPassArrayIntoStaticStringMethod()
     {

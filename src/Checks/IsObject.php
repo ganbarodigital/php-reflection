@@ -34,71 +34,48 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   Reflection/Requirements
+ * @package   Reflection/Checks
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-reflection
  */
 
-namespace GanbaroDigital\Reflection\Requirements;
+namespace GanbaroDigital\Reflection\Checks;
 
-use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
-use GanbaroDigital\Reflection\Checks\IsNumeric;
-use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
-
-class RequireNumeric
+class IsObject
 {
     /**
-     * throws exceptions if $item is not numeric data
-     *
-     * this is a wrapper around our IsNumeric check
+     * do we have something that is an object?
      *
      * @param  mixed $item
-     *         the container to check
-     * @param  string $exception
-     *         the class to use when throwing an exception
-     * @return void
+     *         the item to be checked
+     * @return boolean
+     *         TRUE if the item is an object
+     *         FALSE otherwise
      */
-    public static function check($item, $exception = E4xx_UnsupportedType::class)
+    public static function check($item)
     {
-        // make sure we have a stringy type
-        if (!IsNumeric::check($item)) {
-            throw new $exception(SimpleType::from($item));
+        // general cases
+        if (is_object($item)) {
+            return true;
         }
+
+        // if we get here, we have run out of ideas
+        return false;
     }
 
     /**
-     * throws exceptions if $item is not numeric data
-     *
-     * this is a wrapper around our IsNumeric check
-     *
-     * @deprecated since 2.10.0
-     * @codeCoverageIgnore
-     * @param  mixed $item
-     *         the container to check
-     * @param  string $exception
-     *         the class to use when throwing an exception
-     * @return void
-     */
-    public static function checkMixed($item, $exception = E4xx_UnsupportedType::class)
-    {
-        return self::check($item, $exception);
-    }
-
-    /**
-     * throws exceptions if $item is not numeric data
-     *
-     * this is a wrapper around our IsNumeric check
+     * do we have something that is null?
      *
      * @param  mixed $item
-     *         the container to check
-     * @param  string $exception
-     *         the class to use when throwing an exception
-     * @return void
+     *         the item to be checked
+     * @return boolean
+     *         TRUE if the item is null
+     *         FALSE otherwise
      */
-    public function __invoke($item, $exception = E4xx_UnsupportedType::class)
+    public function __invoke($item)
     {
-        self::check($item, $exception);
+        return self::check($item);
     }
 }

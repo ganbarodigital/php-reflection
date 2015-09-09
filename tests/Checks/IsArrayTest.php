@@ -34,193 +34,209 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   Reflection/Exceptions
+ * @package   Reflection/Checks
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-file-system
+ * @link      http://code.ganbarodigital.com/php-reflection
  */
 
-namespace GanbaroDigital\Reflection\Exceptions;
+namespace GanbaroDigital\Reflection\Checks;
 
+use ArrayIterator;
+use ArrayObject;
+use GanbaroDigital\UnitTestHelpers\ClassesAndObjects\InvokeMethod;
+
+use IteratorAggregate;
 use PHPUnit_Framework_TestCase;
-use RuntimeException;
+use stdClass;
+
+// cribbed directly from the PHP manual
+class IsArrayTest_Target1 implements IteratorAggregate
+{
+    public function getIterator()
+    {
+        return new ArrayIterator([]);
+    }
+}
 
 /**
- * @coversDefaultClass GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
+ * @coversDefaultClass GanbaroDigital\Reflection\Checks\IsArray
  */
-class E4xx_UnsupportedTypeTest extends PHPUnit_Framework_TestCase
+class IsArrayTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::__construct
+     * @coversNothing
      */
     public function testCanInstantiate()
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
-
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
+        $obj = new IsArray();
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertTrue($obj instanceof E4xx_UnsupportedType);
+        $this->assertTrue($obj instanceof IsArray);
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__invoke
+     * @covers ::check
      */
-    public function testIsE4xx_ReflectionException()
+    public function testReturnsTrueForArray()
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
+        $obj = new IsArray();
+        $data = [];
+        $expectedResult = true;
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
+        $actualResult = $obj($data);
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertTrue($obj instanceof E4xx_ReflectionException);
+        $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__invoke
+     * @covers ::check
      */
-    public function testIsExxx_ReflectionException()
+    public function testReturnsFalseForIteratorAggregate()
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
+        $obj = new IsArray();
+        $data = new IsArrayTest_Target1;
+        $expectedResult = false;
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
+        $actualResult = $obj($data);
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertTrue($obj instanceof Exxx_ReflectionException);
+        $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__invoke
+     * @covers ::check
      */
-    public function testIsRuntimeException()
+    public function testReturnsFalseForArrayIterator()
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
+        $obj = new IsArray();
+        $data = new ArrayIterator([]);
+        $expectedResult = false;
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
+        $actualResult = $obj($data);
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertTrue($obj instanceof RuntimeException);
+        $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::ensureString
-     * @dataProvider provideListOfPhpTypes
+     * @covers ::__invoke
+     * @covers ::check
      */
-    public function testAutomaticallyHandlesTypesPassedIn($item)
+    public function testReturnsFalseForArrayObject()
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $expectedType = is_string($item)? $item : gettype($item);
+        $obj = new IsArray();
+        $data = new ArrayObject;
+        $expectedResult = false;
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($item);
+        $actualResult = $obj($data);
 
         // ----------------------------------------------------------------
         // test the results
 
-        $actualArgs = $obj->getMessageData();
-        $this->assertEquals($expectedType, $actualArgs['type']);
+        $this->assertEquals($expectedResult, $actualResult);
     }
 
-    public function provideListOfPhpTypes()
+    /**
+     * @covers ::__invoke
+     * @covers ::check
+     */
+    public function testReturnsFalseForStdclass()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $obj = new IsArray();
+        $data = new stdClass;
+        $expectedResult = false;
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualResult = $obj($data);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @covers ::__invoke
+     * @covers ::check
+     * @dataProvider provideEverythingElse
+     */
+    public function testReturnsFalseForEverythingElse($item)
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $obj = new IsArray();
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualResult = $obj($item);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertFalse($actualResult);
+    }
+
+    public function provideEverythingElse()
     {
         return [
             [ null ],
             [ true ],
             [ false ],
-            [ [ 'alfred' ] ],
             [ 3.1415927 ],
             [ 100 ],
-            [ new \stdClass ],
-            [ "hello, world!" ]
+            [ "hello world"],
+            [ new IsArray ],
         ];
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::getCaller
-     */
-    public function testAutomaticallyWorksOutWhoIsThrowingTheException()
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedCaller = [
-            get_class($this),
-            'testAutomaticallyWorksOutWhoIsThrowingTheException',
-        ];
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $obj = new E4xx_UnsupportedType("NULL");
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualArgs = $obj->getMessageData();
-        $this->assertEquals($expectedCaller[0], $actualArgs['caller'][0]);
-        $this->assertEquals($expectedCaller[1], $actualArgs['caller'][1]);
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::buildErrorMessage
-     */
-    public function testAutomaticallyAddsThrowerDetailsIntoExceptionMessage()
-    {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedMessage = "type 'NULL' is not supported by "
-            .get_class($this)
-            .'::testAutomaticallyAddsThrowerDetailsIntoExceptionMessage';
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $obj = new E4xx_UnsupportedType("NULL");
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $this->assertEquals($expectedMessage, $obj->getMessage());
     }
 }

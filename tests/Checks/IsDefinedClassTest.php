@@ -34,193 +34,235 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   Reflection/Exceptions
+ * @package   Reflection/Checks
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
- * @link      http://code.ganbarodigital.com/php-file-system
+ * @link      http://code.ganbarodigital.com/php-reflection
  */
 
-namespace GanbaroDigital\Reflection\Exceptions;
+namespace GanbaroDigital\Reflection\Checks;
 
 use PHPUnit_Framework_TestCase;
-use RuntimeException;
+use stdClass;
+
+class IsDefinedClassTest_Class1 { }
+interface IsDefinedClass__Interface1 { }
+trait IsDefinedClass_Trait1 { }
 
 /**
- * @coversDefaultClass GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
+ * @coversDefaultClass GanbaroDigital\Reflection\Checks\IsDefinedClass
  */
-class E4xx_UnsupportedTypeTest extends PHPUnit_Framework_TestCase
+class IsDefinedClassTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::__construct
+     * @coversNothing
      */
     public function testCanInstantiate()
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
-
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
+        $obj = new IsDefinedClass();
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertTrue($obj instanceof E4xx_UnsupportedType);
+        $this->assertTrue($obj instanceof IsDefinedClass);
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__invoke
+     * @dataProvider provideDataToTest
      */
-    public function testIsE4xx_ReflectionException()
+    public function testCanUseAsObject($data, $expectedResult)
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
+        $obj = new IsDefinedClass;
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
+        $actualResult = $obj($data);
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertTrue($obj instanceof E4xx_ReflectionException);
+        $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::check
+     * @dataProvider provideDataToTest
      */
-    public function testIsExxx_ReflectionException()
+    public function testCanCallStatically($data, $expectedResult)
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
-
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
+        $actualResult = IsDefinedClass::check($data);
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertTrue($obj instanceof Exxx_ReflectionException);
+        $this->assertEquals($expectedResult, $actualResult);
     }
 
     /**
-     * @covers ::__construct
+     * @covers ::__invoke
+     * @covers ::check
+     * @dataProvider provideValidClassesToTest
      */
-    public function testIsRuntimeException()
+    public function testReturnsTrueForClassNames($data, $expectedResult)
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $type = "NULL";
+        $obj = new IsDefinedClass;
+        $this->assertTrue(class_exists($data));
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($type);
+        $actualResult1 = $obj($data);
+        $actualResult2 = IsDefinedClass::check($data);
 
         // ----------------------------------------------------------------
         // test the results
 
-        $this->assertTrue($obj instanceof RuntimeException);
+        $this->assertTrue($actualResult1);
+        $this->assertTrue($actualResult2);
     }
 
     /**
-     * @covers ::__construct
-     * @covers ::ensureString
-     * @dataProvider provideListOfPhpTypes
+     * @covers ::__invoke
+     * @covers ::check
+     * @dataProvider provideValidInterfacesToTest
      */
-    public function testAutomaticallyHandlesTypesPassedIn($item)
+    public function testReturnsFalseForInterfaceNames($data, $expectedResult)
     {
         // ----------------------------------------------------------------
         // setup your test
 
-        $expectedType = is_string($item)? $item : gettype($item);
+        $obj = new IsDefinedClass;
+        $this->assertTrue(interface_exists($data));
 
         // ----------------------------------------------------------------
         // perform the change
 
-        $obj = new E4xx_UnsupportedType($item);
+        $actualResult1 = $obj($data);
+        $actualResult2 = IsDefinedClass::check($data);
 
         // ----------------------------------------------------------------
         // test the results
 
-        $actualArgs = $obj->getMessageData();
-        $this->assertEquals($expectedType, $actualArgs['type']);
+        $this->assertFalse($actualResult1);
+        $this->assertFalse($actualResult2);
     }
 
-    public function provideListOfPhpTypes()
+    /**
+     * @covers ::__invoke
+     * @covers ::check
+     * @dataProvider provideValidTraitsToTest
+     */
+    public function testReturnsFalseForTraitNames($data, $expectedResult)
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $obj = new IsDefinedClass;
+        $this->assertTrue(trait_exists($data));
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualResult1 = $obj($data);
+        $actualResult2 = IsDefinedClass::check($data);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertFalse($actualResult1);
+        $this->assertFalse($actualResult2);
+    }
+
+    /**
+     * @covers ::__invoke
+     * @covers ::check
+     * @dataProvider provideScalarsToTest
+     */
+    public function testReturnsFalseForEverythingElse($data, $expectedResult)
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $obj = new IsDefinedClass;
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualResult1 = $obj($data);
+        $actualResult2 = IsDefinedClass::check($data);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertFalse($actualResult1);
+        $this->assertFalse($actualResult2);
+    }
+
+
+    public function provideDataToTest()
+    {
+        return array_merge(
+            $this->provideValidClassesToTest(),
+            $this->provideValidInterfacesToTest(),
+            $this->provideValidTraitsToTest(),
+            $this->provideScalarsToTest()
+        );
+    }
+
+    public function provideValidClassesToTest()
     {
         return [
-            [ null ],
-            [ true ],
-            [ false ],
-            [ [ 'alfred' ] ],
-            [ 3.1415927 ],
-            [ 100 ],
-            [ new \stdClass ],
-            [ "hello, world!" ]
+            [ IsDefinedClassTest_Class1::class, true ]
         ];
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getCaller
-     */
-    public function testAutomaticallyWorksOutWhoIsThrowingTheException()
+    public function provideValidInterfacesToTest()
     {
-        // ----------------------------------------------------------------
-        // setup your test
-
-        $expectedCaller = [
-            get_class($this),
-            'testAutomaticallyWorksOutWhoIsThrowingTheException',
+        return [
+            [ IsDefinedClass__Interface1::class, false ],
         ];
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $obj = new E4xx_UnsupportedType("NULL");
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $actualArgs = $obj->getMessageData();
-        $this->assertEquals($expectedCaller[0], $actualArgs['caller'][0]);
-        $this->assertEquals($expectedCaller[1], $actualArgs['caller'][1]);
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::buildErrorMessage
-     */
-    public function testAutomaticallyAddsThrowerDetailsIntoExceptionMessage()
+    public function provideValidTraitsToTest()
     {
-        // ----------------------------------------------------------------
-        // setup your test
+        return [
+            [ IsDefinedClass_Trait1::class, false ],
+        ];
+    }
 
-        $expectedMessage = "type 'NULL' is not supported by "
-            .get_class($this)
-            .'::testAutomaticallyAddsThrowerDetailsIntoExceptionMessage';
-
-        // ----------------------------------------------------------------
-        // perform the change
-
-        $obj = new E4xx_UnsupportedType("NULL");
-
-        // ----------------------------------------------------------------
-        // test the results
-
-        $this->assertEquals($expectedMessage, $obj->getMessage());
+    public function provideScalarsToTest()
+    {
+        return [
+            [ null, false ],
+            [ [ IsDefinedClass::class ], false ],
+            [ true, false ],
+            [ false, false ],
+            [ 3.1415927, false ],
+            [ 0, false ],
+            [ 100, false ],
+            [ new IsDefinedClass, false ],
+            [ "hello, world", false ],
+        ];
     }
 }
