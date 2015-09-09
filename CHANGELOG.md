@@ -4,6 +4,7 @@
 
 ### New
 
+* Added Checks\IsArray
 * Added Checks\IsCallable
 * Added Checks\IsCompatibleWith
 * Added Checks\IsDefinedClass
