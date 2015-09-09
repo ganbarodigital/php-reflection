@@ -12,6 +12,7 @@
 * Added Checks\IsDefinedTrait
 * Added Checks\IsDefinedObjectType
 * Added Checks\IsObject
+* Added Requirements\RequireArray
 * Added Requirements\RequireCallable
 * Added Requirements\RequireDefinedClass
 * Added Requirements\RequireDefinedInterface
