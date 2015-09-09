@@ -2,6 +2,10 @@
 
 ## develop branch
 
+Nothing yet.
+
+## 2.11.0 - Wed Sep 9 2015
+
 ### New
 
 * Added Checks\IsArray
