@@ -16,6 +16,7 @@
 * Added Requirements\RequireDefinedInterface
 * Added Requirements\RequireDefinedObjectType
 * Added Requirements\RequireDefinedTrait
+* Added Requirements\RequireObject
 
 ### Fixes
 
