@@ -5,6 +5,7 @@
 ### New
 
 * Added Checks\IsCallable
+* Added Checks\IsCompatibleWith
 * Added Checks\IsDefinedClass
 * Added Checks\IsDefinedInterface
 * Added Checks\IsDefinedTrait
