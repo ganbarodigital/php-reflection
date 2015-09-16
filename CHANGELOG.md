@@ -2,6 +2,10 @@
 
 ## develop branch
 
+### Deprecated
+
+* FirstMethodMatchingType::from() - convert your classes to use the much faster LookupMethodByType instead
+
 ### New
 
 * Added `ValueBuilders\ConvertToString` - a reusable way to convert anything into a string
