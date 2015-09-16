@@ -2,6 +2,10 @@
 
 ## develop branch
 
+### New
+
+* Added `ValueBuilders\LookupMethodByType` - a much faster alternative to FirstMethodMatchingType
+
 ### Fix
 
 * AllMatchingTypesList - when given an object, specialist types such as "String" and "Callable" now appear ahead of "Object" in the list
