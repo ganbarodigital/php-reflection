@@ -371,7 +371,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
             return self::fromClass($item);
         }
 
-        $reval = [];
+        $retval = [];
         // special case - is this a callable?
         if (is_callable($item)) {
             $retval[] = 'Callable';
