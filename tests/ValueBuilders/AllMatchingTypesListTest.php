@@ -337,6 +337,32 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::fromString
+     */
+    public function testDetectsCallableStrings()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $data = 'is_string';
+        $expectedResult = [
+            'Callable',
+            'String',
+            'EverythingElse'
+        ];
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualResult = AllMatchingTypesList::fromString($data);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
      * @covers ::fromClass
      */
     public function testReadsFromInternalCacheForClasses()

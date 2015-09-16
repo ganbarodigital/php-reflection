@@ -5,6 +5,7 @@
 ### Fix
 
 * AllMatchingTypesList - when given an object, specialist types such as "String" and "Callable" now appear ahead of "Object" in the list
+* AllMatchingTypesList - now detects "Callable" strings
 
 ## 2.11.0 - Wed Sep 9 2015
 
