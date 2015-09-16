@@ -2,6 +2,10 @@
 
 ## develop branch
 
+Nothing yet.
+
+## 2.12.0 - Wed Sep 16 2015
+
 ### Deprecated
 
 * FirstMethodMatchingType::from() - convert your classes to use the much faster LookupMethodByType instead
