@@ -4,6 +4,7 @@
 
 ### New
 
+* Added `ValueBuilders\ConvertToString` - a reusable way to convert anything into a string
 * Added `ValueBuilders\LookupMethodByType` - a much faster alternative to FirstMethodMatchingType
 
 ### Fix
