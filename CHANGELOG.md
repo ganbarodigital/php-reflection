@@ -4,6 +4,22 @@
 
 Nothing yet.
 
+## 2.12.0 - Wed Sep 16 2015
+
+### Deprecated
+
+* FirstMethodMatchingType::from() - convert your classes to use the much faster LookupMethodByType instead
+
+### New
+
+* Added `ValueBuilders\ConvertToString` - a reusable way to convert anything into a string
+* Added `ValueBuilders\LookupMethodByType` - a much faster alternative to FirstMethodMatchingType
+
+### Fix
+
+* AllMatchingTypesList - when given an object, specialist types such as "String" and "Callable" now appear ahead of "Object" in the list
+* AllMatchingTypesList - now detects "Callable" strings
+
 ## 2.11.0 - Wed Sep 9 2015
 
 ### New

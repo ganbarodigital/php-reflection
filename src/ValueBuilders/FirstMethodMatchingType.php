@@ -54,6 +54,8 @@ final class FirstMethodMatchingType
     /**
      * find a method on a class / object that can accept a given piece of data
      *
+     * @deprecated since 2.12.0
+     *
      * @param  mixed $data
      *         the data we are looking for
      * @param  string|object $target

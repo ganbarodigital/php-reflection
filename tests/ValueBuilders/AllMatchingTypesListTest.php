@@ -137,7 +137,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
             [ 0, [ 'Integer', 'EverythingElse' ] ],
             [ 1, [ 'Integer', 'EverythingElse' ] ],
             [ new ArrayObject(), [ ArrayObject::class, 'IteratorAggregate', 'Traversable', 'ArrayAccess', 'Serializable', 'Countable', 'Object', 'EverythingElse' ] ],
-            [ new SimpleType(), [ SimpleType::class, 'Object', 'Callable', 'EverythingElse' ] ],
+            [ new SimpleType(), [ SimpleType::class, 'Callable', 'Object', 'EverythingElse' ] ],
             [ '100', [ 'String', 'EverythingElse' ] ],
         ];
     }
@@ -256,8 +256,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
         $expectedResult = [
             AllMatchingTypesList::class,
             AllMatchingTypesListCache::class,
-            'Object',
             'Callable',
+            'Object',
             'EverythingElse'
         ];
 
@@ -291,8 +291,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
             $expectedResult[] = 'Stringish';
         }
         $expectedResult = array_merge($expectedResult, [
-            'Object',
             'String',
+            'Object',
             'EverythingElse'
         ]);
 
@@ -321,6 +321,32 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
         $expectedResult = [
             AllMatchingTypesListTest_StringTarget::class,
             'Class',
+            'String',
+            'EverythingElse'
+        ];
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualResult = AllMatchingTypesList::fromString($data);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @covers ::fromString
+     */
+    public function testDetectsCallableStrings()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $data = 'is_string';
+        $expectedResult = [
+            'Callable',
             'String',
             'EverythingElse'
         ];

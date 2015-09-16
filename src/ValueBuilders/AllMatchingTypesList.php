@@ -248,8 +248,8 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
         // 4. the default fallback type
         $retval = array_merge(
             self::fromClassName(get_class($object)),
-            ['Object'],
             self::getObjectConditionalTypes($object),
+            ['Object'],
             [self::FALLBACK_TYPE]
         );
 
@@ -371,11 +371,16 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
             return self::fromClass($item);
         }
 
+        $retval = [];
+        // special case - is this a callable?
+        if (is_callable($item)) {
+            $retval[] = 'Callable';
+        }
+
         // if we get here, then this is just a plain old regular string
-        return [
-            "String",
-            self::FALLBACK_TYPE,
-        ];
+        $retval[] = "String";
+        $retval[] = self::FALLBACK_TYPE;
+        return $retval;
     }
 
     /**
