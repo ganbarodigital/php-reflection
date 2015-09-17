@@ -47,6 +47,7 @@ use ArrayObject;
 use PHPUnit_Framework_TestCase;
 use GanbaroDigital\Reflection\Caches\AllMatchingTypesListCache;
 use GanbaroDigital\UnitTestHelpers\ClassesAndObjects\InvokeMethod;
+use stdClass;
 
 interface AllMatchingTypesListTest_Interface1 { }
 interface AllMatchingTypesListTest_Interface2 { }
@@ -138,6 +139,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
             [ 1, [ 'Integer', 'EverythingElse' ] ],
             [ new ArrayObject(), [ ArrayObject::class, 'IteratorAggregate', 'Traversable', 'ArrayAccess', 'Serializable', 'Countable', 'Object', 'EverythingElse' ] ],
             [ new SimpleType(), [ SimpleType::class, 'Callable', 'Object', 'EverythingElse' ] ],
+            [ (object)[ 'name' => 'test data'], [ 'Traversable', 'stdClass', 'Object', 'EverythingElse' ] ],
             [ '100', [ 'String', 'EverythingElse' ] ],
         ];
     }
@@ -295,6 +297,36 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
             'Object',
             'EverythingElse'
         ]);
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualResult = AllMatchingTypesList::fromObject($data);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @covers ::fromObject
+     * @covers ::buildObjectTypeList
+     * @covers ::getObjectSpecialTypes
+     * @covers ::getObjectConditionalTypes
+     */
+    public function testTreatsStdclassAsTraversable()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $data = new stdClass;
+        $expectedResult = [
+            'Traversable',
+            'stdClass',
+            'Object',
+            'EverythingElse',
+        ];
 
         // ----------------------------------------------------------------
         // perform the change

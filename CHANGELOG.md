@@ -2,7 +2,9 @@
 
 ## develop branch
 
-Nothing yet.
+### Fixes
+
+* AllMatchingTypesList - treats `stdClass` as a Traversable
 
 ## 2.12.0 - Wed Sep 16 2015
 
