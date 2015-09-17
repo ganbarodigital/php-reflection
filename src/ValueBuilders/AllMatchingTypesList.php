@@ -50,6 +50,7 @@ use GanbaroDigital\Reflection\Requirements\RequireArray;
 use GanbaroDigital\Reflection\Requirements\RequireDefinedObjectType;
 use GanbaroDigital\Reflection\Requirements\RequireObject;
 use GanbaroDigital\Reflection\Requirements\RequireStringy;
+use stdClass;
 
 final class AllMatchingTypesList extends AllMatchingTypesListCache
 {
@@ -181,13 +182,6 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
     private static function fromClassName($className)
     {
         // our return value
-        //
-        // we build this to go from the most specific to the least specific
-        //
-        // 1. parent classes
-        // 2. interfaces
-        // 3. substituted as a string
-        // 4. substituted as a callable
         $retval = [$className];
 
         foreach (class_parents($className) as $parentName) {
@@ -247,11 +241,30 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
         // 3. any magic methods that can be automatically taken advantage of
         // 4. the default fallback type
         $retval = array_merge(
+            self::getObjectSpecialTypes($object),
             self::fromClassName(get_class($object)),
             self::getObjectConditionalTypes($object),
             ['Object'],
             [self::FALLBACK_TYPE]
         );
+
+        return $retval;
+    }
+
+    /**
+     * hard-coded rules for dealing with PHP's built-in classes
+     *
+     * @param  object $object
+     *         object to examine
+     * @return array
+     */
+    private static function getObjectSpecialTypes($object)
+    {
+        $retval = [];
+
+        if ($object instanceof stdClass) {
+            $retval[] = 'Traversable';
+        }
 
         return $retval;
     }
