@@ -50,10 +50,13 @@ use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
 use GanbaroDigital\Reflection\Requirements\RequireObject;
 use GanbaroDigital\Reflection\Requirements\RequireStringy;
 use GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList;
-use GanbaroDigital\Reflection\ValueBuilders\FirstMethodMatchingType;
+use GanbaroDigital\Reflection\ValueBuilders\LookupMethodByType;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class IsCompatibleWith
 {
+    use LookupMethodByType;
+
     /**
      * is $data compatible with $constraint?
      *
@@ -81,7 +84,7 @@ class IsCompatibleWith
      */
     public static function check($data, $constraint)
     {
-        $method = FirstMethodMatchingType::from($data, self::class, 'check', E4xx_UnsupportedType::class);
+        $method = self::lookupMethodFor($data, self::$dispatchTable);
         return self::$method($data, $constraint);
     }
 
@@ -136,4 +139,25 @@ class IsCompatibleWith
         // if we get here, we have run out of ideas
         return false;
     }
+
+    /**
+     * called when $data is a data type that we do not support
+     *
+     * @param  mixed $data
+     * @param  mixed $constraint
+     * @return void
+     */
+    public static function nothingMatchesTheInputType($data, $constraint)
+    {
+        throw new E4xx_UnsupportedType(SimpleType::from($data));
+    }
+
+    /**
+     * our lookup table of which method to call for which supported data type
+     * @var array
+     */
+    private static $dispatchTable = [
+        'Object' => 'checkObject',
+        'String' => 'checkString',
+    ];
 }

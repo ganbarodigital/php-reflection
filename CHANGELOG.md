@@ -2,7 +2,9 @@
 
 ## develop branch
 
-Nothing yet.
+### Fixes
+
+* IsCompatibleWith - performance improvements
 
 ## 2.12.1 - Thu Sep 17 2015
 
