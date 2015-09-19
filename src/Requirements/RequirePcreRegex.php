@@ -46,7 +46,6 @@ namespace GanbaroDigital\Reflection\Requirements;
 use GanbaroDigital\Reflection\Checks\IsPcreRegex;
 use GanbaroDigital\Reflection\Exceptions\E4xx_InvalidPcreRegex;
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
-use GanbaroDigital\Reflection\ValueBuilders\FirstMethodMatchingType;
 
 class RequirePcreRegex
 {
@@ -78,8 +77,7 @@ class RequirePcreRegex
      */
     public static function check($item, $exception = E4xx_InvalidPcreRegex::class)
     {
-        $method = FirstMethodMatchingType::from($item, self::class, 'check', E4xx_UnsupportedType::class);
-        return self::$method($item, $exception);
+        self::checkString($item, $exception);
     }
 
     /**

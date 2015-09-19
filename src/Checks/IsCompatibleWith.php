@@ -144,10 +144,9 @@ class IsCompatibleWith
      * called when $data is a data type that we do not support
      *
      * @param  mixed $data
-     * @param  mixed $constraint
      * @return void
      */
-    public static function nothingMatchesTheInputType($data, $constraint)
+    public static function nothingMatchesTheInputType($data)
     {
         throw new E4xx_UnsupportedType(SimpleType::from($data));
     }
