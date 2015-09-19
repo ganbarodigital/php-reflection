@@ -5,6 +5,7 @@
 ### Fixes
 
 * IsCompatibleWith - performance improvements
+* AllMatchingTypesListTest - update tests to check for more accurate error messages from latest Exceptions release
 
 ## 2.12.1 - Thu Sep 17 2015
 
