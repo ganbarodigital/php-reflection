@@ -5,6 +5,7 @@
 ## New
 
 * Checks\IsDouble - added
+* Checks\IsInteger - added
 
 ## 2.12.2 - Sat Sep 19 2015
 
