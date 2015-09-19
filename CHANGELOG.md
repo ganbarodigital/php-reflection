@@ -4,6 +4,13 @@
 
 Nothing yet.
 
+## 2.12.2 - Sat Sep 19 2015
+
+### Fixes
+
+* IsCompatibleWith - performance improvements
+* AllMatchingTypesListTest - update tests to check for more accurate error messages from latest Exceptions release
+
 ## 2.12.1 - Thu Sep 17 2015
 
 ### Fixes
