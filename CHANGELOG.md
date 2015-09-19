@@ -7,6 +7,10 @@
 * Checks\IsDouble - added
 * Checks\IsInteger - added
 
+## Test Fixes
+
+* Checks\IsCompatibleWith - added test for rejecting bad inputs
+
 ## 2.12.2 - Sat Sep 19 2015
 
 ### Fixes
