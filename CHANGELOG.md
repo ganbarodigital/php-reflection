@@ -7,6 +7,7 @@
 * Checks\IsDouble - added
 * Checks\IsInteger - added
 * Requirements\RequireDouble - added
+* Requirements\RequireInteger - added
 
 ## Test Fixes
 
