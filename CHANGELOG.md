@@ -2,14 +2,18 @@
 
 ## develop branch
 
-## New
+Nothing yet.
+
+## 2.13.0 - Sun Sep 20 2015
+
+### New
 
 * Checks\IsDouble - added
 * Checks\IsInteger - added
 * Requirements\RequireDouble - added
 * Requirements\RequireInteger - added
 
-## Test Fixes
+### Test Fixes
 
 * Checks\IsCompatibleWith - added test for rejecting bad inputs
 
