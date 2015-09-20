@@ -4,6 +4,19 @@
 
 Nothing yet.
 
+## 2.13.0 - Sun Sep 20 2015
+
+### New
+
+* Checks\IsDouble - added
+* Checks\IsInteger - added
+* Requirements\RequireDouble - added
+* Requirements\RequireInteger - added
+
+### Test Fixes
+
+* Checks\IsCompatibleWith - added test for rejecting bad inputs
+
 ## 2.12.2 - Sat Sep 19 2015
 
 ### Fixes

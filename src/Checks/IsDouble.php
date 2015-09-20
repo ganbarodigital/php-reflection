@@ -34,63 +34,53 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   Reflection/Requirements
+ * @package   Reflection/Checks
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-reflection
  */
 
-namespace GanbaroDigital\Reflection\Requirements;
+namespace GanbaroDigital\Reflection\Checks;
 
-use GanbaroDigital\Reflection\Checks\IsPcreRegex;
-use GanbaroDigital\Reflection\Exceptions\E4xx_InvalidPcreRegex;
-use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
-
-class RequirePcreRegex
+class IsDouble
 {
     /**
-     * throws exceptions if $item is not a valid PCRE regex
+     * do we have something that is a double?
      *
-     * @param  string $item
-     *         the container to check
-     * @param  string $exception
-     *         the class to use when throwing an exception
-     * @return void
+     * @param  mixed $item
+     *         the item to be checked
+     * @return boolean
+     *         TRUE if the item is a double, or can be used as a double
+     *         FALSE otherwise
      */
-    public static function checkString($item, $exception = E4xx_InvalidPcreRegex::class)
+    public static function check($item)
     {
-        // make sure we have a stringy type
-        if (!IsPcreRegex::checkString($item)) {
-            throw new $exception($item);
+        // special case
+        if (is_bool($item)) {
+            return false;
         }
+
+        // general cases
+        if (is_float($item) || filter_var($item, FILTER_VALIDATE_FLOAT) !== false) {
+            return true;
+        }
+
+        // if we get here, we have run out of ideas
+        return false;
     }
 
     /**
-     * throws exceptions if $item is not a valid PCRE regex
+     * do we have something that is a double?
      *
      * @param  mixed $item
-     *         the container to check
-     * @param  string $exception
-     *         the class to use when throwing an exception
-     * @return void
+     *         the item to be checked
+     * @return boolean
+     *         TRUE if the item is a double, or can be used as a double
+     *         FALSE otherwise
      */
-    public static function check($item, $exception = E4xx_InvalidPcreRegex::class)
+    public function __invoke($item)
     {
-        self::checkString($item, $exception);
-    }
-
-    /**
-     * throws exceptions if $item is not a valid PCRE regex
-     *
-     * @param  mixed $item
-     *         the container to check
-     * @param  string $exception
-     *         the class to use when throwing an exception
-     * @return void
-     */
-    public function __invoke($item, $exception = E4xx_InvalidPcreRegex::class)
-    {
-        self::check($item, $exception);
+        return self::check($item);
     }
 }

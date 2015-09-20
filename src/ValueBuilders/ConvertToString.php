@@ -117,12 +117,10 @@ class ConvertToString
     /**
      * convert NULL into a string
      *
-     * @param  null $item
-     *         the data to convert
      * @return string
      *         always 'null'
      */
-    private static function fromNULL($item)
+    private static function fromNULL()
     {
         return "null";
     }
@@ -143,11 +141,9 @@ class ConvertToString
     /**
      * convert a resource into a string
      *
-     * @param  resource $item
-     *         the data to convert
      * @return string
      */
-    private static function fromResource($item)
+    private static function fromResource()
     {
         return "(resource)";
     }

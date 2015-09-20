@@ -258,6 +258,22 @@ class IsCompatibleWithTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($actualResult2);
     }
 
+    /**
+     * @covers ::nothingMatchesTheInputType
+     * @dataProvider provideBadInputs
+     * @expectedException GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType
+     */
+    public function testRejectsEverythingElse($data, $constraint)
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        IsCompatibleWith::check($data, $constraint);
+    }
+
 
     public function provideDataToTest()
     {
@@ -312,7 +328,7 @@ class IsCompatibleWithTest extends PHPUnit_Framework_TestCase
         ];
     }
 
-    public function provideScalarsToTest()
+    public function provideBadInputs()
     {
         return [
             [ null, false ],

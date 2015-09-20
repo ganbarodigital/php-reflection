@@ -43,31 +43,37 @@
 
 namespace GanbaroDigital\Reflection\Requirements;
 
-use GanbaroDigital\Reflection\Checks\IsPcreRegex;
-use GanbaroDigital\Reflection\Exceptions\E4xx_InvalidPcreRegex;
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
+use GanbaroDigital\Reflection\Checks\IsDouble;
+use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
-class RequirePcreRegex
+class RequireDouble
 {
     /**
-     * throws exceptions if $item is not a valid PCRE regex
+     * throws exceptions if $item is not a double, or something that can
+     * be cast as a double
      *
-     * @param  string $item
+     * this is a wrapper around our IsDouble check
+     *
+     * @param  mixed $item
      *         the container to check
      * @param  string $exception
      *         the class to use when throwing an exception
      * @return void
      */
-    public static function checkString($item, $exception = E4xx_InvalidPcreRegex::class)
+    public static function check($item, $exception = E4xx_UnsupportedType::class)
     {
-        // make sure we have a stringy type
-        if (!IsPcreRegex::checkString($item)) {
-            throw new $exception($item);
+        // make sure we have a double
+        if (!IsDouble::check($item)) {
+            throw new $exception(SimpleType::from($item));
         }
     }
 
     /**
-     * throws exceptions if $item is not a valid PCRE regex
+     * throws exceptions if $item is not a double, or something that can
+     * be cast as a double
+     *
+     * this is a wrapper around our IsDouble check
      *
      * @param  mixed $item
      *         the container to check
@@ -75,21 +81,7 @@ class RequirePcreRegex
      *         the class to use when throwing an exception
      * @return void
      */
-    public static function check($item, $exception = E4xx_InvalidPcreRegex::class)
-    {
-        self::checkString($item, $exception);
-    }
-
-    /**
-     * throws exceptions if $item is not a valid PCRE regex
-     *
-     * @param  mixed $item
-     *         the container to check
-     * @param  string $exception
-     *         the class to use when throwing an exception
-     * @return void
-     */
-    public function __invoke($item, $exception = E4xx_InvalidPcreRegex::class)
+    public function __invoke($item, $exception = E4xx_UnsupportedType::class)
     {
         self::check($item, $exception);
     }
