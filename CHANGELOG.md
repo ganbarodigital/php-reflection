@@ -2,7 +2,9 @@
 
 ## develop branch
 
-Nothing yet.
+### New
+
+* Checks\IsObjectOfType - added
 
 ## 2.13.0 - Sun Sep 20 2015
 
