@@ -44,7 +44,7 @@
 namespace GanbaroDigital\Reflection\Requirements;
 
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
-use GanbaroDigital\Reflection\Checks\IsObject;
+use GanbaroDigital\Reflection\Checks\IsObjectOfType;
 use GanbaroDigital\Reflection\ValueBuilders\SimpleType;
 
 class RequireObjectOfType
@@ -68,8 +68,8 @@ class RequireObjectOfType
         RequireStringy::check($type, $exception);
 
         // make sure we have a PHP class that exists
-        if (!IsObject::check($item, $type)) {
-            throw new $exception(SimpleType::from($item, $type));
+        if (!IsObjectOfType::check($item, $type)) {
+            throw new $exception(SimpleType::from($item));
         }
     }
 
