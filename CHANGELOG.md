@@ -5,6 +5,7 @@
 ### New
 
 * Checks\IsObjectOfType - added
+* Requirements\RequireObjectOfType - added
 
 ## 2.13.0 - Sun Sep 20 2015
 
