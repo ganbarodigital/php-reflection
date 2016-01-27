@@ -6,6 +6,10 @@
 
 * MapTypeToMethod - added
 
+### Refactor
+
+* LookupMethodByType trait - now uses MapTypeToMethod internally
+
 ## 2.14.0 - Thu Oct 8 2015
 
 ### New

@@ -43,6 +43,8 @@
 
 namespace GanbaroDigital\Reflection\ValueBuilders;
 
+use GanbaroDigital\Reflection\Maps\MapTypeToMethod;
+
 trait LookupMethodByType
 {
     /**
@@ -64,13 +66,6 @@ trait LookupMethodByType
      */
     private static function lookupMethodFor($item, $typeMethods)
     {
-        $types = AllMatchingTypesList::from($item);
-        foreach ($types as $type) {
-            if (isset($typeMethods[$type])) {
-                return $typeMethods[$type];
-            }
-        }
-
-        return 'nothingMatchesTheInputType';
+        return MapTypeToMethod::using($item, $typeMethods);
     }
 }
