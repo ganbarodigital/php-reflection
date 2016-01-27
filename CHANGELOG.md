@@ -4,6 +4,12 @@
 
 ### New
 
+* MapTypeToMethod - added
+
+## 2.14.0 - Thu Oct 8 2015
+
+### New
+
 * Checks\IsObjectOfType - added
 * Requirements\RequireObjectOfType - added
 
