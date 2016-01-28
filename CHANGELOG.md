@@ -2,6 +2,18 @@
 
 ## develop branch
 
+## 2.15.0 - Thu Jan 28 2015
+
+### New
+
+* MapTypeToMethod - added
+
+### Refactor
+
+* LookupMethodByType trait - now uses MapTypeToMethod internally
+
+## 2.14.0 - Thu Oct 8 2015
+
 ### New
 
 * Checks\IsObjectOfType - added

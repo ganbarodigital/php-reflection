@@ -34,18 +34,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category  Libraries
- * @package   Reflection/ValueBuilders
+ * @package   Reflection/Maps
  * @author    Stuart Herbert <stuherbert@ganbarodigital.com>
  * @copyright 2015-present Ganbaro Digital Ltd www.ganbarodigital.com
  * @license   http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link      http://code.ganbarodigital.com/php-reflection
  */
 
-namespace GanbaroDigital\Reflection\ValueBuilders;
+namespace GanbaroDigital\Reflection\Maps;
 
-use GanbaroDigital\Reflection\Maps\MapTypeToMethod;
+use GanbaroDigital\Reflection\ValueBuilders\AllMatchingTypesList;
 
-trait LookupMethodByType
+class MapTypeToMethod
 {
     /**
      * use an input item's data type to work out which method we should
@@ -64,8 +64,37 @@ trait LookupMethodByType
      * @return string
      *         the name of the method to call
      */
-    private static function lookupMethodFor($item, $typeMethods)
+    public function __invoke($item, $typeMethods)
     {
-        return MapTypeToMethod::using($item, $typeMethods);
+        return self::using($item, $typeMethods);
+    }
+
+    /**
+     * use an input item's data type to work out which method we should
+     * call
+     *
+     * this is a faster replacement for the older FirstMethodMatchingType
+     * value builder
+     *
+     * not only is it faster, but the lookup table can also contain protected
+     * and private methods
+     *
+     * @param  mixed $item
+     *         the item we want to dispatch
+     * @param  array $typeMethods
+     *         the list of methods that are available
+     * @return string
+     *         the name of the method to call
+     */
+    public static function using($item, $typeMethods)
+    {
+        $types = AllMatchingTypesList::from($item);
+        foreach ($types as $type) {
+            if (isset($typeMethods[$type])) {
+                return $typeMethods[$type];
+            }
+        }
+
+        return 'nothingMatchesTheInputType';
     }
 }
