@@ -4,7 +4,10 @@
 
 ### New
 
-* IsEmpty - added
+* Added support for checking for empty data
+  * Added `GanbaroDigital\Reflection\Checks\IsEmpty`
+  * Added `GanbaroDigital\Reflection\Exceptions\E4xx_DataCannotBeEmpty`
+  * Added `GanbaroDigital\Reflection\Requirements\RequireNotEmpty`
 
 ## 2.15.0 - Thu Jan 28 2015
 
