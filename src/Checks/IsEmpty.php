@@ -170,7 +170,7 @@ class IsEmpty
      *
      * NULL is always treated as an empty value
      *
-     * @param  null $item
+     * @param  CheckableForEmpty $item
      *         the item to check
      * @return boolean
      *         always TRUE
