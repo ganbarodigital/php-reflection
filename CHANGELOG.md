@@ -2,6 +2,10 @@
 
 ## develop branch
 
+### New
+
+* IsEmpty - added
+
 ## 2.15.0 - Thu Jan 28 2015
 
 ### New
