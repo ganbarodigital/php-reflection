@@ -2,7 +2,17 @@
 
 ## develop branch
 
-## 2.15.0 - Thu Jan 28 2015
+## 2.16.0 - Sat Jan 30 2016
+
+### New
+
+* Added support for checking for empty data
+  * Added `GanbaroDigital\Reflection\Checks\IsEmpty`
+  * Added `GanbaroDigital\Reflection\Exceptions\E4xx_DataCannotBeEmpty`
+  * Added `GanbaroDigital\Reflection\Requirements\RequireNotEmpty`
+  * Added `GanbaroDigital\Reflection\Specifications\CheckableForEmpty`
+
+## 2.15.0 - Thu Jan 28 2016
 
 ### New
 
