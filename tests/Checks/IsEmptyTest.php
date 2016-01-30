@@ -358,11 +358,25 @@ class IsEmptyTest extends PHPUnit_Framework_TestCase
     public function provideDataToTest()
     {
         return array_merge(
-            $this->provideEmptyArraysToTest(),
-            $this->provideEmptyValuesToTest(),
+            $this->provideDataWithContentToTest(),
+            $this->provideDataWithNoContentToTest()
+        );
+    }
+
+    public function provideDataWithContentToTest()
+    {
+        return array_merge(
             $this->provideArraysWithContentToTest(),
             $this->provideStringsWithContentToTest(),
             $this->provideEverythingElseToTest()
+        );
+    }
+
+    public function provideDataWithNoContentToTest()
+    {
+        return array_merge(
+            $this->provideEmptyArraysToTest(),
+            $this->provideEmptyValuesToTest()
         );
     }
 
