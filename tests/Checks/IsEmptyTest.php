@@ -44,6 +44,7 @@
 namespace GanbaroDigital\Reflection\Checks;
 
 use ArrayObject;
+use GanbaroDigital\Reflection\Specifications\CheckableForEmpty;
 use PHPUnit_Framework_TestCase;
 use stdClass;
 
@@ -268,6 +269,28 @@ class IsEmptyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::askObject
+     * @dataProvider provideAskableObjectsToTest
+     */
+    public function testSupportsObjectsThatImplementCheckableForEmptyInterface($data, $expectedResult)
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $obj = new IsEmpty;
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualResult = $obj($data);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
      * @covers ::checkString
      * @dataProvider provideStringsWithWhitespaceToTest
      */
@@ -367,6 +390,7 @@ class IsEmptyTest extends PHPUnit_Framework_TestCase
     {
         return array_merge(
             $this->provideArraysWithContentToTest(),
+            $this->provideAskableObjectsWithContentToTest(),
             $this->provideStringsWithContentToTest(),
             $this->provideEverythingElseToTest()
         );
@@ -376,6 +400,7 @@ class IsEmptyTest extends PHPUnit_Framework_TestCase
     {
         return array_merge(
             $this->provideEmptyArraysToTest(),
+            $this->provideAskableObjectsWithNoContentToTest(),
             $this->provideEmptyValuesToTest()
         );
     }
@@ -484,6 +509,36 @@ class IsEmptyTest extends PHPUnit_Framework_TestCase
         ];
     }
 
+    public function provideAskableObjectsToTest()
+    {
+        return array_merge(
+            $this->provideAskableObjectsWithContentToTest(),
+            $this->provideAskableObjectsWithNoContentToTest()
+        );
+    }
+
+    public function provideAskableObjectsWithContentToTest()
+    {
+        return [
+            [ new IsEmptyTest_CheckableNotEmptyObject(), false ],
+        ];
+    }
+
+    public function provideAskableObjectsWithNoContentToTest()
+    {
+        return [
+            [ new IsEmptyTest_CheckableEmptyObject(), true ],
+        ];
+    }
+
+    public function provideStringsToTest()
+    {
+        return array_merge(
+            $this->provideEmptyStringsToTest(),
+            $this->provideStringsWithContentToTest()
+        );
+    }
+
     public function provideEmptyStringsToTest()
     {
         return array_merge(
@@ -532,5 +587,21 @@ class IsEmptyTest extends PHPUnit_Framework_TestCase
             [ new IsEmpty, false ],
             [ STDIN, false ],
         ];
+    }
+}
+
+class IsEmptyTest_CheckableEmptyObject implements CheckableForEmpty
+{
+    public function isEmpty()
+    {
+        return true;
+    }
+}
+
+class IsEmptyTest_CheckableNotEmptyObject implements CheckableForEmpty
+{
+    public function isEmpty()
+    {
+        return false;
     }
 }

@@ -44,6 +44,7 @@
 namespace GanbaroDigital\Reflection\Checks;
 
 use GanbaroDigital\Reflection\Maps\MapTypeToMethod;
+use GanbaroDigital\Reflection\Specifications\CheckableForEmpty;
 
 class IsEmpty
 {
@@ -100,6 +101,7 @@ class IsEmpty
      */
     private static $dispatchMap = [
         'Array' => 'checkArray',
+        CheckableForEmpty::class => 'askObject',
         'NULL' => 'checkNull',
         'String' => 'checkString',
         'Traversable' => 'checkTraversable'
@@ -161,6 +163,21 @@ class IsEmpty
     private static function checkNull($item)
     {
         return true;
+    }
+
+    /**
+     * check if an item is empty
+     *
+     * NULL is always treated as an empty value
+     *
+     * @param  null $item
+     *         the item to check
+     * @return boolean
+     *         always TRUE
+     */
+    private static function askObject($item)
+    {
+        return $item->isEmpty();
     }
 
     /**

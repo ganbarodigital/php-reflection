@@ -8,6 +8,7 @@
   * Added `GanbaroDigital\Reflection\Checks\IsEmpty`
   * Added `GanbaroDigital\Reflection\Exceptions\E4xx_DataCannotBeEmpty`
   * Added `GanbaroDigital\Reflection\Requirements\RequireNotEmpty`
+  * Added `GanbaroDigital\Reflection\Specifications\CheckableForEmpty`
 
 ## 2.15.0 - Thu Jan 28 2015
 
