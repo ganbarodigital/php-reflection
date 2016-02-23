@@ -172,7 +172,18 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
     private static function fromClassName($className)
     {
         // our return value
-        $retval = [$className];
+        $retval = array_merge(
+            [$className],
+            self::getClassHierarchy($className)
+        );
+
+        return $retval;
+    }
+
+    private static function getClassHierarchy($className)
+    {
+        // our return value
+        $retval = [];
 
         foreach (class_parents($className) as $parentName) {
             $retval[] = $parentName;
@@ -222,6 +233,8 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
      */
     private static function buildObjectTypeList($object)
     {
+        $className = get_class($object);
+
         // our details are made up of this order:
         //
         // 1. details about the class
@@ -229,8 +242,9 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
         // 3. any magic methods that can be automatically taken advantage of
         // 4. the default fallback type
         $retval = array_merge(
+            [$className],
             self::getObjectSpecialTypes($object),
-            self::fromClassName(get_class($object)),
+            self::getClassHierarchy($className),
             self::getObjectConditionalTypes($object),
             ['Object'],
             [self::FALLBACK_TYPE]
@@ -251,6 +265,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
         $retval = [];
 
         if ($object instanceof stdClass) {
+            $retval[] = 'GanbaroDigital\DataContainers\Containers\DataContainer';
             $retval[] = 'Traversable';
         }
 
@@ -338,7 +353,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
     private static function fromString($item)
     {
         // special case - is this a class name?
-        if (class_exists($item)) {
+        if (class_exists($item) || interface_exists($item)) {
             return self::fromClass($item);
         }
 

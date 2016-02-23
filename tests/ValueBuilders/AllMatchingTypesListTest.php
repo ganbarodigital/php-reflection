@@ -106,6 +106,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
      * @covers ::fromString
      * @covers ::fromClass
      * @covers ::fromClassName
+     * @covers ::getClassHierarchy
      * @covers ::buildCombinedClassNameDetails
      * @dataProvider provideDataToTest
      */
@@ -139,7 +140,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
             [ 1, [ 'Integer', 'EverythingElse' ] ],
             [ new ArrayObject(), [ ArrayObject::class, 'IteratorAggregate', 'Traversable', 'ArrayAccess', 'Serializable', 'Countable', 'Object', 'EverythingElse' ] ],
             [ new SimpleType(), [ SimpleType::class, 'Callable', 'Object', 'EverythingElse' ] ],
-            [ (object)[ 'name' => 'test data'], [ 'Traversable', 'stdClass', 'Object', 'EverythingElse' ] ],
+            [ (object)[ 'name' => 'test data'], [ 'stdClass', 'GanbaroDigital\DataContainers\Containers\DataContainer', 'Traversable', 'Object', 'EverythingElse' ] ],
             [ '100', [ 'String', 'EverythingElse' ] ],
         ];
     }
@@ -148,8 +149,8 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
      * @covers ::__invoke
      * @covers ::fromObject
      * @covers ::getObjectConditionalTypes
-     * @covers ::fromClass
-     * @covers ::fromClassName
+     * @covers ::fromObject
+     * @covers ::getClassHierarchy
      * @covers ::buildCombinedClassNameDetails
      * @dataProvider provideTestClasses
      */
@@ -322,8 +323,9 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
         $data = new stdClass;
         $expectedResult = [
-            'Traversable',
             'stdClass',
+            'GanbaroDigital\DataContainers\Containers\DataContainer',
+            'Traversable',
             'Object',
             'EverythingElse',
         ];
@@ -342,6 +344,7 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
     /**
      * @covers ::fromString
      * @covers ::fromClass
+     * @covers ::fromClassName
      * @covers ::buildCombinedClassNameDetails
      */
     public function testDetectsStringyClassnames()
@@ -379,6 +382,37 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
         $data = 'is_string';
         $expectedResult = [
             'Callable',
+            'String',
+            'EverythingElse'
+        ];
+
+        // ----------------------------------------------------------------
+        // perform the change
+
+        $actualResult = AllMatchingTypesList::from($data);
+
+        // ----------------------------------------------------------------
+        // test the results
+
+        $this->assertEquals($expectedResult, $actualResult);
+    }
+
+    /**
+     * @covers ::fromString
+     * @covers ::fromClass
+     * @covers ::fromClassName
+     * @covers ::buildCombinedClassNameDetails
+     * @covers ::getClassHierarchy
+     */
+    public function testDetectsInterfaces()
+    {
+        // ----------------------------------------------------------------
+        // setup your test
+
+        $data = 'Traversable';
+        $expectedResult = [
+            'Traversable',
+            'Interface',
             'String',
             'EverythingElse'
         ];
@@ -454,7 +488,6 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
-     * @covers ::getObjectFromCache
      * @covers ::getObjectCacheName
      */
     public function testReadsFromInternalCacheForObjects()
@@ -486,7 +519,6 @@ class AllMatchingTypesListTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ::fromObject
-     * @covers ::setObjectInCache
      * @covers ::getObjectCacheName
      */
     public function testWritesToInternalCacheForObjects()

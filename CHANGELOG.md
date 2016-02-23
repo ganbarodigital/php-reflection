@@ -2,6 +2,16 @@
 
 ## develop branch
 
+### New
+
+* Added support for interfaces to `AllMatchingTypesList`
+* `AllMatchingTypesList` now reports `stdClass` as a `DataContainer`
+
+### Fixes
+
+* `AllMatchingTypesList` now reports `stdClass` as first in the type list
+  - makes it consistent with how all other classes are treated
+
 ## 2.16.1 - Tue Feb 23 2016
 
 ### Fixes
