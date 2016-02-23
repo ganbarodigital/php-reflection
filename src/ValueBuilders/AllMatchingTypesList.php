@@ -46,10 +46,6 @@ namespace GanbaroDigital\Reflection\ValueBuilders;
 use GanbaroDigital\Reflection\Caches\AllMatchingTypesListCache;
 use GanbaroDigital\Reflection\Exceptions\E4xx_NoSuchClass;
 use GanbaroDigital\Reflection\Exceptions\E4xx_UnsupportedType;
-use GanbaroDigital\Reflection\Requirements\RequireArray;
-use GanbaroDigital\Reflection\Requirements\RequireDefinedObjectType;
-use GanbaroDigital\Reflection\Requirements\RequireObject;
-use GanbaroDigital\Reflection\Requirements\RequireStringy;
 use stdClass;
 
 final class AllMatchingTypesList extends AllMatchingTypesListCache
@@ -107,11 +103,8 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
      * @return string[]
      *         a list of matching types
      */
-    public static function fromArray($item)
+    private static function fromArray($item)
     {
-        // robustness!
-        RequireArray::check($item, E4xx_UnsupportedType::class);
-
         // our return type
         $retval = [];
 
@@ -133,11 +126,8 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
      * @return string[]
      *         a list of matching objects
      */
-    public static function fromClass($className)
+    private static function fromClass($className)
     {
-        // robustness!
-        RequireDefinedObjectType::check($className);
-
         // do we have this cached?
         $cacheName = $className . '::class';
         if ($retval = self::getFromCache($cacheName)) {
@@ -192,8 +182,8 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
             $retval[] = $interfaceName;
         }
 
-        // all done
         return $retval;
+        // all done
     }
 
     /**
@@ -204,13 +194,11 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
      * @return string[]
      *         a list of matching objects
      */
-    public static function fromObject($item)
+    private static function fromObject($item)
     {
-        // robustness!
-        RequireObject::check($item, E4xx_UnsupportedType::class);
-
         // do we have this cached?
-        if ($retval = self::getObjectFromCache($item)) {
+        $cacheName = self::getObjectCacheName($item);
+        if ($retval = self::getFromCache($cacheName)) {
             return $retval;
         }
 
@@ -218,7 +206,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
         $retval = self::buildObjectTypeList($item);
 
         // cache the results
-        self::setObjectInCache($item, $retval);
+        self::setInCache($cacheName, $retval);
 
         // all done
         return $retval;
@@ -291,33 +279,6 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
     }
 
     /**
-     * do we have the details of this object in the cache?
-     *
-     * @param  object $object
-     *         the object to check for
-     * @return array|null
-     */
-    private static function getObjectFromCache($object)
-    {
-        $cacheName = self::getObjectCacheName($object);
-        return self::getFromCache($cacheName);
-    }
-
-    /**
-     * write the details about this object into the cache
-     *
-     * @param object $object
-     *        the object to cache details about
-     * @param array $typeList
-     *        the details for $object
-     */
-    private static function setObjectInCache($object, array $typeList)
-    {
-        $cacheName = self::getObjectCacheName($object);
-        self::setInCache($cacheName, $typeList);
-    }
-
-    /**
      * what is the cache key to use for this object?
      *
      * @param  object $object
@@ -339,7 +300,7 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
     public static function from($item)
     {
         $type = ucfirst(gettype($item));
-        $methodName = 'from' . ucfirst($type);
+        $methodName = 'from' . $type;
         if (method_exists(self::class, $methodName)) {
             return call_user_func_array([self::class, $methodName], [$item]);
         }
@@ -374,11 +335,8 @@ final class AllMatchingTypesList extends AllMatchingTypesListCache
      * @return array
      *         the basic type of the examined item
      */
-    public static function fromString($item)
+    private static function fromString($item)
     {
-        // robustness!
-        RequireStringy::check($item);
-
         // special case - is this a class name?
         if (class_exists($item)) {
             return self::fromClass($item);

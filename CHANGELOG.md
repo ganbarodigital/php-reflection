@@ -2,6 +2,11 @@
 
 ## develop branch
 
+### Fixes
+
+* Performance tweaks to `AllMatchingTypesList`
+  - includes dropping deprecated `public` methods
+
 ## 2.16.0 - Sat Jan 30 2016
 
 ### New

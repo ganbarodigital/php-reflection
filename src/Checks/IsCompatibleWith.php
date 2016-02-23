@@ -126,7 +126,7 @@ class IsCompatibleWith
         RequireStringy::check($data, E4xx_UnsupportedType::class);
         RequireAnyOneOf::check([ new IsObject, new IsStringy], [$constraint], E4xx_UnsupportedType::class);
 
-        $compatibleTypes = AllMatchingTypesList::fromClass($data);
+        $compatibleTypes = AllMatchingTypesList::from($data);
         if (is_object($constraint)) {
             $constraint = get_class($constraint);
         }
