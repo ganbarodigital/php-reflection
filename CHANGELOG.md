@@ -2,6 +2,8 @@
 
 ## develop branch
 
+## 2.16.1 - Tue Feb 23 2016
+
 ### Fixes
 
 * Performance tweaks to `AllMatchingTypesList`
